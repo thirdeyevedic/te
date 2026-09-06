@@ -1,0 +1,178 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { conceptFamilies } from "../data/concepts";
+import { destinations } from "../data/destinations";
+import { signatureEntries } from "../data/signatureEntries";
+import { eventIPs } from "../data/eventIPs";
+import { productionServices } from "../data/production";
+
+const title = "Sitemap | Third Eye Events";
+const description =
+  "Complete site map of Third Eye Events — weddings, destination worlds, wedding concepts, signature entries, event IP, production facilitation and about.";
+
+const sections: {
+  title: string;
+  href?: string;
+  note?: string;
+  links: { label: string; href: string }[];
+}[] = [
+  {
+    title: "Weddings",
+    href: "/weddings/",
+    note: "Where celebration becomes experience.",
+    links: [
+      { label: "Vaidik Weddings", href: "/weddings/vaidik/" },
+      { label: "Destination Weddings", href: "/weddings/destination/" },
+      { label: "Wedding Concepts — Wedding Worlds", href: "/weddings/concepts/" },
+      { label: "Signature Entries", href: "/weddings/experiences/" },
+      ...signatureEntries.map((e) => ({
+        label: `— ${e.title} (${e.category})`,
+        href: `/weddings/experiences/${e.slug}/`,
+      })),
+    ],
+  },
+  {
+    title: "Destination Worlds",
+    href: "/destinations/",
+    note: "Different destinations. Different worlds.",
+    links: destinations.map((d) => ({
+      label: `${d.name} — ${d.tagline}`,
+      href: `/destinations/${d.slug}/`,
+    })).concat([{ label: "India — One country. Seven worlds.", href: "/destinations/india/" }]),
+  },
+  {
+    title: "Wedding Concepts",
+    href: "/weddings/concepts/",
+    note: "Six semantic families.",
+    links: conceptFamilies.map((f) => ({
+      label: `${f.family} — ${f.concepts.map((c) => c.name).join(", ")}`,
+      href: `/weddings/concepts/#${f.id}`,
+    })),
+  },
+  {
+    title: "Event IP",
+    href: "/event-ip/",
+    note: "Owned, designed and delivered by Third Eye.",
+    links: eventIPs.map((ip) => ({
+      label: ip.name,
+      href: `/event-ip/${ip.id}/`,
+    })),
+  },
+  {
+    title: "Production",
+    href: "/production/",
+    note: "Behind every frame.",
+    links: productionServices.map((s) => ({
+      label: s.name,
+      href: `/production/${s.id}/`,
+    })),
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path="/sitemap/" noindex>
+  <section class="section-lg">
+    <div class="container">
+      <p class="eyebrow reveal">Site Map</p>
+      <h1 class="display sm-title reveal" style="--reveal-delay: 120ms">The world,<br />mapped.</h1>
+
+      <nav aria-label="Site map" class="sm-tree">
+        <a class="sm-root display reveal" href="/">Third Eye — Home</a>
+        {
+          sections.map((s, i) => (
+            <section class="sm-section reveal" style={`--reveal-delay: ${i * 60}ms`}>
+              <h2>
+                <a class="display sm-heading" href={s.href}>
+                  {s.title}
+                </a>
+              </h2>
+              {s.note && <p class="statement sm-note">{s.note}</p>}
+              <ul role="list">
+                {s.links.map((l) => (
+                  <li>
+                    <a class="sm-link" href={l.href}>{l.label}</a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))
+        }
+        <section class="sm-section reveal">
+          <h2><a class="display sm-heading" href="/about/">About</a></h2>
+          <ul role="list">
+            <li><a class="sm-link" href="/about/story/">Our Story</a></li>
+            <li><a class="sm-link" href="/about/founder/">Gautam GS</a></li>
+            <li><a class="sm-link" href="/about/philosophy/">Philosophy</a></li>
+            <li><a class="sm-link" href="/about/vision/">Vision</a></li>
+          </ul>
+        </section>
+        <section class="sm-section reveal">
+          <h2><a class="display sm-heading" href="/contact/">Contact</a></h2>
+          <ul role="list">
+            <li><a class="sm-link" href="/contact/">Start a Conversation</a></li>
+            <li><a class="sm-link" href="/privacy/">Privacy Policy</a></li>
+            <li><a class="sm-link" href="/terms/">Terms of Use</a></li>
+          </ul>
+        </section>
+      </nav>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .sm-title {
+    font-size: clamp(2.6rem, 7vw, 5.5rem);
+    margin-block: 1.2rem clamp(3rem, 7vw, 5rem);
+  }
+
+  .sm-tree {
+    max-width: 56rem;
+  }
+
+  .sm-root {
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    color: var(--color-gold);
+    display: inline-block;
+    margin-bottom: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .sm-section {
+    border-top: 1px solid var(--line);
+    padding-block: clamp(2rem, 4vw, 3rem);
+  }
+
+  h2 {
+    margin: 0;
+  }
+
+  .sm-heading {
+    font-size: clamp(1.7rem, 3vw, 2.5rem);
+    transition: color var(--dur-micro) ease;
+  }
+
+  .sm-heading:hover {
+    color: var(--color-gold);
+  }
+
+  .sm-note {
+    font-size: 1rem;
+    margin-block: 0.6rem 1.25rem;
+  }
+
+  ul {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .sm-link {
+    display: inline-block;
+    padding-block: 0.2rem;
+    color: var(--ink-muted);
+    transition: color var(--dur-micro) ease, translate var(--dur-standard) var(--ease-out-expo);
+  }
+
+  .sm-link:hover {
+    color: var(--ink);
+    translate: 0.35em 0;
+  }
+</style>

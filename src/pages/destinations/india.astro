@@ -1,0 +1,137 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import CTA from "../../components/CTA.astro";
+import { indiaCategories } from "../../data/destinations";
+import { ORG_ID } from "../../data/site";
+
+const title = "India Destination Weddings — Seven Worlds, One Country | Third Eye Events";
+const description =
+  "India destination weddings by Third Eye Events across seven master worlds — royal heritage palaces, desert dunes, forest retreats, coastlines, mountains, spiritual centres and metro luxury.";
+
+const categoryHref: Record<string, string> = {
+  "royal-heritage": "/destinations/rajasthan/",
+  "desert-offbeat": "/destinations/rajasthan/",
+  "nature-forest": "/destinations/rajasthan/",
+  "beach-coastal": "/destinations/india/",
+  "mountains-hills": "/destinations/india/",
+  "spiritual-vaidik": "/destinations/india/",
+  "metro-luxury": "/destinations/india/",
+};
+
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "India Destination Weddings",
+    provider: { "@id": ORG_ID },
+    areaServed: { "@type": "Country", name: "India" },
+    description:
+      "Destination wedding design and execution across India — seven master categories from royal heritage to spiritual Vaidik settings.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path="/destinations/india/" structuredData={structuredData}>
+  <PageHero
+    eyebrow="Destinations · India"
+    title="One country. Seven worlds."
+    statement="India is not one destination — it is an architecture of worlds. Each master category carries its own climate, culture and ceremony logic."
+  />
+
+  <section class="section">
+    <div class="container grid cats">
+      {
+        indiaCategories.map((c, i) => (
+          <article class={`cat reveal ${c.destinations[0].startsWith("[CONTENT") ? "cat--pending" : ""}`} id={c.id} style={`--reveal-delay: ${(i % 3) * 100}ms`}>
+            <span class="microcopy">World {String(i + 1).padStart(2, "0")}</span>
+            <h2 class="display cat__name">{c.name}</h2>
+            <p class="text-muted cat__essence">{c.essence}</p>
+            <p class="cat__list">
+              {c.destinations.map((d) =>
+                d === "[CONTENT REQUIRED]" ? (
+                  <span>In curation</span>
+                ) : categoryHref[c.id] ? (
+                  <a href={`${categoryHref[c.id]}`}>{d}</a>
+                ) : (
+                  <span>{d}</span>
+                ),
+              )}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <CTA title="Design Your India Wedding" line="Tell us which world your story belongs to." />
+</BaseLayout>
+
+<style>
+  .cats {
+    row-gap: 1.25rem;
+  }
+
+  .cat {
+    grid-column: span 4;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    min-height: clamp(16rem, 34vh, 22rem);
+    padding: 1.9rem;
+    border: 1px solid var(--line);
+    scroll-margin-top: calc(var(--nav-h) + 1rem);
+    transition: border-color var(--dur-standard) ease;
+  }
+
+  .cat:hover {
+    border-color: var(--color-gold);
+  }
+
+  @media (min-width: 48em) {
+    .cat {
+      grid-column: span 8;
+    }
+  }
+
+  @media (min-width: 72em) {
+    .cat {
+      grid-column: span 4;
+    }
+  }
+
+  .cat--pending {
+    opacity: 0.6;
+  }
+
+  .cat__name {
+    font-size: clamp(1.7rem, 2.8vw, 2.3rem);
+  }
+
+  .cat__essence {
+    font-size: 0.95rem;
+  }
+
+  .cat__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-block-start: auto;
+  }
+
+  .cat__list span,
+  .cat__list a {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-sandstone);
+    border: 1px solid var(--line);
+    padding: 0.35em 0.9em;
+    transition: color var(--dur-micro) ease, border-color var(--dur-micro) ease;
+  }
+
+  .cat__list a:hover {
+    color: var(--color-gold);
+    border-color: var(--color-gold);
+  }
+</style>

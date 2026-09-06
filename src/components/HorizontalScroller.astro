@@ -1,0 +1,116 @@
+---
+/**
+ * HorizontalScroller — cinematic horizontal gallery.
+ * Native scroll-snap (touch-first); wheel converts to horizontal on desktop
+ * when hovering the track. Disabled under reduced motion / touch devices.
+ */
+interface Props {
+  label: string;
+  class?: string;
+}
+
+const { label, class: className } = Astro.props;
+---
+
+<div class={`scroller ${className ?? ""}`} role="group" aria-label={label}>
+  <ul role="list" class="scroller__track" tabindex="0">
+    <slot />
+  </ul>
+</div>
+
+<style>
+  .scroller {
+    --edge: max(var(--space-gutter), calc((100vw - var(--grid-max)) / 2));
+    overflow-x: clip;
+  }
+
+  .scroller__track {
+    display: flex;
+    gap: clamp(1rem, 2vw, 2rem);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline-start: var(--edge);
+    padding-inline: var(--edge);
+    padding-bottom: 1rem;
+    scrollbar-width: none;
+    cursor: grab;
+  }
+
+  .scroller__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scroller__track::-moz-scrollbar {
+    display: none;
+  }
+
+  .scroller__track:active {
+    cursor: grabbing;
+  }
+
+  .scroller__track:focus-visible {
+    outline-offset: -2px;
+  }
+
+  /* First card aligns with grid edge; last card gets trailing space */
+  .scroller :global(> ul > li:last-child) {
+    padding-inline-end: 4rem;
+  }
+</style>
+
+<script>
+  const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function initScrollers() {
+    const tracks = document.querySelectorAll<HTMLElement>(".scroller__track");
+    if (!finePointer) return;
+
+    if (!reducedMotion) {
+      tracks.forEach((track) => {
+        let acc = 0;
+        let raf = 0;
+        const step = () => {
+          track.scrollLeft += acc;
+          acc *= 0.92;
+          if (Math.abs(acc) > 0.4) raf = requestAnimationFrame(step);
+          else raf = 0;
+        };
+        track.addEventListener("wheel", (e: WheelEvent) => {
+          if (!e.deltaY || Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+          const atStart = track.scrollLeft <= 0 && e.deltaY < 0;
+          const atEnd =
+            track.scrollLeft + track.clientWidth >= track.scrollWidth - 1 && e.deltaY > 0;
+          if (atStart || atEnd) return; // release page scroll at edges
+          e.preventDefault();
+          acc += e.deltaY * 0.36;
+          if (!raf) raf = requestAnimationFrame(step);
+        }, { passive: false });
+      });
+    }
+
+    /* Drag to scroll */
+    tracks.forEach((track) => {
+      let down = false;
+      let startX = 0;
+      let startScroll = 0;
+      track.addEventListener("pointerdown", (e) => {
+        down = true;
+        startX = e.clientX;
+        startScroll = track.scrollLeft;
+        track.setPointerCapture(e.pointerId);
+      });
+      track.addEventListener("pointermove", (e) => {
+        if (!down) return;
+        track.scrollLeft = startScroll - (e.clientX - startX);
+      });
+      ["pointerup", "pointercancel"].forEach((ev) =>
+        track.addEventListener(ev, () => {
+          down = false;
+        }),
+      );
+    });
+  }
+
+  document.addEventListener("astro:page-load", initScrollers);
+</script>

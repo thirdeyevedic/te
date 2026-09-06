@@ -1,0 +1,257 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import CTA from "../../components/CTA.astro";
+import { destinations } from "../../data/destinations";
+import { getVenuesByCountry } from "../../data/venues";
+import { ORG_ID } from "../../data/site";
+import { buildBreadcrumbs } from "../../utils/schema";
+
+export function getStaticPaths() {
+  return destinations.map((d) => ({ params: { slug: d.slug }, props: { d } }));
+}
+
+const { d } = Astro.props;
+const venues = getVenuesByCountry(d.slug);
+
+const crumbs = [
+  { label: "Home", href: "/" },
+  { label: "Destinations", href: "/destinations/" },
+  { label: d.name },
+];
+
+const structuredData = [
+  buildBreadcrumbs(crumbs),
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: `${d.name} Destination Weddings`,
+    provider: { "@id": ORG_ID },
+    areaServed: { "@type": "Place", name: `${d.name}, ${d.country}` },
+    description: d.metaDescription,
+  },
+];
+
+const related = destinations.filter((x) => x.slug !== d.slug).slice(0, 3);
+---
+
+<BaseLayout title={d.seoTitle} description={d.metaDescription} path={`/destinations/${d.slug}/`} structuredData={structuredData}>
+  <PageHero
+    eyebrow={`${d.region} · ${d.country}`}
+    title={d.name}
+    statement={d.tagline}
+    image={d.heroImage}
+    transitionName={`dest-${d.slug}`}
+    breadcrumbs={crumbs}
+  />
+
+  <!-- Why this destination -->
+  <section class="section why">
+    <div class="container why__grid">
+      <div class="why__col reveal">
+        <h2 class="eyebrow">Why this destination</h2>
+        <p class="text-muted">{d.landscape}</p>
+      </div>
+      <div class="why__col reveal" style="--reveal-delay: 120ms">
+        <h2 class="eyebrow">Cultural context</h2>
+        <p class="text-muted">{d.culturalContext}</p>
+      </div>
+      <div class="why__col reveal" style="--reveal-delay: 240ms">
+        <h2 class="eyebrow">Luxury context</h2>
+        <p class="text-muted">{d.luxuryContext}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Third Eye interpretation -->
+  <section class="section-lg interpret atmosphere-radial">
+    <div class="container">
+      <p class="eyebrow reveal">The Third Eye Interpretation</p>
+      <p class="display interpret__line reveal" style="--reveal-delay: 140ms">{d.thirdEyeInterpretation}</p>
+    </div>
+  </section>
+
+  <!-- Concept system -->
+  <section class="section concepts" aria-labelledby="concepts-title">
+    <div class="container">
+      <h2 class="eyebrow reveal" id="concepts-title">Wedding Concepts</h2>
+      <ul role="list" class="concept-list">
+        {
+          venues.map((v, i) => (
+            <li class="concept reveal" style={`--reveal-delay: ${i * 80}ms`}>
+              <a class="display concept__venue concept__venue--link" href={`/destinations/${d.slug}/${v.slug}/`}>
+                {v.name} →
+              </a>
+              <span class="concept__name">{v.concept}</span>
+              <span class="text-muted concept__meaning">{v.meaning}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Ritual direction & experience -->
+  <section class="section ritual">
+    <div class="container grid two">
+      <article class="reveal">
+        <h2 class="eyebrow">Ritual direction</h2>
+        <p class="text-muted">{d.ritualDirection}</p>
+      </article>
+      <article class="reveal" style="--reveal-delay: 140ms">
+        <h2 class="eyebrow">Experience design</h2>
+        <p class="text-muted">{d.experienceDescription}</p>
+      </article>
+    </div>
+    <div class="container bestfor reveal">
+      <h2 class="eyebrow">Best for</h2>
+      <p>{d.bestFor.join(" · ")}</p>
+    </div>
+  </section>
+
+  <!-- Related -->
+  <section class="section related atmosphere-radial" aria-label="Related worlds">
+    <div class="container rel-grid">
+      {
+        related.map((r) => (
+          <a class="rel ph reveal" href={`/destinations/${r.slug}/`}>
+            <span class="microcopy">{r.country}</span>
+            <span class="display rel__name">{r.name} →</span>
+            <span class="statement rel__tag">{r.tagline}</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <CTA title={`Design Your ${d.name} Wedding`} line="Tell us what this world should mean for you." />
+
+  <style>
+    .why__grid {
+      display: grid;
+      gap: 3rem;
+    }
+
+    @media (min-width: 64em) {
+      .why__grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .why__col h2,
+    .ritual .eyebrow,
+    .bestfor h2 {
+      margin-bottom: 1rem;
+    }
+
+    .interpret__line {
+      font-size: clamp(1.9rem, 4.5vw, 3.6rem);
+      font-style: italic;
+      max-width: 26ch;
+      margin-top: 1.5rem;
+    }
+
+    .concept-list {
+      display: grid;
+      gap: 0;
+      margin-top: clamp(2rem, 5vw, 3.5rem);
+    }
+
+    .concept {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.5rem 2.5rem;
+      padding-block: 1.6rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .concept:first-child {
+      border-top: 1px solid var(--line);
+    }
+
+    .concept__venue {
+      font-size: clamp(1.5rem, 2.8vw, 2.3rem);
+    }
+
+    .concept__venue--link {
+      transition: color var(--dur-micro) ease;
+    }
+
+    .concept__venue--link:hover {
+      color: var(--color-gold);
+    }
+
+    .concept__name {
+      color: var(--color-gold);
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+    }
+
+    .concept__meaning {
+      width: 100%;
+      max-width: 60ch;
+      font-size: 0.95rem;
+    }
+
+    .two {
+      row-gap: 2.5rem;
+    }
+
+    @media (min-width: 56em) {
+      .two {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .two article:first-child {
+        grid-column: span 6;
+      }
+
+      .two article:last-child {
+        grid-column: span 6;
+      }
+    }
+
+    .bestfor {
+      margin-top: 3rem;
+    }
+
+    /* Related */
+    .rel-grid {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 56em) {
+      .rel-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .rel {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      padding: 1.75rem;
+      border: 1px solid transparent;
+      transition: border-color var(--dur-standard) ease;
+    }
+
+    .rel:hover {
+      border-color: var(--color-gold);
+    }
+
+    .rel__name {
+      font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+    }
+
+    .rel__tag {
+      font-size: 0.95rem;
+      font-style: normal;
+      font-family: var(--font-body);
+      color: var(--ink-muted);
+    }
+  </style>
+</BaseLayout>

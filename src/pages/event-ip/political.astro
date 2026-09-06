@@ -1,0 +1,105 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import CTA from "../../components/CTA.astro";
+import { eventIPs } from "../../data/eventIPs";
+
+const ip = eventIPs.find((e) => e.id === "political")!;
+
+const title = `${ip.name} — Owned Event IP by Third Eye Events | Third Eye Events`;
+const description =
+  "Large-scale public gatherings executed with protocol discipline — crowd architecture, security coordination, zero-error stages. Third Eye Events.";
+---
+
+<BaseLayout title={title} description={description} path="/event-ip/political/">
+  <PageHero eyebrow="Event IP" title={ip.name} statement="Scale management meets protocol discipline." />
+
+  <section class="section">
+    <div class="container">
+      <p class="statement measure reveal">{ip.description}</p>
+      <dl class="ip__meta reveal" style="--reveal-delay: 120ms">
+        <div><dt>Focus</dt><dd>{ip.focus}</dd></div>
+        <div><dt>Format</dt><dd>{ip.potentialFormat}</dd></div>
+        <div><dt>Audience</dt><dd>{ip.audience}</dd></div>
+        <div><dt>Scale</dt><dd>{ip.scalability}</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section related" aria-label="Related">
+    <div class="container rel-grid">
+      <a class="rel reveal" href="/event-ip/exhibitions/">
+        <span class="microcopy">Event IP</span>
+        <span class="display rel__label">Exhibitions & Expos →</span>
+      </a>
+      <a class="rel reveal" href="/event-ip/devotional/" style="--reveal-delay: 110ms">
+        <span class="microcopy">Event IP</span>
+        <span class="display rel__label">Devotional & Spiritual →</span>
+      </a>
+      <a class="rel reveal" href="/event-ip/concerts/" style="--reveal-delay: 220ms">
+        <span class="microcopy">Event IP</span>
+        <span class="display rel__label">Concerts & Live →</span>
+      </a>
+    </div>
+  </section>
+
+  <CTA title="Partner With a Platform" line="Bring your brand into an ecosystem built to recur." />
+</BaseLayout>
+
+<style>
+  .ip__meta {
+    margin-top: 2rem;
+    display: grid;
+    gap: 0.9rem;
+    max-width: 40ch;
+  }
+
+  .ip__meta div {
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+    border-top: 1px solid var(--line);
+    padding-top: 0.8rem;
+  }
+
+  .ip__meta dt {
+    min-width: 6.5rem;
+    color: var(--ink-faint);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .ip__meta dd {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.92rem;
+  }
+
+  .rel-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 56em) {
+    .rel-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .rel {
+    display: grid;
+    gap: 0.9rem;
+    padding: 1.75rem;
+    border: 1px solid var(--line);
+    transition: border-color var(--dur-standard) ease;
+  }
+
+  .rel:hover {
+    border-color: var(--color-gold);
+  }
+
+  .rel__label {
+    font-size: clamp(1.3rem, 2vw, 1.7rem);
+  }
+</style>

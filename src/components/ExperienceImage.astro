@@ -1,0 +1,53 @@
+---
+/**
+ * ExperienceImage — single entry point for all site imagery.
+ *
+ * • Real asset supplied  → optimised responsive image (astro:assets for
+ *   imported metadata, native img for /public paths), lazy by default.
+ * • Nothing supplied yet → atmospheric placeholder that preserves layout,
+ *   carrying its [CONTENT REQUIRED] status honestly.
+ *
+ * `fill` mode absolutely-fills a positioned (.ph) parent — used inside
+ * cards and heroes.
+ */
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  src?: string | ImageMetadata;
+  alt?: string;
+  fill?: boolean;
+  eager?: boolean;
+  tone?: "default" | "agni";
+  class?: string;
+}
+
+const { src, alt = "", fill = false, eager = false, tone = "default", class: className } = Astro.props;
+
+const metaSrc = typeof src === "object" ? src : undefined;
+const pathSrc = typeof src === "string" ? src : undefined;
+
+const fillClass = fill ? "xi--fill" : "";
+const cls = ["xi__media", fillClass, className].filter(Boolean).join(" ");
+---
+
+{
+  metaSrc ? (
+    <Image
+      src={metaSrc}
+      alt={alt}
+      widths={[480, 768, 1200, 1600]}
+      sizes="(max-width: 48em) 100vw, (max-width: 72em) 80vw, 60vw"
+      loading={eager ? "eager" : "lazy"}
+      decoding="async"
+      class={cls}
+    />
+  ) : pathSrc ? (
+    <img src={pathSrc} alt={alt} loading={eager ? "eager" : "lazy"} decoding="async" class={cls} />
+  ) : (
+    <div class:list={["ph", "xi", `xi--${tone}`, fillClass]} role="presentation">
+      {/* [CONTENT REQUIRED] Imagery pending — atmospheric fallback */}
+      {alt && <span class="sr-only">{alt}</span>}
+    </div>
+  )
+}

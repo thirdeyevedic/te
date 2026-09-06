@@ -1,0 +1,181 @@
+---
+/**
+ * Opening Sequence — blackness → ॐ → mantra → reveal.
+ * Plays once per browser session. Skippable. Disabled under reduced motion.
+ * Content beneath is never blocked from assistive tech.
+ */
+---
+
+<div class="opening" id="opening" aria-hidden="true">
+  <div class="opening__om display">ॐ</div>
+  <div class="opening__mantra" lang="sa">
+    <p>यदा यदा हि धर्मस्य ग्लानिर्भवति भारत।</p>
+    <p>अभ्युत्थानमधर्मस्य तदात्मानं सृजाम्यहम् ॥</p>
+  </div>
+  <button class="opening__skip microcopy" id="opening-skip" tabindex="-1">Skip Intro</button>
+</div>
+
+<style>
+  .opening {
+    position: fixed;
+    inset: 0;
+    z-index: 150;
+    display: grid;
+    place-items: center;
+    background: var(--color-ink);
+    opacity: 1;
+  }
+
+  .opening__om {
+    position: absolute;
+    font-size: clamp(5rem, 14vw, 11rem);
+    color: var(--color-ivory);
+    text-shadow:
+      0 0 60px rgba(184, 155, 94, 0.35),
+      0 0 140px rgba(169, 85, 43, 0.18);
+    opacity: 0;
+    scale: 0.96;
+    animation:
+      om-in 2600ms var(--ease-out-expo) forwards,
+      om-breath 4200ms ease-in-out 2600ms infinite;
+  }
+
+  @keyframes om-in {
+    to {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+
+  @keyframes om-breath {
+    50% {
+      text-shadow:
+        0 0 80px rgba(184, 155, 94, 0.5),
+        0 0 180px rgba(169, 85, 43, 0.26);
+    }
+  }
+
+  .opening__mantra {
+    position: absolute;
+    text-align: center;
+    padding-inline: var(--space-gutter);
+    font-size: clamp(1.05rem, 2.4vw, 1.6rem);
+    line-height: 2.3;
+    color: var(--ink-muted);
+  }
+
+  .opening__mantra p {
+    opacity: 0;
+    translate: 0 0.6rem;
+    transition:
+      opacity 1100ms ease,
+      translate 1100ms var(--ease-out-expo);
+  }
+
+  .opening.is-mantra .opening__om {
+    opacity: 0;
+    scale: 1.03;
+    transition:
+      opacity 1600ms ease,
+      scale 2200ms ease;
+  }
+
+  .opening.is-mantra .opening__mantra p:nth-child(1) {
+    transition-delay: 500ms;
+  }
+
+  .opening.is-mantra .opening__mantra p:nth-child(2) {
+    transition-delay: 1500ms;
+  }
+
+  .opening__mantra p {
+    /* enabled when parent gets .is-mantra */
+  }
+
+  .opening.is-mantra .opening__mantra p {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  .opening.is-exiting {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1300ms ease;
+  }
+
+  .opening.is-done {
+    display: none;
+  }
+
+  .opening__skip {
+    position: absolute;
+    right: var(--space-gutter);
+    bottom: 2rem;
+    color: var(--ink-faint);
+    padding: 0.8em;
+    letter-spacing: 0.22em;
+    transition: color var(--dur-micro) ease;
+  }
+
+  .opening__skip:hover {
+    color: var(--color-gold);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .opening {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let timers = [];
+
+  function finish(el) {
+    el.classList.add("is-exiting");
+    document.body.style.overflow = "";
+    setTimeout(() => el.remove(), reducedMotion ? 0 : 1350);
+  }
+
+  function initOpening() {
+    const el = document.getElementById("opening");
+    const skipBtn = document.getElementById("opening-skip");
+    if (!el) return;
+
+    /* Fresh DOM after client-side navigation — always tear down stale state */
+    document.body.style.overflow = "";
+
+    if (reducedMotion || sessionStorage.getItem("te-opened")) {
+      el.remove();
+      return;
+    }
+
+    sessionStorage.setItem("te-opened", "1");
+    document.body.style.overflow = "hidden";
+    skipBtn?.removeAttribute("tabindex");
+
+    timers = [
+      setTimeout(() => el.classList.add("is-mantra"), 3400),
+      setTimeout(() => finish(el), 7400),
+    ];
+
+    skipBtn?.addEventListener("click", () => {
+      timers.forEach(clearTimeout);
+      finish(el);
+    });
+
+    addEventListener(
+      "keydown",
+      (e) => {
+        if (e.key === "Escape") {
+          timers.forEach(clearTimeout);
+          finish(el);
+        }
+      },
+      { once: true },
+    );
+  }
+
+  document.addEventListener("astro:page-load", initOpening);
+</script>

@@ -1,0 +1,702 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import OpeningSequence from "../components/OpeningSequence.astro";
+import HorizontalScroller from "../components/HorizontalScroller.astro";
+import CTA from "../components/CTA.astro";
+import ExperienceImage from "../components/ExperienceImage.astro";
+import { destinations } from "../data/destinations";
+import { getVenuesByCountry } from "../data/venues";
+import { signatureEntries } from "../data/signatureEntries";
+import { eventIPs } from "../data/eventIPs";
+import { productionNetwork } from "../data/production";
+
+const title = "Third Eye Events — Vaidik Luxury Weddings, Experiences & Execution";
+const description =
+  "Third Eye Events is a multi-domain experience and execution powerhouse — Vaidik luxury weddings, destination weddings across seven worlds, owned event IP and production facilitation. You dream it. We bring it to life—with trust.";
+
+const heroImage = "/images/hero-cinematic.jpg"; // [CONTENT REQUIRED] Replace with cinematic premium visual — spiritual + luxury wedding aesthetic
+---
+
+<BaseLayout title={title} description={description} path="/">
+  <OpeningSequence />
+
+  <!-- 02 · HERO -->
+  <section class="hero" aria-label="Third Eye">
+    <div class="hero__visual" aria-hidden="true">
+      <!-- [CONTENT REQUIRED] Hero background: high-quality cinematic premium visual — spiritual + luxury wedding aesthetic per doc -->
+      <ExperienceImage src={heroImage} alt="Third Eye Events spiritual luxury wedding hero" fill eager />
+    </div>
+    <div class="hero__veil" aria-hidden="true"></div>
+    <div class="hero__content container">
+      <p class="eyebrow reveal">Experience &amp; Execution</p>
+      <h1 class="display hero__title reveal" style="--reveal-delay: 150ms">THIRD EYE</h1>
+      <p class="statement reveal" style="--reveal-delay: 300ms">
+        You dream it.<br />We bring it to life—with trust.
+      </p>
+      <div class="hero__actions reveal" style="--reveal-delay: 450ms">
+        <a class="btn btn--solid" href="#weddings">Explore</a>
+        <a class="btn btn--ghost" href="/about/">Discover Third Eye</a>
+      </div>
+    </div>
+    <p class="microcopy hero__scrollhint" aria-hidden="true">Scroll</p>
+  </section>
+
+  <!-- 03 · FIRST TRANSITION -->
+  <section class="section-lg transition">
+    <div class="container">
+      <p class="display transition__line reveal">
+        We don't simply organize moments.<br />
+        We create experiences that carry meaning.
+      </p>
+    </div>
+  </section>
+
+  <!-- 04 · WEDDINGS -->
+  <section class="section" id="weddings" aria-labelledby="weddings-title">
+    <div class="container">
+      <p class="eyebrow reveal">Weddings</p>
+      <h2 class="display section__title reveal" style="--reveal-delay: 100ms" id="weddings-title">
+        Where celebration<br />becomes experience.
+      </h2>
+    </div>
+    <div class="container pathways grid">
+      {
+        [
+          {
+            href: "/weddings/vaidik/",
+            name: "Vaidik",
+            line: "Sacred. Pure. Conscious.",
+          },
+          {
+            href: "/weddings/destination/",
+            name: "Destination",
+            line: "Different locations. Different worlds.",
+          },
+          {
+            href: "/weddings/concepts/",
+            name: "Concepts",
+            line: "Experiences designed around meaning.",
+          },
+        ].map((p, i) => (
+          <a class={`pathway ph reveal`} style={`--reveal-delay: ${i * 120}ms`} href={p.href}>
+            <span class="pathway__num microcopy">0{i + 1}</span>
+            <span class="pathway__name display">{p.name}</span>
+            <span class="pathway__line">{p.line}</span>
+            <span class="link-line">Enter Experience</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- 05 · VAIDIK -->
+  <section class="section-lg vaidik atmosphere-radial" aria-labelledby="vaidik-title">
+    <div class="container vaidik__grid">
+      <div>
+        <p class="eyebrow reveal">The Core</p>
+        <h2 class="display vaidik__title reveal" style="--reveal-delay: 120ms" id="vaidik-title">
+          Vaidik Weddings
+        </h2>
+        <p class="statement reveal" style="--reveal-delay: 240ms">
+          Where Marriage is not an Event… but a Sacred Sanskar.
+        </p>
+        <a class="link-line reveal" style="--reveal-delay: 360ms" href="/weddings/vaidik/">Enter the Sacred</a>
+      </div>
+      <div class="vaidik__pure">
+        <div class="vaidik__pure-mandala" aria-hidden="true"></div>
+        <p class="vaidik__pure-word display reveal-mask">PURE</p>
+        <p class="microcopy reveal" style="--reveal-delay: 300ms">
+          No Alcohol · No Non-Veg · Pure Satvik
+        </p>
+        <p class="text-muted measure reveal" style="--reveal-delay: 420ms">
+          A conscious choice — not a restriction. Purity as the highest form of luxury.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 · DESTINATION WORLDS -->
+  <section class="section" aria-labelledby="dest-title">
+    <div class="container dest-head">
+      <div>
+        <p class="eyebrow reveal">Destination Weddings</p>
+        <h2 class="display section__title reveal" style="--reveal-delay: 120ms" id="dest-title">
+          Different destinations.<br />Different worlds.
+        </h2>
+      </div>
+      <a class="link-line reveal" href="/weddings/destination/">From dream destinations to divine celebrations</a>
+    </div>
+    <HorizontalScroller label="Destination worlds">
+      {
+        destinations.map((d, i) => (
+          <li class="dcard">
+            <a
+              class="dcard__inner ph"
+              href={`/destinations/${d.slug}/`}
+              style={`--reveal-delay: ${i * 60}ms; view-transition-name: dest-${d.slug}`}
+            >
+              <span class="dcard__region microcopy">{d.region} · {d.country}</span>
+              <span class="dcard__name display">{d.name}</span>
+              <span class="dcard__concept">
+                {getVenuesByCountry(d.slug).slice(0, 2).map((v) => (
+                  <b>{v.concept}</b>
+                ))}
+              </span>
+              <span class="dcard__cta link-line">Enter Experience →</span>
+            </a>
+          </li>
+        ))
+      }
+    </HorizontalScroller>
+  </section>
+
+  <!-- 07 · SIGNATURE EXPERIENCES -->
+  <section class="section signatures" aria-labelledby="sig-title">
+    <div class="container">
+      <p class="eyebrow reveal">Signature Entries</p>
+      <h2 class="display section__title reveal" style="--reveal-delay: 120ms" id="sig-title">
+        Moments that define the wedding<br />before it begins.
+      </h2>
+    </div>
+    <div class="container sig-grid">
+      {
+        signatureEntries.map((e, i) => (
+          <a
+            class={`sig-card ph reveal`}
+            href={`/weddings/experiences/${e.slug}/`}
+            style={`--reveal-delay: ${i * 110}ms; view-transition-name: entry-${e.slug}`}
+          >
+            <span class="microcopy">{e.category}</span>
+            <span class="sig-card__title display">{e.title}</span>
+            <span class="statement sig-card__line">{e.line}</span>
+            <span class="link-line">Choose Your Moment</span>
+          </a>
+        ))
+      }
+    </div>
+    <div class="container">
+      <p class="statement sig-signature reveal">Before the rituals begin, we create a moment the world will remember.</p>
+    </div>
+  </section>
+
+  <!-- 08 · EVENT IP -->
+  <section class="section ip atmosphere-radial" aria-labelledby="ip-title">
+    <div class="container ip-head">
+      <div>
+        <p class="eyebrow reveal">Owned Experiences</p>
+        <h2 class="display section__title reveal" style="--reveal-delay: 120ms" id="ip-title">
+          An ecosystem of<br />signature experiences.
+        </h2>
+        <p class="text-muted measure reveal" style="--reveal-delay: 240ms">
+          Owned, designed and delivered by Third Eye. Not services — properties. Repeatable formats,
+          brandable experiences and scalable platforms with audiences of their own.
+        </p>
+      </div>
+      <a class="link-line reveal" href="/event-ip/">Enter IP Portfolio</a>
+    </div>
+    <HorizontalScroller label="Event IP portfolio">
+      {
+        eventIPs.map((ip, i) => (
+          <li class="ip-card reveal" style={`--reveal-delay: ${i * 50}ms`}>
+            <a href={`/event-ip/${ip.id}/`}>
+              <span class="microcopy">{String(i + 1).padStart(2, "0")}</span>
+              <span class="ip-card__name display">{ip.name}</span>
+              <span class="ip-card__focus microcopy">{ip.focus}</span>
+              <span class="link-line">Enter IP</span>
+            </a>
+          </li>
+        ))
+      }
+    </HorizontalScroller>
+  </section>
+
+  <!-- 09 · PRODUCTION -->
+  <section class="section production" aria-labelledby="prod-title">
+    <div class="container prod-head">
+      <div>
+        <p class="eyebrow reveal">Production Facilitation</p>
+        <h2 class="display section__title reveal" style="--reveal-delay: 120ms" id="prod-title">
+          Behind every frame.
+        </h2>
+        <p class="statement reveal" style="--reveal-delay: 240ms">
+          Structured. Managed. Delivered by Third Eye.
+        </p>
+      </div>
+      <a class="link-line reveal" href="/production/">See the System</a>
+    </div>
+    <div class="container network reveal" role="list" aria-label="Execution network">
+      {
+        productionNetwork.map((n, i) => (
+          <>
+            <span class="network__node microcopy" role="listitem">{n.label}</span>
+            {i < productionNetwork.length - 1 && <span class="network__arrow" aria-hidden="true">→</span>}
+          </>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- 10 · FOUNDER -->
+  <section class="section founder atmosphere-radial" aria-labelledby="founder-title">
+    <div class="container founder__grid">
+      <figure class="founder__portrait ph reveal" aria-hidden="true">
+        <!-- [CONTENT REQUIRED] Founder portrait: Gautam GS -->
+      </figure>
+      <div>
+        <p class="eyebrow reveal">Founder</p>
+        <h2 class="display section__title reveal" style="--reveal-delay: 100ms" id="founder-title">Gautam GS</h2>
+        <p class="microcopy reveal" style="--reveal-delay: 200ms">Director · Choreographer · Designer · Visionary</p>
+        <p class="text-muted measure reveal" style="--reveal-delay: 300ms">
+          Dancer to choreographer. Choreographer to creator. Creator to entrepreneur. Entrepreneur to
+          experience builder. One trajectory — from stage to scale to purpose.
+        </p>
+        <a class="link-line reveal" style="--reveal-delay: 400ms" href="/about/">Continue the Journey</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 · PHILOSOPHY MANIFESTO -->
+  <section class="section manifesto" aria-labelledby="manifesto-title">
+    <div class="container">
+      <h2 class="eyebrow reveal" id="manifesto-title">Philosophy</h2>
+      <ul role="list" class="manifesto__list">
+        {
+          [
+            ["Meaning", "over Decoration"],
+            ["Emotion", "over Performance"],
+            ["Discipline", "over Hype"],
+            ["Culture", "over Trend"],
+          ].map(([word, over], i) => (
+            <li class="manifesto__row reveal" style={`--reveal-delay: ${i * 140}ms`}>
+              <span class="display manifesto__word">{word}</span>
+              <span class="manifesto__over statement">over {over}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- 12 · FINAL CTA -->
+  <CTA />
+
+  <style>
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: grid;
+      align-items: end;
+      overflow: clip;
+    }
+
+    .hero__visual {
+      position: absolute;
+      inset: -6% 0;
+      animation: hero-drift 36s var(--ease-in-out-soft) infinite alternate;
+    }
+
+    @keyframes hero-drift {
+      to {
+        translate: 0 -2.5%;
+        scale: 1.04;
+      }
+    }
+
+    .hero__veil {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(10, 10, 10, 0.55), rgba(10, 10, 10, 0.25) 45%, rgba(10, 10, 10, 0.88));
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 1;
+      padding-block: 8rem 7rem;
+      display: grid;
+      gap: 1.6rem;
+      justify-items: start;
+    }
+
+    .hero__title {
+      font-size: var(--text-hero);
+      letter-spacing: 0.02em;
+    }
+
+    .hero__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .hero__scrollhint {
+      position: absolute;
+      right: var(--space-gutter);
+      bottom: 2rem;
+      writing-mode: vertical-rl;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero__visual {
+        animation: none;
+      }
+    }
+
+    /* ---------- Transition statement ---------- */
+    .transition__line {
+      font-size: clamp(2rem, 5vw, 4.2rem);
+      font-style: italic;
+      color: var(--ink);
+      max-width: 22ch;
+    }
+
+    .section__title {
+      font-size: clamp(2.4rem, 5.5vw, 4.6rem);
+      margin-block: 1.2rem 3rem;
+    }
+
+    /* ---------- Pathways ---------- */
+    .pathways {
+      row-gap: 1.25rem;
+    }
+
+    .pathway {
+      grid-column: span 4;
+      min-height: clamp(18rem, 42vh, 26rem);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      border: 1px solid transparent;
+      transition: border-color var(--dur-standard) ease;
+    }
+
+    @media (min-width: 48em) {
+      .pathway {
+        grid-column: span 8;
+      }
+    }
+
+    @media (min-width: 72em) {
+      .pathway {
+        grid-column: span 4;
+      }
+    }
+
+    .pathway:hover {
+      border-color: var(--color-gold);
+      box-shadow: 0 0 30px rgba(184, 155, 94, 0.1);
+    }
+
+    .pathway__num {
+      order: -1;
+    }
+
+    .pathway__name {
+      font-size: clamp(1.9rem, 3vw, 2.6rem);
+      margin-block-start: auto;
+    }
+
+    .pathway__line {
+      color: var(--ink-muted);
+      font-size: 0.95rem;
+    }
+
+    /* ---------- Vaidik ---------- */
+    .vaidik__grid {
+      display: grid;
+      gap: 4rem;
+    }
+
+    @media (min-width: 64em) {
+      .vaidik__grid {
+        grid-template-columns: 1.2fr 1fr;
+        align-items: center;
+      }
+    }
+
+    .vaidik__title {
+      font-size: clamp(2.6rem, 6vw, 5.2rem);
+      margin-block: 1.2rem;
+    }
+
+    .vaidik__pure {
+      text-align: center;
+      display: grid;
+      gap: 1.1rem;
+      justify-items: center;
+      position: relative;
+    }
+
+    .vaidik__pure-mandala {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      translate: -50% -55%;
+      width: clamp(18rem, 40vw, 35rem);
+      height: clamp(18rem, 40vw, 35rem);
+      border-radius: 50%;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        rgba(184, 155, 94, 0.05) 15deg,
+        transparent 30deg,
+        rgba(184, 155, 94, 0.03) 45deg,
+        transparent 60deg,
+        rgba(184, 155, 94, 0.05) 75deg,
+        transparent 90deg,
+        rgba(184, 155, 94, 0.03) 105deg,
+        transparent 120deg,
+        rgba(184, 155, 94, 0.05) 135deg,
+        transparent 150deg,
+        rgba(184, 155, 94, 0.03) 165deg,
+        transparent 180deg,
+        rgba(184, 155, 94, 0.05) 195deg,
+        transparent 210deg,
+        rgba(184, 155, 94, 0.03) 225deg,
+        transparent 240deg,
+        rgba(184, 155, 94, 0.05) 255deg,
+        transparent 270deg,
+        rgba(184, 155, 94, 0.03) 285deg,
+        transparent 300deg,
+        rgba(184, 155, 94, 0.05) 315deg,
+        transparent 330deg,
+        rgba(184, 155, 94, 0.03) 345deg,
+        transparent 360deg
+      );
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .vaidik__pure-mandala {
+        display: none;
+      }
+    }
+
+    .vaidik__pure-word {
+      font-size: clamp(5rem, 16vw, 15rem);
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(184, 155, 94, 0.55);
+      background: linear-gradient(180deg, rgba(184, 155, 94, 0.28), rgba(169, 85, 43, 0.12));
+      -webkit-background-clip: text;
+      background-clip: text;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 0 60px rgba(184, 155, 94, 0.12);
+    }
+
+    /* ---------- Destinations ---------- */
+    .dest-head,
+    .ip-head,
+    .prod-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      justify-content: space-between;
+      gap: 2rem;
+      margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+    }
+
+    .dcard {
+      scroll-snap-align: start;
+      flex: 0 0 auto;
+      width: min(78vw, 26rem);
+    }
+
+    .dcard__inner {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      aspect-ratio: 3 / 4;
+      padding: 1.75rem;
+      border: 1px solid transparent;
+      transition: border-color var(--dur-standard) ease, scale var(--dur-standard) var(--ease-out-expo);
+    }
+
+    .dcard__inner:hover {
+      border-color: var(--color-gold);
+      scale: 1.012;
+      box-shadow: 0 0 30px rgba(184, 155, 94, 0.1);
+    }
+
+    .dcard__name {
+      font-size: clamp(2rem, 3vw, 2.8rem);
+      margin-block-start: auto;
+    }
+
+    .dcard__concept {
+      display: grid;
+      gap: 0.25rem;
+    }
+
+    .dcard__concept b {
+      font-weight: 600;
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+    }
+
+    /* ---------- Signatures ---------- */
+    .signatures {
+      background: linear-gradient(180deg, transparent, rgba(23, 23, 23, 0.5) 20%, transparent);
+    }
+
+    .sig-grid {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 56em) {
+      .sig-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .sig-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      aspect-ratio: 3 / 4.2;
+      padding: 1.6rem;
+      border: 1px solid transparent;
+      transition: border-color var(--dur-standard) ease;
+    }
+
+    .sig-card:hover {
+      border-color: var(--color-agni);
+      box-shadow: 0 0 30px rgba(169, 85, 43, 0.12);
+    }
+
+    .sig-card .link-line {
+      opacity: 0;
+      transition: opacity var(--dur-standard) ease;
+    }
+
+    .sig-card:hover .link-line {
+      opacity: 1;
+    }
+
+    .sig-card__title {
+      font-size: clamp(1.6rem, 2.2vw, 2rem);
+      margin-block-start: auto;
+    }
+
+    .sig-card__line {
+      font-size: 1rem;
+      font-style: normal;
+      font-family: var(--font-body);
+      color: var(--ink-muted);
+    }
+
+    .sig-signature {
+      text-align: center;
+      margin-block: clamp(2rem, 5vw, 3.5rem);
+      font-size: clamp(1.05rem, 1.8vw, 1.4rem);
+    }
+
+    /* ---------- Event IP ---------- */
+    .ip-card {
+      flex: 0 0 auto;
+      width: min(72vw, 21rem);
+      scroll-snap-align: start;
+    }
+
+    .ip-card a {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      height: 100%;
+      padding: 1.6rem;
+      border: 1px solid var(--line);
+      background: rgba(23, 23, 23, 0.45);
+      transition: border-color var(--dur-standard) ease, background-color var(--dur-standard) ease;
+    }
+
+    .ip-card a:hover {
+      border-color: var(--color-gold);
+      background: rgba(23, 23, 23, 0.75);
+      box-shadow: 0 0 30px rgba(184, 155, 94, 0.1);
+    }
+
+    .ip-card__name {
+      font-size: 1.65rem;
+    }
+
+    .ip-card .link-line {
+      margin-block-start: auto;
+    }
+
+    /* ---------- Production network ---------- */
+    .network {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem 1.4rem;
+      padding-block: 1rem;
+    }
+
+    .network__node {
+      padding: 0.85em 1.4em;
+      border: 1px solid var(--line);
+      color: var(--ink-muted);
+      white-space: nowrap;
+      transition: border-color var(--dur-micro) ease, color var(--dur-micro) ease;
+    }
+
+    .network__node:hover {
+      border-color: var(--color-gold);
+      color: var(--color-gold);
+    }
+
+    .network__arrow {
+      color: var(--color-bronze);
+    }
+
+    /* ---------- Founder ---------- */
+    .founder__grid {
+      display: grid;
+      gap: 3.5rem;
+      align-items: center;
+    }
+
+    @media (min-width: 64em) {
+      .founder__grid {
+        grid-template-columns: minmax(16rem, 26rem) 1fr;
+        gap: 5rem;
+      }
+    }
+
+    .founder__portrait {
+      aspect-ratio: 4 / 5;
+    }
+
+    /* ---------- Manifesto ---------- */
+    .manifesto__list {
+      margin-top: 3rem;
+    }
+
+    .manifesto__row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.5rem 2.5rem;
+      padding-block: clamp(1.4rem, 3vw, 2.4rem);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .manifesto__row:first-child {
+      border-top: 1px solid var(--line);
+    }
+
+    .manifesto__word {
+      font-size: clamp(2.2rem, 5.5vw, 4.4rem);
+    }
+
+    .manifesto__over {
+      font-size: clamp(1.05rem, 1.8vw, 1.5rem);
+    }
+  </style>
+</BaseLayout>

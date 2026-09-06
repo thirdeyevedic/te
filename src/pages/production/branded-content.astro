@@ -1,0 +1,126 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import CTA from "../../components/CTA.astro";
+import { productionServices } from "../../data/production";
+import { ORG_ID } from "../../data/site";
+
+const svc = productionServices.find((s) => s.id === "branded-content")!;
+
+const title = `${svc.name} — Production Facilitation by Third Eye Events | Third Eye Events`;
+const description =
+  "Branded content production facilitation by Third Eye Events — brand alignment, quality control. The brand's voice, protected frame by frame.";
+
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Branded Content Production Facilitation",
+    serviceType: "Line Production & Content Facilitation",
+    provider: { "@id": ORG_ID },
+    areaServed: "India and international productions",
+    description: svc.note,
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path="/production/branded-content/" structuredData={structuredData}>
+  <PageHero eyebrow="Production" title={svc.name} statement="The brand's voice, protected frame by frame." />
+
+  <section class="section">
+    <div class="container">
+      <p class="statement measure reveal">
+        Every brand has a voice. Third Eye ensures that voice stays consistent across every frame —
+        from concept to final delivery, quality control at every step.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="eyebrow reveal">Capabilities</h2>
+      <ul role="list" class="cap-list">
+        {svc.capabilities.map((c, i) => (
+          <li class="cap reveal" style={`--reveal-delay: ${i * 90}ms`}>{c}</li>
+        ))}
+      </ul>
+      <p class="microcopy svc__note reveal" style="--reveal-delay: 400ms">{svc.note}</p>
+    </div>
+  </section>
+
+  <section class="section related" aria-label="Related">
+    <div class="container rel-grid">
+      <a class="rel reveal" href="/production/feature-films/">
+        <span class="microcopy">Production</span>
+        <span class="display rel__label">Feature Films →</span>
+      </a>
+      <a class="rel reveal" href="/production/digital-content/" style="--reveal-delay: 110ms">
+        <span class="microcopy">Production</span>
+        <span class="display rel__label">Digital Content →</span>
+      </a>
+      <a class="rel reveal" href="/production/ad-shoots/" style="--reveal-delay: 220ms">
+        <span class="microcopy">Production</span>
+        <span class="display rel__label">Ad Shoots →</span>
+      </a>
+    </div>
+  </section>
+
+  <CTA title="Bring Your Production" line="Tell us the frame you see. We'll build what stands behind it." />
+</BaseLayout>
+
+<style>
+  .cap-list {
+    margin-top: 1.5rem;
+  }
+
+  .cap {
+    position: relative;
+    padding-inline-start: 1.3rem;
+    color: var(--ink-muted);
+    font-size: 1.1rem;
+    padding-block: 0.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .cap::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0.5em;
+    height: 1px;
+    background: var(--color-gold);
+  }
+
+  .svc__note {
+    margin-top: 1.5rem;
+    color: var(--ink-faint);
+  }
+
+  .rel-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 56em) {
+    .rel-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .rel {
+    display: grid;
+    gap: 0.9rem;
+    padding: 1.75rem;
+    border: 1px solid var(--line);
+    transition: border-color var(--dur-standard) ease;
+  }
+
+  .rel:hover {
+    border-color: var(--color-gold);
+  }
+
+  .rel__label {
+    font-size: clamp(1.3rem, 2vw, 1.7rem);
+  }
+</style>

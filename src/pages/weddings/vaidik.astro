@@ -1,0 +1,429 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import CTA from "../../components/CTA.astro";
+import { ORG_ID } from "../../data/site";
+
+const title = "Vaidik Luxury Weddings — Marriage as a Sacred Sanskar | Third Eye Events";
+const description =
+  "Vaidik weddings by Third Eye Events: pure satvik celebrations where marriage is a sacred sanskar — mantra, Agni, muhurat and sankalp conducted with discipline, refinement and complete devotion.";
+
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Vaidik Luxury Weddings",
+    serviceType: "Vaidik Wedding Planning & Experience Design",
+    provider: { "@id": ORG_ID },
+    areaServed: "India and international destinations",
+    description:
+      "Pure satvik Vaidik wedding experiences — vivaah sanskar conducted with mantra, Agni, muhurat and purohit-led ritual, designed as conscious luxury.",
+  },
+];
+
+const ritualEntities = [
+  { term: "Sankalp", note: "The intention that begins everything — spoken before any ritual moves." },
+  { term: "Muhurat", note: "Time chosen by the shastras, not by convenience." },
+  { term: "Purohit", note: "The priest who carries the ceremony — respected, briefed, honoured." },
+  { term: "Mantra", note: "Sound as structure. Every chant rehearsed, every pause intentional." },
+  { term: "Agni", note: "The fire as witness — the centre the entire celebration orbits." },
+  { term: "Shastra", note: "Scripture guiding each step — tradition without guesswork." },
+];
+---
+
+<BaseLayout title={title} description={description} path="/weddings/vaidik/" structuredData={structuredData}>
+  <PageHero
+    eyebrow="Weddings · The Core"
+    title="Vaidik Weddings"
+    statement="Where Marriage is not an Event… but a Sacred Sanskar."
+  />
+
+  <!-- PURE -->
+  <section class="section pure atmosphere-radial" aria-labelledby="pure-title">
+    <div class="container pure__wrap">
+      <div class="pure__mandala" aria-hidden="true"></div>
+      <div class="pure__smoke" aria-hidden="true">
+        <span class="pure__smoke-particle"></span>
+        <span class="pure__smoke-particle"></span>
+        <span class="pure__smoke-particle"></span>
+      </div>
+      <p class="pure__word display reveal-mask" id="pure-title">PURE</p>
+      <p class="microcopy reveal">No Alcohol · No Non-Veg · Pure Satvik</p>
+      <p class="text-muted measure reveal" style="--reveal-delay: 200ms">
+        This is not a restriction. It is a conscious choice. A Vaidik wedding maintains energetic purity —
+        where every element supports clarity, calmness and sacredness. Food is not just served… it is offered.
+      </p>
+    </div>
+  </section>
+
+  <!-- THE SACRED SYSTEM -->
+  <section class="section system" aria-labelledby="system-title">
+    <div class="container sys-head">
+      <h2 class="display section-title reveal" id="system-title">
+        One sacred system.<br />Nothing left to chance.
+      </h2>
+      <p class="text-muted measure reveal" style="--reveal-delay: 160ms">
+        At Third Eye we don’t design weddings around trends — we align them with Dharma, Energy and Meaning.
+        A Vaidik wedding is not about noise, show or excess. It is about purity, intention and sacred union.
+        We honour its architecture and translate it flawlessly for your family, your guests and this generation.
+      </p>
+    </div>
+    <div class="container grid entities">
+      {
+        ritualEntities.map((e, i) => (
+          <article class="entity reveal" style={`--reveal-delay: ${i * 90}ms`}>
+            <h3 class="display entity__term">{e.term}</h3>
+            <p class="text-muted">{e.note}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- SATVIK DINING -->
+  <section class="section-lg dining atmosphere-radial" aria-labelledby="dining-title">
+    <div class="container dining__grid">
+      <figure class="ph dining__visual reveal-mask" aria-hidden="true">
+        <!-- [CONTENT REQUIRED] Satvik dining photography: copper serveware, banana leaf, seasonal produce -->
+      </figure>
+      <div class="dining__copy">
+        <p class="eyebrow reveal">Dining as Ritual</p>
+        <h2 class="display section-title reveal" style="--reveal-delay: 120ms" id="dining-title">Satvik Dining</h2>
+        <p class="statement reveal" style="--reveal-delay: 240ms">
+          Crafted with Intention. Served with Tradition.
+        </p>
+        <div class="dining__styles reveal" style="--reveal-delay: 340ms">
+          <article class="dining__style">
+            <h3>Tamra Patra</h3>
+            <p>Traditional copper vessel dining — food served in hand-hammered copper ware that has been used in Vaidik households for centuries. Each vessel is selected for its purifying properties and ceremonial significance.</p>
+          </article>
+          <article class="dining__style">
+            <h3>Banana Leaf</h3>
+            <p>The South Indian purity format — meals served on fresh banana leaves, each placement following Vaidik order. A dining tradition where the plate itself is an offering from nature.</p>
+          </article>
+          <article class="dining__style">
+            <h3>Modern Satvik</h3>
+            <p>Contemporary plating with the same discipline — seasonal ingredients, zero onion and garlic, presented with the refinement of fine dining. Proof that purity and sophistication are not opposites.</p>
+          </article>
+          <article class="dining__style">
+            <h3>Jain Satvik</h3>
+            <p>Root-free, strictly prepared — no root vegetables, no fermentation, cooked within prescribed hours. Honoured precisely for families who observe these conventions without compromise.</p>
+          </article>
+        </div>
+        <p class="text-muted measure reveal" style="--reveal-delay: 440ms">
+          Dining here is not catering. It is part of the sanskar itself — food that keeps the body light and
+          the mind clear for what the day means.
+        </p>
+        <a class="link-line reveal" style="--reveal-delay: 520ms" href="/contact/">Begin a Conversation</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- RELATED PATHS -->
+  <section class="section related" aria-label="Related experiences">
+    <div class="container rel-grid">
+      {
+        [
+          { href: "/weddings/destination/", label: "Take it somewhere sacred", sub: "Destination Weddings" },
+          { href: "/weddings/concepts/", label: "Give it a concept", sub: "Wedding Worlds" },
+          { href: "/weddings/experiences/", label: "Open it powerfully", sub: "Signature Entries" },
+        ].map((r, i) => (
+          <a class="rel reveal" href={r.href} style={`--reveal-delay: ${i * 110}ms`}>
+            <span class="microcopy">{r.sub}</span>
+            <span class="display rel__label">{r.label} →</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section vaidik-sig">
+    <div class="container">
+      <p class="statement reveal">In a world full of celebrations, choose a wedding that is pure, powerful, and eternal.</p>
+    </div>
+  </section>
+
+  <CTA />
+
+  <style>
+    /* PURE */
+    .pure {
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .pure__wrap {
+      position: relative;
+      display: grid;
+      justify-items: center;
+    }
+
+    .pure__mandala {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      translate: -50% -55%;
+      width: clamp(28rem, 60vw, 55rem);
+      height: clamp(28rem, 60vw, 55rem);
+      border-radius: 50%;
+      background:
+        conic-gradient(
+          from 0deg,
+          transparent 0deg,
+          rgba(184, 155, 94, 0.06) 15deg,
+          transparent 30deg,
+          rgba(184, 155, 94, 0.04) 45deg,
+          transparent 60deg,
+          rgba(184, 155, 94, 0.06) 75deg,
+          transparent 90deg,
+          rgba(184, 155, 94, 0.04) 105deg,
+          transparent 120deg,
+          rgba(184, 155, 94, 0.06) 135deg,
+          transparent 150deg,
+          rgba(184, 155, 94, 0.04) 165deg,
+          transparent 180deg,
+          rgba(184, 155, 94, 0.06) 195deg,
+          transparent 210deg,
+          rgba(184, 155, 94, 0.04) 225deg,
+          transparent 240deg,
+          rgba(184, 155, 94, 0.06) 255deg,
+          transparent 270deg,
+          rgba(184, 155, 94, 0.04) 285deg,
+          transparent 300deg,
+          rgba(184, 155, 94, 0.06) 315deg,
+          transparent 330deg,
+          rgba(184, 155, 94, 0.04) 345deg,
+          transparent 360deg
+        ),
+        radial-gradient(circle, transparent 30%, rgba(10, 10, 10, 0.4) 70%);
+      opacity: 0;
+      animation: mandala-in 3s var(--ease-out-expo) 0.5s forwards;
+      pointer-events: none;
+    }
+
+    @keyframes mandala-in {
+      to { opacity: 1; }
+    }
+
+    .pure__smoke {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .pure__smoke-particle {
+      position: absolute;
+      bottom: 20%;
+      width: clamp(10rem, 25vw, 22rem);
+      height: clamp(10rem, 25vw, 22rem);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 241, 232, 0.04), transparent 70%);
+      filter: blur(40px);
+      animation: smoke-drift 12s ease-in-out infinite alternate;
+    }
+
+    .pure__smoke-particle:nth-child(1) {
+      left: 15%;
+      animation-delay: 0s;
+      animation-duration: 14s;
+    }
+
+    .pure__smoke-particle:nth-child(2) {
+      left: 50%;
+      animation-delay: -4s;
+      animation-duration: 11s;
+      opacity: 0.7;
+    }
+
+    .pure__smoke-particle:nth-child(3) {
+      left: 75%;
+      animation-delay: -8s;
+      animation-duration: 16s;
+      opacity: 0.5;
+    }
+
+    @keyframes smoke-drift {
+      0% {
+        translate: 0 0;
+        scale: 0.8;
+        opacity: 0;
+      }
+      30% {
+        opacity: 1;
+      }
+      100% {
+        translate: 10px -40px;
+        scale: 1.3;
+        opacity: 0;
+      }
+    }
+
+    .pure .microcopy,
+    .pure .text-muted {
+      margin-inline: auto;
+      margin-top: 1.4rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pure__word {
+      font-size: clamp(6rem, 24vw, 22rem);
+      line-height: 0.9;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(184, 155, 94, 0.5);
+      background: linear-gradient(180deg, rgba(184, 155, 94, 0.26), rgba(169, 85, 43, 0.1));
+      -webkit-background-clip: text;
+      background-clip: text;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 0 80px rgba(184, 155, 94, 0.15);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pure__mandala {
+        animation: none;
+        opacity: 0.6;
+      }
+
+      .pure__smoke-particle {
+        animation: none;
+        display: none;
+      }
+    }
+
+    /* System */
+    .sys-head {
+      display: grid;
+      gap: 2rem;
+      margin-bottom: clamp(3rem, 7vw, 5rem);
+    }
+
+    @media (min-width: 64em) {
+      .sys-head {
+        grid-template-columns: 1.3fr 1fr;
+        align-items: end;
+      }
+    }
+
+    .section-title {
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+    }
+
+    .entities {
+      row-gap: 2.5rem;
+    }
+
+    .entity {
+      grid-column: span 4;
+      border-top: 1px solid var(--line);
+      padding-top: 1.4rem;
+    }
+
+    @media (min-width: 48em) {
+      .entity {
+        grid-column: span 8;
+      }
+    }
+
+    @media (min-width: 72em) {
+      .entity {
+        grid-column: span 4;
+      }
+    }
+
+    .entity__term {
+      font-size: clamp(1.5rem, 2.4vw, 2rem);
+      color: var(--color-gold);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Dining */
+    .dining__grid {
+      display: grid;
+      gap: clamp(3rem, 6vw, 5rem);
+      align-items: center;
+    }
+
+    @media (min-width: 64em) {
+      .dining__grid {
+        grid-template-columns: 1fr 1.1fr;
+      }
+    }
+
+    .dining__visual {
+      aspect-ratio: 4 / 5;
+    }
+
+    .dining__copy {
+      display: grid;
+      gap: 1.2rem;
+      justify-items: start;
+    }
+
+    .dining__styles {
+      display: grid;
+      gap: 1.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .dining__style {
+      border-top: 1px solid var(--line);
+      padding-top: 1rem;
+    }
+
+    .dining__style h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--color-gold);
+      margin-bottom: 0.4rem;
+    }
+
+    .dining__style p {
+      color: var(--ink-muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      max-width: 50ch;
+    }
+
+    /* Related */
+    .rel-grid {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 56em) {
+      .rel-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .rel {
+      display: grid;
+      gap: 0.9rem;
+      padding: 1.75rem;
+      border: 1px solid var(--line);
+      transition: border-color var(--dur-standard) ease;
+    }
+
+    .rel:hover {
+      border-color: var(--color-gold);
+    }
+
+    .rel__label {
+      font-size: clamp(1.3rem, 2vw, 1.7rem);
+    }
+
+    /* Signature line */
+    .vaidik-sig {
+      text-align: center;
+    }
+
+    .vaidik-sig .statement {
+      max-width: 32ch;
+      margin-inline: auto;
+      font-size: clamp(1.05rem, 1.8vw, 1.4rem);
+    }
+  </style>
+</BaseLayout>

@@ -1,0 +1,257 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import CTA from "../components/CTA.astro";
+import { founderTimeline } from "../data/founder";
+import { SITE_URL, ORG_ID } from "../data/site";
+
+const title = "About — Not Built on Events. Built on Vision. | Third Eye Events";
+const description =
+  "The story of Third Eye Events and founder Gautam GS — from dancer to choreographer to creator to entrepreneur to experience builder. From struggle to stage, stage to scale, scale to purpose.";
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": `${SITE_URL}#gautam-gs`,
+  name: "Gautam GS",
+  jobTitle: "Founder · Director · Choreographer · Designer",
+  worksFor: { "@id": ORG_ID },
+};
+---
+
+<BaseLayout title={title} description={description} path="/about/" structuredData={[personSchema]}>
+  <PageHero
+    eyebrow="About"
+    title="Not built on events. Built on vision."
+    statement="From struggle to stage. From stage to scale. From scale to purpose."
+  />
+
+  <!-- STORY -->
+  <section class="section" id="story" aria-labelledby="story-title">
+    <div class="container story__grid">
+      <figure class="ph story__portrait reveal-mask" aria-hidden="true">
+        <!-- [CONTENT REQUIRED] Founder portrait & archival imagery -->
+      </figure>
+      <div>
+        <p class="eyebrow reveal">The Story</p>
+        <h2 class="display section-title reveal" style="--reveal-delay: 120ms" id="story-title">
+          Struggle. Discipline.<br />Growth. Vision. Purpose.
+        </h2>
+        <p class="text-muted measure reveal" style="--reveal-delay: 240ms">
+          Every great creation begins with a journey built on संघर्ष, अनुशासन, और अटूट समर्पण.
+          From Bareilly streets to Delhi stages, Gautam GS earned his place through long rehearsals, silent struggles and absolute commitment.
+          Mumbai refined the vision — 300+ stage performances, Amitabh Bachchan, Dance India Dance Super Moms, Star Guild Awards.
+          Global exposure followed — Johannesburg, Bangkok, Dubai, Saudi Arabia.
+          In 2013 he founded BMP Fire. In 2016 Third Eye was born — first as a dance company, then as Third Eye Events.
+          From struggle to stage, stage to scale, scale to purpose.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOUNDER -->
+  <section class="section-lg founder atmosphere-radial" id="founder" aria-labelledby="founder-title">
+    <div class="container">
+      <p class="eyebrow reveal">Founder</p>
+      <h2 class="display founder__name reveal" style="--reveal-delay: 120ms" id="founder-title">Gautam GS</h2>
+      <p class="microcopy reveal" style="--reveal-delay: 220ms">Director · Choreographer · Designer · Visionary</p>
+
+      <ol role="list" class="path" style="list-style:none">
+        {
+          ["Dancer", "Choreographer", "Creator", "Entrepreneur", "Experience Builder"].map((stage, i) => (
+            <li class="path__node reveal" style={`--reveal-delay: ${i * 90}ms`}>
+              <span class="microcopy">{String(i + 1).padStart(2, "0")}</span>
+              <span class="display path__label">{stage}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section class="section timeline" aria-labelledby="timeline-title">
+    <div class="container">
+      <h2 class="eyebrow reveal" id="timeline-title">The Journey</h2>
+      <ul role="list" class="tl">
+        {
+          founderTimeline.map((m, i) => (
+            <li class="tl__item reveal" style={`--reveal-delay: ${i * 70}ms`}>
+              <span class="display tl__period">{m.period}</span>
+              <div>
+                <h3>{m.title}</h3>
+                <p class="text-muted">{m.detail}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <section class="section philosophy atmosphere-radial" id="philosophy" aria-labelledby="philosophy-title">
+    <div class="container">
+      <h2 class="eyebrow reveal" id="philosophy-title">Philosophy</h2>
+      <p class="display philosophy__line reveal" style="--reveal-delay: 120ms">
+        Meaning over decoration. Emotion over performance.
+      </p>
+      <p class="display philosophy__line reveal" style="--reveal-delay: 260ms">
+        Discipline over hype. Culture over trend.
+      </p>
+      <p class="text-muted measure reveal" style="--reveal-delay: 400ms">
+        These are not slogans. They are operating principles — visible in every mandap we build, every entry
+        we direct and every frame we facilitate.
+      </p>
+      <p class="text-muted measure reveal" style="--reveal-delay: 520ms">
+        Core belief: No alcohol, No non-vegetarian food, Only Satvik conscious celebrations. Because purity enhances experience and rituals deserve respect.
+      </p>
+    </div>
+  </section>
+
+  <!-- EVOLUTION -->
+  <section class="section evolution" id="vision" aria-labelledby="vision-title">
+    <div class="container">
+      <h2 class="eyebrow reveal" id="vision-title">Brand Evolution · The Vision</h2>
+      <div class="evo reveal">
+        {
+          ["Dance", "Performance", "Creation", "Events", "Experiences", "Execution", "Event IP", "Purpose"].map((s) => (
+            <span class="evo__step microcopy">{s}</span>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTA title="Continue With Us" />
+
+  <style>
+    .section-title {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      margin-block: 1.2rem;
+    }
+
+    .story__grid {
+      display: grid;
+      gap: clamp(3rem, 6vw, 5rem);
+      align-items: center;
+    }
+
+    @media (min-width: 64em) {
+      .story__grid {
+        grid-template-columns: minmax(16rem, 24rem) 1fr;
+        scroll-margin-top: var(--nav-h);
+      }
+    }
+
+    .story__portrait {
+      aspect-ratio: 4 / 5;
+      scroll-margin-top: var(--nav-h);
+    }
+
+    /* Founder */
+    .founder {
+      scroll-margin-top: var(--nav-h);
+    }
+
+    .founder__name {
+      font-size: clamp(2.8rem, 8vw, 6.5rem);
+      margin-block: 1rem;
+    }
+
+    .path {
+      margin-top: clamp(3rem, 7vw, 5rem);
+    }
+
+    .path__node {
+      display: flex;
+      align-items: baseline;
+      gap: 2.5rem;
+      padding-block: 1.4rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .path__node:first-child {
+      border-top: 1px solid var(--line);
+    }
+
+    .path__label {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      color: var(--ink-muted);
+      transition: color var(--dur-micro) ease;
+    }
+
+    .path__node:hover .path__label {
+      color: var(--color-gold);
+    }
+
+    /* Timeline */
+    .timeline,
+    .evolution,
+    #vision {
+      scroll-margin-top: var(--nav-h);
+    }
+
+    .tl {
+      margin-top: clamp(2rem, 5vw, 3.5rem);
+    }
+
+    .tl__item {
+      display: grid;
+      gap: 0.75rem 4rem;
+      padding-block: 1.8rem;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (min-width: 56em) {
+      .tl__item {
+        grid-template-columns: minmax(10rem, auto) 1fr;
+      }
+    }
+
+    .tl__period {
+      font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+      color: var(--color-gold);
+    }
+
+    .tl__item h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.35rem;
+    }
+
+    /* Philosophy */
+    .philosophy {
+      scroll-margin-top: var(--nav-h);
+    }
+
+    .philosophy__line {
+      font-size: clamp(1.9rem, 4.6vw, 3.8rem);
+      font-style: italic;
+      max-width: 24ch;
+      margin-block: 0.9rem;
+    }
+
+    /* Evolution */
+    .evo {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.8rem 1.2rem;
+      margin-top: 2.5rem;
+    }
+
+    .evo__step {
+      padding: 0.8em 1.4em;
+      border: 1px solid var(--line);
+      color: var(--ink-muted);
+    }
+
+    .evo__step:not(:last-child)::after {
+      content: "→";
+      margin-left: 2.2rem;
+      color: var(--color-bronze);
+    }
+  </style>
+</BaseLayout>

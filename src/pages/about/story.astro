@@ -1,0 +1,107 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import CTA from "../../components/CTA.astro";
+
+const title = "Our Story — Struggle to Stage, Stage to Scale | Third Eye Events";
+const description =
+  "The story of Third Eye Events — from Bareilly streets to Delhi stages, Mumbai refinement to global events. Founded by Gautam GS in 2016, built on struggle, discipline and vision.";
+---
+
+<BaseLayout title={title} description={description} path="/about/story/">
+  <PageHero
+    eyebrow="About"
+    title="Our Story"
+    statement="From struggle to stage. From stage to scale. From scale to purpose."
+  />
+
+  <section class="section">
+    <div class="container story__grid">
+      <figure class="ph story__portrait reveal-mask" aria-hidden="true">
+        <!-- [CONTENT REQUIRED] Founder portrait & archival imagery -->
+      </figure>
+      <div>
+        <h2 class="display section-title reveal" id="story-title">
+          Struggle. Discipline.<br />Growth. Vision. Purpose.
+        </h2>
+        <p class="text-muted measure reveal" style="--reveal-delay: 120ms">
+          Every great creation begins with a journey built on संघर्ष, अनुशासन, और अटूट समर्पण.
+          From Bareilly streets to Delhi stages, Gautam GS earned his place through long rehearsals, silent struggles and absolute commitment.
+          Mumbai refined the vision — 300+ stage performances, Amitabh Bachchan, Dance India Dance Super Moms, Star Guild Awards.
+          Global exposure followed — Johannesburg, Bangkok, Dubai, Saudi Arabia.
+          In 2013 he founded BMP Fire. In 2016 Third Eye was born — first as a dance company, then as Third Eye Events.
+          From struggle to stage, stage to scale, scale to purpose.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section related" aria-label="Related">
+    <div class="container rel-grid">
+      <a class="rel reveal" href="/about/founder/">
+        <span class="microcopy">About</span>
+        <span class="display rel__label">Meet the Founder →</span>
+      </a>
+      <a class="rel reveal" href="/about/philosophy/" style="--reveal-delay: 110ms">
+        <span class="microcopy">About</span>
+        <span class="display rel__label">Our Philosophy →</span>
+      </a>
+      <a class="rel reveal" href="/about/vision/" style="--reveal-delay: 220ms">
+        <span class="microcopy">About</span>
+        <span class="display rel__label">The Vision →</span>
+      </a>
+    </div>
+  </section>
+
+  <CTA />
+
+  <style>
+    .section-title {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      margin-block: 1.2rem;
+    }
+
+    .story__grid {
+      display: grid;
+      gap: clamp(3rem, 6vw, 5rem);
+      align-items: center;
+    }
+
+    @media (min-width: 64em) {
+      .story__grid {
+        grid-template-columns: minmax(16rem, 24rem) 1fr;
+      }
+    }
+
+    .story__portrait {
+      aspect-ratio: 4 / 5;
+    }
+
+    .rel-grid {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 56em) {
+      .rel-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .rel {
+      display: grid;
+      gap: 0.9rem;
+      padding: 1.75rem;
+      border: 1px solid var(--line);
+      transition: border-color var(--dur-standard) ease;
+    }
+
+    .rel:hover {
+      border-color: var(--color-gold);
+    }
+
+    .rel__label {
+      font-size: clamp(1.3rem, 2vw, 1.7rem);
+    }
+  </style>
+</BaseLayout>

@@ -1,0 +1,70 @@
+---
+/** Inner-page hero — atmospheric, editorial, restrained */
+import ExperienceImage from "./ExperienceImage.astro";
+import BreadcrumbTrail from "./BreadcrumbTrail.astro";
+import type { ImageMetadata } from "astro";
+import type { Crumb } from "../utils/schema";
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  statement?: string;
+  /** Imagery when supplied; atmospheric fallback otherwise */
+  image?: string | ImageMetadata;
+  /** Shared-element transition name pairing this hero with its listing card */
+  transitionName?: string;
+  breadcrumbs?: Crumb[];
+}
+const { eyebrow, title, statement, image, transitionName, breadcrumbs = [] } = Astro.props;
+---
+
+<section class="phero">
+  <div
+    class="phero__bg"
+    aria-hidden="true"
+    style={transitionName ? `view-transition-name: ${transitionName}` : undefined}
+  >
+    <ExperienceImage src={image} alt="" fill eager />
+  </div>
+  <div class="container phero__content">
+    {breadcrumbs.length > 0 && <BreadcrumbTrail crumbs={breadcrumbs} />}
+    <p class="eyebrow reveal">{eyebrow}</p>
+    <h1 class="display phero__title reveal" style="--reveal-delay: 120ms">{title}</h1>
+    {statement && <p class="statement reveal" style="--reveal-delay: 260ms">{statement}</p>}
+  </div>
+</section>
+
+<style>
+  .phero {
+    position: relative;
+    padding-block: calc(var(--nav-h) + clamp(4rem, 12vh, 8rem)) clamp(4rem, 10vh, 7rem);
+    overflow: clip;
+  }
+
+  .phero__bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.85;
+    overflow: clip;
+  }
+
+  .phero__bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg, rgba(10, 10, 10, 0.72), rgba(10, 10, 10, 0.55) 60%, var(--color-ink));
+  }
+
+  .phero__content {
+    position: relative;
+    display: grid;
+    gap: 1.3rem;
+    justify-items: start;
+  }
+
+  .phero__title {
+    font-size: clamp(2.8rem, 8vw, 6.5rem);
+    max-width: 14ch;
+  }
+</style>

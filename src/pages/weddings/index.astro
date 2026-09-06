@@ -1,0 +1,102 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import CTA from "../../components/CTA.astro";
+
+const title = "Weddings — Where Celebration Becomes Experience | Third Eye Events";
+const description =
+  "Third Eye weddings move beyond planning: Vaidik luxury weddings, destination celebrations across seven worlds, concept-driven experiences and signature entries that define the wedding before it begins.";
+---
+
+<BaseLayout title={title} description={description} path="/weddings/">
+  <PageHero
+    eyebrow="Weddings"
+    title="Where celebration becomes experience."
+    statement="Not coordination. Composition — of ritual, place, emotion and precision."
+  />
+
+  <section class="section">
+    <div class="container grid paths">
+      {
+        [
+          {
+            href: "/weddings/vaidik/",
+            num: "01",
+            name: "Vaidik Weddings",
+            line: "Sacred. Pure. Conscious. Marriage as a sacred sanskar.",
+          },
+          {
+            href: "/weddings/destination/",
+            num: "02",
+            name: "Destination Weddings",
+            line: "Different destinations. Different worlds.",
+          },
+          {
+            href: "/weddings/concepts/",
+            num: "03",
+            name: "Wedding Concepts",
+            line: "Locations are common. Concepts create emotion.",
+          },
+          {
+            href: "/weddings/experiences/",
+            num: "04",
+            name: "Signature Entries",
+            line: "Moments that define the wedding before it begins.",
+          },
+        ].map((p, i) => (
+          <a class="path ph reveal" href={p.href} style={`--reveal-delay: ${i * 110}ms`}>
+            <span class="microcopy">{p.num}</span>
+            <h2 class="display path__name">{p.name}</h2>
+            <p class="text-muted">{p.line}</p>
+            <span class="link-line">Enter Experience</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <CTA title="Begin the Journey" />
+
+  <style>
+    .paths {
+      row-gap: 1.25rem;
+    }
+
+    .path {
+      grid-column: span 4;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      min-height: clamp(16rem, 36vh, 22rem);
+      padding: 1.75rem;
+      border: 1px solid transparent;
+      transition: border-color var(--dur-standard) ease, scale var(--dur-standard) var(--ease-out-expo);
+    }
+
+    .path:hover {
+      border-color: var(--color-gold);
+      scale: 1.01;
+    }
+
+    @media (min-width: 48em) {
+      .path {
+        grid-column: span 8;
+      }
+    }
+
+    @media (min-width: 72em) {
+      .path {
+        grid-column: span 6;
+      }
+    }
+
+    .path__name {
+      font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+      margin-block-start: auto;
+    }
+
+    .path p {
+      font-size: 0.95rem;
+    }
+  </style>
+</BaseLayout>

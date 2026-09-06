@@ -1,0 +1,168 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import HorizontalScroller from "../../components/HorizontalScroller.astro";
+import CTA from "../../components/CTA.astro";
+import { destinations, indiaCategories } from "../../data/destinations";
+import { getVenuesByCountry } from "../../data/venues";
+
+const title = "Destination Weddings — Different Destinations. Different Worlds. | Third Eye Events";
+const description =
+  "Destination weddings by Third Eye Events across Maldives, Rajasthan, Switzerland, Kyoto, Italy, Bali and cruise voyages — each location designed as a distinct world with its own Vaidik concept.";
+---
+
+<BaseLayout title={title} description={description} path="/weddings/destination/">
+  <PageHero
+    eyebrow="Weddings · Destination"
+    title="From dream destinations to divine celebrations."
+    statement="Different destinations. Different worlds. We don't move your wedding — we translate it into a new landscape."
+  />
+
+  <section class="section">
+    <HorizontalScroller label="Destination worlds">
+      {
+        destinations.map((d) => (
+          <li class="world">
+            <a
+              class="world__card ph"
+              href={`/destinations/${d.slug}/`}
+              style={`view-transition-name: dest-${d.slug}`}
+            >
+              <span class="microcopy">{d.region} · {d.country}</span>
+              <span class="display world__name">{d.name}</span>
+              <span class="statement world__tagline">{d.tagline}</span>
+              <span class="microcopy world__concepts">
+                {getVenuesByCountry(d.slug).map((v) => v.concept).join(" · ")}
+              </span>
+              <span class="link-line">Explore Destination</span>
+            </a>
+          </li>
+        ))
+      }
+    </HorizontalScroller>
+  </section>
+
+  <!-- INDIA ARCHITECTURE -->
+  <section class="section india atmosphere-radial" aria-labelledby="india-title">
+    <div class="container">
+      <p class="eyebrow reveal">India Destination Architecture</p>
+      <h2 class="display section-title reveal" style="--reveal-delay: 120ms" id="india-title">
+        One country.<br />Seven worlds.
+      </h2>
+      <p class="text-muted measure reveal" style="--reveal-delay: 240ms">
+        India is not one destination — it is an architecture of worlds. Third Eye curates across seven
+        master categories.
+      </p>
+      <div class="grid cats">
+        {
+          indiaCategories.map((c, i) => (
+            <article class={`cat reveal ${c.destinations[0].startsWith("[CONTENT") ? "cat--pending" : ""}`} style={`--reveal-delay: ${i * 80}ms`}>
+              <h3 class="display cat__name">{c.name}</h3>
+              <p class="text-muted cat__essence">{c.essence}</p>
+              <p class="cat__list">
+                {c.destinations.map((d) => (
+                  <span>{d === "[CONTENT REQUIRED]" ? "In curation" : d}</span>
+                ))}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTA />
+
+  <style>
+    .section-title {
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      margin-block: 1.2rem;
+    }
+
+    .world {
+      flex: 0 0 auto;
+      width: min(80vw, 27rem);
+      scroll-snap-align: start;
+    }
+
+    .world__card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      aspect-ratio: 3 / 4;
+      padding: 1.75rem;
+      border: 1px solid transparent;
+      transition: border-color var(--dur-standard) ease;
+    }
+
+    .world__card:hover {
+      border-color: var(--color-gold);
+    }
+
+    .world__name {
+      font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+    }
+
+    .world__tagline {
+      font-size: 1.05rem;
+    }
+
+    .world__concepts {
+      margin-block-start: auto;
+      line-height: 1.9;
+    }
+
+    /* India */
+    .cats {
+      row-gap: 2.25rem;
+      margin-top: clamp(2.5rem, 6vw, 4rem);
+    }
+
+    .cat {
+      grid-column: span 4;
+      border-top: 1px solid var(--line);
+      padding-top: 1.3rem;
+    }
+
+    @media (min-width: 48em) {
+      .cat {
+        grid-column: span 8;
+      }
+    }
+
+    @media (min-width: 72em) {
+      .cat {
+        grid-column: span 4;
+      }
+    }
+
+    .cat--pending {
+      opacity: 0.65;
+    }
+
+    .cat__name {
+      font-size: clamp(1.35rem, 2vw, 1.75rem);
+      margin-bottom: 0.4rem;
+    }
+
+    .cat__essence {
+      font-size: 0.92rem;
+    }
+
+    .cat__list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.9rem;
+    }
+
+    .cat__list span {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-sandstone);
+      border: 1px solid var(--line);
+      padding: 0.35em 0.9em;
+    }
+  </style>
+</BaseLayout>

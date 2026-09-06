@@ -1,0 +1,48 @@
+---
+/** Full-bleed final conversation block — reused at page ends */
+interface Props {
+  title?: string;
+  line?: string;
+}
+
+const {
+  title = "Start a Conversation",
+  line = "Every celebration has a beginning. Let yours have meaning.",
+} = Astro.props;
+---
+
+<section class="cta atmosphere-radial">
+  <div class="container cta__inner">
+    <p class="statement reveal">{line}</p>
+    <h2 class="display reveal" style="--reveal-delay: 120ms">{title}</h2>
+    <div class="cta__actions reveal" style="--reveal-delay: 240ms">
+      <a class="btn btn--solid" href="/contact/">Start a Conversation</a>
+      <a class="btn btn--ghost" href="/weddings/experiences/">Explore Experiences</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    padding-block: var(--space-section-lg);
+    text-align: center;
+  }
+
+  .cta__inner {
+    display: grid;
+    justify-items: center;
+    gap: 2rem;
+  }
+
+  h2 {
+    font-size: clamp(2.6rem, 7vw, 5.5rem);
+  }
+
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+</style>

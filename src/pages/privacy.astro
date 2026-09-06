@@ -1,0 +1,95 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import { CONTACT_EMAIL } from "../data/site";
+
+const title = "Privacy Policy | Third Eye Events";
+const description =
+  "How Third Eye Events collects, uses and protects personal information shared through our website and conversations.";
+
+const sections = [
+  {
+    heading: "Information We Collect",
+    body: [
+      "When you begin a conversation with us through this website, we collect the details you choose to share: your name, email address, phone or WhatsApp number, event preferences, destination interests, approximate guest counts, timeframes and your vision statement.",
+      "We do not collect payment information through this website.",
+    ],
+  },
+  {
+    heading: "How We Use It",
+    body: [
+      "Your information is used solely to respond to your enquiry, understand what you are envisioning and communicate with you about it. We may retain it to continue an ongoing conversation or to inform you about experiences relevant to what you have told us.",
+    ],
+  },
+  {
+    heading: "What We Never Do",
+    body: [
+      "We do not sell, rent or trade your personal information. Enquiry details — including wedding visions — are treated as confidential and shared only with team members involved in responding to you.",
+    ],
+  },
+  {
+    heading: "Cookies & Analytics",
+    body: [
+      "This website uses only essential technical storage required for its operation (such as remembering whether you have seen the opening sequence).",
+    ],
+  },
+  {
+    heading: "Data Retention",
+    body: [
+      "Enquiry records are retained only as long as needed to serve you or as required by applicable law. You may request access, correction or deletion of your information at any time via the contact details below.",
+    ],
+  },
+  {
+    heading: "Contact",
+    body: [
+      `Questions about this policy may be directed to ${CONTACT_EMAIL} or through the contact page.`,
+    ],
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path="/privacy/" noindex>
+  <PageHero eyebrow="Legal" title="Privacy Policy" statement="Handled with the same care we bring to every detail." />
+
+  <section class="section">
+    <div class="container legal">
+      <p class="microcopy reveal">Last updated · 2026</p>
+      {
+        sections.map((s) => (
+          <article class="legal__block reveal">
+            <h2 class="display">{s.heading}</h2>
+            {s.body.map((p) => (
+              <p>{p}</p>
+            ))}
+          </article>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal {
+    max-width: 46rem;
+  }
+
+  .legal__block {
+    border-top: 1px solid var(--line);
+    padding-block: clamp(1.75rem, 4vw, 2.75rem);
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: var(--ink-muted);
+    margin-bottom: 0.8em;
+    max-width: var(--measure);
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+</style>

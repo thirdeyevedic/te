@@ -1,0 +1,176 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import CTA from "../../components/CTA.astro";
+import { founderTimeline } from "../../data/founder";
+import { SITE_URL, ORG_ID } from "../../data/site";
+
+const title = "Gautam GS — Director, Choreographer, Designer, Visionary | Third Eye Events";
+const description =
+  "Gautam GS: dancer, choreographer, creator, entrepreneur, experience builder. From struggle to stage, stage to scale, scale to purpose. Founder of Third Eye Events.";
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": `${SITE_URL}#gautam-gs`,
+  name: "Gautam GS",
+  jobTitle: "Founder · Director · Choreographer · Designer",
+  worksFor: { "@id": ORG_ID },
+};
+---
+
+<BaseLayout title={title} description={description} path="/about/founder/" structuredData={[personSchema]}>
+  <PageHero
+    eyebrow="About"
+    title="Gautam GS"
+    statement="Director · Choreographer · Designer · Visionary"
+  />
+
+  <section class="section-lg founder atmosphere-radial">
+    <div class="container">
+      <ol role="list" class="path" style="list-style:none">
+        {
+          ["Dancer", "Choreographer", "Creator", "Entrepreneur", "Experience Builder"].map((stage, i) => (
+            <li class="path__node reveal" style={`--reveal-delay: ${i * 90}ms`}>
+              <span class="microcopy">{String(i + 1).padStart(2, "0")}</span>
+              <span class="display path__label">{stage}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section timeline" aria-labelledby="timeline-title">
+    <div class="container">
+      <h2 class="eyebrow reveal" id="timeline-title">The Journey</h2>
+      <ul role="list" class="tl">
+        {
+          founderTimeline.map((m, i) => (
+            <li class="tl__item reveal" style={`--reveal-delay: ${i * 70}ms`}>
+              <span class="display tl__period">{m.period}</span>
+              <div>
+                <h3>{m.title}</h3>
+                <p class="text-muted">{m.detail}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section related" aria-label="Related">
+    <div class="container rel-grid">
+      <a class="rel reveal" href="/about/story/">
+        <span class="microcopy">About</span>
+        <span class="display rel__label">Our Story →</span>
+      </a>
+      <a class="rel reveal" href="/about/philosophy/" style="--reveal-delay: 110ms">
+        <span class="microcopy">About</span>
+        <span class="display rel__label">Our Philosophy →</span>
+      </a>
+      <a class="rel reveal" href="/about/vision/" style="--reveal-delay: 220ms">
+        <span class="microcopy">About</span>
+        <span class="display rel__label">The Vision →</span>
+      </a>
+    </div>
+  </section>
+
+  <CTA />
+</BaseLayout>
+
+<style>
+  /* Founder */
+  .founder {
+    scroll-margin-top: var(--nav-h);
+  }
+
+  .path {
+    margin-top: clamp(3rem, 7vw, 5rem);
+  }
+
+  .path__node {
+    display: flex;
+    align-items: baseline;
+    gap: 2.5rem;
+    padding-block: 1.4rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .path__node:first-child {
+    border-top: 1px solid var(--line);
+  }
+
+  .path__label {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    color: var(--ink-muted);
+    transition: color var(--dur-micro) ease;
+  }
+
+  .path__node:hover .path__label {
+    color: var(--color-gold);
+  }
+
+  /* Timeline */
+  .timeline {
+    scroll-margin-top: var(--nav-h);
+  }
+
+  .tl {
+    margin-top: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .tl__item {
+    display: grid;
+    gap: 0.75rem 4rem;
+    padding-block: 1.8rem;
+    border-top: 1px solid var(--line);
+  }
+
+  @media (min-width: 56em) {
+    .tl__item {
+      grid-template-columns: minmax(10rem, auto) 1fr;
+    }
+  }
+
+  .tl__period {
+    font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+    color: var(--color-gold);
+  }
+
+  .tl__item h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.35rem;
+  }
+
+  /* Related */
+  .rel-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 56em) {
+    .rel-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .rel {
+    display: grid;
+    gap: 0.9rem;
+    padding: 1.75rem;
+    border: 1px solid var(--line);
+    transition: border-color var(--dur-standard) ease;
+  }
+
+  .rel:hover {
+    border-color: var(--color-gold);
+  }
+
+  .rel__label {
+    font-size: clamp(1.3rem, 2vw, 1.7rem);
+  }
+</style>

@@ -1,0 +1,9 @@
+name = "third-eye-events"
+compatibility_date = "2026-08-01"
+pages_build_output_dir = "dist"
+
+# D1 binding — replace database_id after `wrangler d1 create third-eye-db`
+[[d1_databases]]
+binding = "DB"
+database_name = "third-eye-db"
+database_id = "SET_AT_DEPLOY"

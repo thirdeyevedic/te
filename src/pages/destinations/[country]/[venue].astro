@@ -1,0 +1,210 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PageHero from "../../../components/PageHero.astro";
+import CTA from "../../../components/CTA.astro";
+import { destinations } from "../../../data/destinations";
+import { venueExperiences, getVenuesByCountry, type VenueExperience } from "../../../data/venues";
+import { ORG_ID } from "../../../data/site";
+import { buildBreadcrumbs } from "../../../utils/schema";
+
+export function getStaticPaths() {
+  return venueExperiences.map((v) => ({
+    params: { country: v.countrySlug, venue: v.slug },
+    props: { venue: v },
+  }));
+}
+
+const { venue } = Astro.props as { venue: VenueExperience };
+const country = destinations.find((d) => d.slug === venue.countrySlug)!;
+const related = getVenuesByCountry(venue.countrySlug).filter((v) => v.slug !== venue.slug).slice(0, 3);
+
+const crumbs = [
+  { label: "Home", href: "/" },
+  { label: "Destinations", href: "/destinations/" },
+  { label: country.name, href: `/destinations/${country.slug}/` },
+  { label: venue.name },
+];
+
+const structuredData = [
+  buildBreadcrumbs(crumbs),
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: `${venue.concept} — ${venue.name}`,
+    provider: { "@id": ORG_ID },
+    areaServed: { "@type": "Place", name: `${venue.name}, ${venue.countryName}` },
+    description: venue.metaDescription,
+  },
+];
+---
+
+<BaseLayout title={venue.seoTitle} description={venue.metaDescription} path={`/destinations/${venue.countrySlug}/${venue.slug}/`} structuredData={structuredData}>
+  <PageHero
+    eyebrow={`${venue.countryName} · ${country.region}`}
+    title={venue.name}
+    statement={venue.tagline}
+    transitionName={`venue-${venue.slug}`}
+    breadcrumbs={crumbs}
+  />
+
+  <!-- Concept -->
+  <section class="section concept atmosphere-radial">
+    <div class="container concept__grid">
+      <p class="eyebrow reveal">The Wedding Concept</p>
+      <h2 class="display concept__name reveal" style="--reveal-delay: 120ms">{venue.concept}</h2>
+      <p class="statement reveal" style="--reveal-delay: 240ms">{venue.meaning}</p>
+    </div>
+  </section>
+
+  <!-- Interpretation -->
+  <section class="section">
+    <div class="container grid two">
+      <article class="reveal">
+        <h2 class="eyebrow">Why this venue</h2>
+        <p class="text-muted">{venue.whyVenue}</p>
+      </article>
+      <article class="reveal" style="--reveal-delay: 140ms">
+        <h2 class="eyebrow">The Third Eye interpretation</h2>
+        <p class="text-muted">{venue.interpretation}</p>
+      </article>
+      <article class="reveal" style="--reveal-delay: 200ms">
+        <h2 class="eyebrow">Ritual direction</h2>
+        <p class="text-muted">{venue.ritualDirection}</p>
+      </article>
+      <article class="reveal" style="--reveal-delay: 260ms">
+        <h2 class="eyebrow">Experience design</h2>
+        <p class="text-muted">{venue.experienceDesign}</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Signature moments -->
+  <section class="section-lg moments">
+    <div class="container">
+      <p class="eyebrow reveal">Signature Moments</p>
+      <ol role="list" class="moments__list" style="list-style:none">
+        {
+          venue.signatureMoments.map((m, i) => (
+            <li class="moments__item reveal" style={`--reveal-delay: ${i * 100}ms`}>
+              <span class="microcopy">{String(i + 1).padStart(2, "0")}</span>
+              <span class="display moments__label">{m}</span>
+              <!-- [CONTENT REQUIRED] moment imagery -->
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Related venues -->
+  <section class="section related atmosphere-radial" aria-label="Related venues">
+    <div class="container rel-grid">
+      {
+        related.map((r) => (
+          <a class="rel ph reveal" href={`/destinations/${r.countrySlug}/${r.slug}/`}>
+            <span class="microcopy">{r.concept}</span>
+            <span class="display rel__name">{r.name} →</span>
+            <span class="statement rel__tag">{r.tagline}</span>
+          </a>
+        ))
+      }
+      <a class="rel ph reveal" href={`/weddings/experiences/`} style="--reveal-delay: 300ms">
+        <span class="microcopy">Before it begins</span>
+        <span class="display rel__name">Signature Entries →</span>
+        <span class="statement rel__tag">Open the wedding with intention.</span>
+      </a>
+    </div>
+  </section>
+
+  <CTA title={`Begin Your ${venue.concept}`} line="Tell us what this place should mean for the two of you." />
+</BaseLayout>
+
+<style>
+  .concept__grid {
+    display: grid;
+    gap: 1.2rem;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .concept__name {
+    font-size: clamp(2.4rem, 7vw, 5.5rem);
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(184, 155, 94, 0.5);
+    background: linear-gradient(180deg, rgba(184, 155, 94, 0.26), rgba(169, 85, 43, 0.1));
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .two {
+    row-gap: 2.75rem;
+  }
+
+  @media (min-width: 56em) {
+    .two article {
+      grid-column: span 6;
+    }
+  }
+
+  .two .eyebrow,
+  .moments .eyebrow {
+    display: block;
+    margin-bottom: 0.9rem;
+  }
+
+  /* Moments */
+  .moments__item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding-block: clamp(1.4rem, 3vw, 2.2rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .moments__item:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .moments__label {
+    font-size: clamp(1.45rem, 2.6vw, 2.1rem);
+  }
+
+  /* Related */
+  .rel-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 56em) {
+    .rel-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .rel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    min-height: 13rem;
+    padding: 1.6rem;
+    border: 1px solid transparent;
+    transition: border-color var(--dur-standard) ease;
+  }
+
+  .rel:hover {
+    border-color: var(--color-gold);
+  }
+
+  .rel__name {
+    font-size: clamp(1.35rem, 2vw, 1.7rem);
+    margin-block-start: auto;
+  }
+
+  .rel__tag {
+    font-family: var(--font-body);
+    font-style: normal;
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+  }
+</style>

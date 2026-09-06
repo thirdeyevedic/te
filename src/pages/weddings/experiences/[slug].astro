@@ -1,0 +1,188 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PageHero from "../../../components/PageHero.astro";
+import CTA from "../../../components/CTA.astro";
+import { signatureEntries } from "../../../data/signatureEntries";
+
+export function getStaticPaths() {
+  return signatureEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const related = signatureEntries.filter((e) => e.slug !== entry.slug).slice(0, 3);
+---
+
+<BaseLayout title={entry.seoTitle} description={entry.metaDescription} path={`/weddings/experiences/${entry.slug}/`}>
+  <PageHero
+    eyebrow={`Signature Entry · ${entry.category}`}
+    title={entry.title}
+    statement={entry.line}
+    image={entry.heroImage}
+    transitionName={`entry-${entry.slug}`}
+  />
+
+  <section class="section">
+    <div class="container seq-head">
+      <p class="statement measure reveal">{entry.descriptor}</p>
+      <!-- [CONTENT REQUIRED] Cinematic sequence film/stills -->
+    </div>
+    <ol class="container seq" role="list" style="list-style:none">
+      {
+        entry.sequence.map((step, i) => (
+          <li class="seq__step reveal" style={`--reveal-delay: ${i * 90}ms`}>
+            <span class="seq__num microcopy">{String(i + 1).padStart(2, "0")}</span>
+            <h2 class="display seq__label">{step.label}</h2>
+            <p class="text-muted">{step.description}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <p class="container microcopy sound reveal">Sound identity: {entry.sound ?? "Curated per celebration"} · Optional &amp; muted by default</p>
+  </section>
+
+  <!-- WHO THIS IS FOR -->
+  <section class="section audience atmosphere-radial">
+    <div class="container">
+      <p class="eyebrow reveal">Who This Is For</p>
+      <p class="text-muted measure reveal" style="--reveal-delay: 120ms">{entry.targetAudience}</p>
+    </div>
+  </section>
+
+  <!-- CUSTOMIZE YOUR EXPERIENCE -->
+  <section class="section customize">
+    <div class="container">
+      <p class="eyebrow reveal">Customize Your Experience</p>
+      <h2 class="display customize__title reveal" style="--reveal-delay: 120ms">Make it yours.</h2>
+      <ul role="list" class="customize__list">
+        {entry.customizationOptions.map((opt, i) => (
+          <li class="reveal" style={`--reveal-delay: ${i * 80 + 200}ms`}>{opt}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section related atmosphere-radial" aria-label="Related entries">
+    <div class="container rel-grid">
+      {
+        related.map((r) => (
+          <a class="rel reveal" href={`/weddings/experiences/${r.slug}/`}>
+            <span class="microcopy">{r.category}</span>
+            <span class="display rel__name">{r.title} →</span>
+            <span class="text-muted rel__line">{r.line}</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <CTA title="Commission This Experience" line="An entry like this is designed once — for you." />
+
+  <style>
+    .seq-head {
+      margin-bottom: clamp(3rem, 7vw, 5rem);
+    }
+
+    .seq {
+      display: grid;
+    }
+
+    .seq__step {
+      display: grid;
+      gap: 0.4rem;
+      padding-block: clamp(1.6rem, 4vw, 2.6rem);
+      border-top: 1px solid var(--line);
+    }
+
+    @media (min-width: 56em) {
+      .seq__step {
+        grid-template-columns: auto 1fr 1.4fr;
+        gap: 3rem;
+        align-items: baseline;
+      }
+    }
+
+    .seq__label {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+    }
+
+    .sound {
+      display: block;
+      margin-top: 3rem;
+    }
+
+    /* Audience */
+    .audience {
+      text-align: center;
+    }
+
+    .audience .eyebrow {
+      margin-bottom: 1rem;
+    }
+
+    /* Customize */
+    .customize__title {
+      font-size: clamp(2rem, 4.5vw, 3.6rem);
+      margin-block: 1rem 2rem;
+    }
+
+    .customize__list {
+      display: grid;
+      gap: 0;
+    }
+
+    .customize__list li {
+      display: flex;
+      align-items: baseline;
+      gap: 2rem;
+      padding-block: 1.3rem;
+      border-bottom: 1px solid var(--line);
+      color: var(--ink-muted);
+      font-size: 1.05rem;
+    }
+
+    .customize__list li:first-child {
+      border-top: 1px solid var(--line);
+    }
+
+    .customize__list li::before {
+      content: "—";
+      color: var(--color-gold);
+      flex-shrink: 0;
+    }
+
+    /* Related */
+    .rel-grid {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 56em) {
+      .rel-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .rel {
+      display: grid;
+      gap: 0.8rem;
+      padding: 1.75rem;
+      border: 1px solid var(--line);
+      transition: border-color var(--dur-standard) ease;
+    }
+
+    .rel:hover {
+      border-color: var(--color-gold);
+    }
+
+    .rel__name {
+      font-size: clamp(1.35rem, 2vw, 1.8rem);
+    }
+
+    .rel__line {
+      font-size: 0.92rem;
+    }
+  </style>
+</BaseLayout>

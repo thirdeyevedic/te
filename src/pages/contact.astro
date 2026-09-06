@@ -1,0 +1,247 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import { destinations } from "../data/destinations";
+
+const title = "Start a Conversation | Third Eye Events";
+const description =
+  "Begin a conversation with Third Eye Events — Vaidik luxury weddings, destination celebrations, signature experiences, event IP partnerships and production facilitation.";
+
+const eventTypes = [
+  "Vaidik Wedding",
+  "Destination Wedding",
+  "Wedding Concept / Experience",
+  "Signature Entry",
+  "Event IP / Brand Platform",
+  "Production Facilitation",
+  "Cultural / Other",
+];
+---
+
+<BaseLayout title={title} description={description} path="/contact/">
+  <PageHero
+    eyebrow="Contact"
+    title="Every celebration has a beginning."
+    statement="Let yours have meaning. Tell us what you're envisioning — we'll listen before we propose."
+  />
+
+  <section class="section">
+    <form class="container form" method="post" action="/api/enquiry" data-enhanced>
+      <div class="grid fields">
+        <label class="field reveal" style="grid-column: span 4">
+          <span>Name</span>
+          <input type="text" name="name" required autocomplete="name" />
+        </label>
+        <label class="field reveal" style="--reveal-delay: 80ms; grid-column: span 4">
+          <span>Email</span>
+          <input type="email" name="email" required autocomplete="email" />
+        </label>
+        <label class="field reveal" style="--reveal-delay: 160ms; grid-column: span 4">
+          <span>Phone / WhatsApp</span>
+          <input type="tel" name="phone" autocomplete="tel" />
+        </label>
+
+        <label class="field reveal" style="--reveal-delay: 200ms; grid-column: span 4">
+          <span>Event type</span>
+          <select name="event_type" required>
+            <option value="" disabled selected>Select</option>
+            {eventTypes.map((t) => <option value={t}>{t}</option>)}
+          </select>
+        </label>
+        <label class="field reveal" style="--reveal-delay: 260ms; grid-column: span 4">
+          <span>Destination (if imagined)</span>
+          <select name="destination">
+            <option value="" selected>Undecided / Open to ideas</option>
+            {destinations.map((d) => <option value={d.name}>{d.name}</option>)}
+          </select>
+        </label>
+        <label class="field reveal" style="--reveal-delay: 320ms; grid-column: span 2">
+          <span>Approximate guest count</span>
+          <input type="text" name="guests" inputmode="numeric" placeholder="e.g. 250" />
+        </label>
+        <label class="field reveal" style="--reveal-delay: 380ms; grid-column: span 2">
+          <span>Date / timeframe</span>
+          <input type="text" name="timeframe" placeholder="Month & year, or flexible" />
+        </label>
+      </div>
+
+      <label class="field vision reveal">
+        <span>Tell us about your vision</span>
+        <textarea name="vision" rows="7" placeholder="What do you want this to feel like? What should your guests never forget?"></textarea>
+      </label>
+
+      <!-- Honeypot — invisible to humans -->
+      <div class="hp" aria-hidden="true">
+        <label>Company<input type="text" name="company" tabindex="-1" autocomplete="off" /></label>
+      </div>
+
+      <div class="submit reveal">
+        <button class="btn btn--solid" type="submit" data-label="Begin a Conversation">Begin a Conversation</button>
+        <p class="microcopy">We respond personally — not with brochures.</p>
+      </div>
+
+      <p class="form-status" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+</BaseLayout>
+
+<style>
+  .form {
+    display: grid;
+    gap: clamp(1.75rem, 4vw, 3rem);
+    max-width: 72rem;
+  }
+
+  .fields {
+    row-gap: 1.5rem;
+  }
+
+  .field {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .field > span {
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 0.8em 0;
+    color: var(--ink);
+    font: inherit;
+    transition: border-color var(--dur-standard) ease;
+  }
+
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: none;
+    border-bottom-color: var(--color-gold);
+  }
+
+  textarea {
+    resize: vertical;
+    line-height: 1.7;
+  }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23B89B5E'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.2em center;
+  }
+
+  option {
+    background: var(--color-charcoal);
+    color: var(--ivory);
+  }
+
+  ::placeholder {
+    color: var(--ink-faint);
+  }
+
+  .submit {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .form-status:not(:empty) {
+    color: var(--color-gold);
+    font-size: 0.95rem;
+  }
+
+  .form-status.is-error {
+    color: var(--color-agni);
+  }
+
+  .form-status a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .hp {
+    position: absolute;
+    inset: auto auto -1px 0;
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  const messages: Record<string, string> = {
+    validation: "Please check your name and email — something needs correcting.",
+    turnstile: "Verification failed. Please try once more.",
+    storage: "Your enquiry could not be saved. Kindly write to us directly instead.",
+    network: "The connection was interrupted. Kindly write to us directly instead.",
+  };
+  const mailto = `hello@thirdeyeevents.com`;
+
+  function initForm() {
+    const form = document.querySelector<HTMLFormElement>("form[data-enhanced]");
+    const status = document.querySelector<HTMLElement>(".form-status");
+    const button = form?.querySelector<HTMLButtonElement>("button[type=submit]");
+    if (!form || form.dataset.bound) return;
+    form.dataset.bound = "1";
+
+    const setStatus = (msg: string, isError = false) => {
+      if (!status) return;
+      status.textContent = msg;
+      status.classList.toggle("is-error", isError);
+    };
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!button || button.disabled) return;
+
+      const label = button.dataset.label ?? "Begin a Conversation";
+      button.disabled = true;
+      button.textContent = "Sending…";
+      setStatus("");
+
+      try {
+        const res = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+        });
+
+        let errorKey = "network";
+        if (res.headers.get("content-type")?.includes("application/json")) {
+          const data = (await res.json()) as { ok: boolean; error?: string };
+          if (data.ok) {
+            setStatus("Received. We will reach out personally.");
+            form.reset();
+            return;
+          }
+          if (data.error) errorKey = data.error;
+        } else if (res.ok) {
+          setStatus("Received. We will reach out personally.");
+          form.reset();
+          return;
+        }
+
+        setStatus(`${messages[errorKey] ?? messages.network} · ${mailto}`, true);
+      } catch {
+        setStatus(`${messages.network} · ${mailto}`, true);
+      } finally {
+        button.disabled = false;
+        button.textContent = label;
+      }
+    });
+  }
+
+  document.addEventListener("astro:page-load", initForm);
+</script>

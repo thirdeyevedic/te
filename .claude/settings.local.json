@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(awk '/countrySlug: \"cruises\"/{found=1} found && /slug:|name:/ {print NR\": \"$0}' src/data/venues.ts)",
+      "Bash(node --experimental-strip-types *)",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git -c 'user.name=Third Eye Events' -c user.email=hello@thirdeyeevents.com commit -q -m 'Initial commit: Third Eye Events site *)",
+      "Bash(echo \"=== exit: $? \\(1 = none left\\) ===\")",
+      "Bash(grep -o 'class=\"dcard__concept[^>]*>.\\\\{0,140\\\\}' dist/index.html)",
+      "Bash(grep -o 'class=\"microcopy world__concepts[^>]*>.\\\\{0,180\\\\}' dist/weddings/destination/index.html)"
+    ]
+  }
+}

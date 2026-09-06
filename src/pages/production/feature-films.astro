@@ -1,0 +1,176 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import CTA from "../../components/CTA.astro";
+import { productionServices, productionNetwork } from "../../data/production";
+import { ORG_ID } from "../../data/site";
+
+const svc = productionServices.find((s) => s.id === "feature-films")!;
+
+const title = `${svc.name} — Production Facilitation by Third Eye Events | Third Eye Events`;
+const description =
+  "Feature film production facilitation by Third Eye Events — location coordination, crew management, equipment logistics and schedule execution. Long-form complexity handled on the ground.";
+
+const structuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Feature Film Production Facilitation",
+    serviceType: "Line Production & Content Facilitation",
+    provider: { "@id": ORG_ID },
+    areaServed: "India and international productions",
+    description: svc.note,
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path="/production/feature-films/" structuredData={structuredData}>
+  <PageHero
+    eyebrow="Production"
+    title={svc.name}
+    statement="Long-form complexity handled on the ground."
+  />
+
+  <section class="section">
+    <div class="container">
+      <p class="statement measure reveal">
+        Third Eye acts as an execution partner and network enabler — the infrastructure between a script
+        and a finished schedule. Directors create. We make the creation possible.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="eyebrow reveal">Capabilities</h2>
+      <ul role="list" class="cap-list">
+        {svc.capabilities.map((c, i) => (
+          <li class="cap reveal" style={`--reveal-delay: ${i * 90}ms`}>{c}</li>
+        ))}
+      </ul>
+      <p class="microcopy svc__note reveal" style="--reveal-delay: 400ms">{svc.note}</p>
+    </div>
+  </section>
+
+  <section class="section-lg network atmosphere-radial" aria-labelledby="network-title">
+    <div class="container">
+      <h2 class="eyebrow reveal" id="network-title">The Execution Network</h2>
+      <p class="display network__line reveal" style="--reveal-delay: 120ms">
+        One call activates the whole chain.
+      </p>
+      <ol class="chain" role="list">
+        {
+          productionNetwork.map((n, i) => (
+            <li class="chain__node reveal" style={`--reveal-delay: ${i * 70}ms`}>
+              <span class="microcopy">{String(i + 1).padStart(2, "0")}</span>
+              <span class="display chain__label">{n.label}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section related" aria-label="Related">
+    <div class="container rel-grid">
+      <a class="rel reveal" href="/production/short-films/">
+        <span class="microcopy">Production</span>
+        <span class="display rel__label">Short Films →</span>
+      </a>
+      <a class="rel reveal" href="/production/documentaries/" style="--reveal-delay: 110ms">
+        <span class="microcopy">Production</span>
+        <span class="display rel__label">Documentaries →</span>
+      </a>
+      <a class="rel reveal" href="/production/digital-content/" style="--reveal-delay: 220ms">
+        <span class="microcopy">Production</span>
+        <span class="display rel__label">Digital Content →</span>
+      </a>
+    </div>
+  </section>
+
+  <CTA title="Bring Your Production" line="Tell us the frame you see. We'll build what stands behind it." />
+</BaseLayout>
+
+<style>
+  .cap-list {
+    margin-top: 1.5rem;
+  }
+
+  .cap {
+    position: relative;
+    padding-inline-start: 1.3rem;
+    color: var(--ink-muted);
+    font-size: 1.1rem;
+    padding-block: 0.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .cap::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0.5em;
+    height: 1px;
+    background: var(--color-gold);
+  }
+
+  .svc__note {
+    margin-top: 1.5rem;
+    color: var(--ink-faint);
+  }
+
+  .network__line {
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    margin-block: 1.4rem 3rem;
+  }
+
+  .chain__node {
+    display: flex;
+    align-items: baseline;
+    gap: 2rem;
+    padding-block: 1.3rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .chain__node:first-child {
+    border-top: 1px solid var(--line);
+  }
+
+  .chain__label {
+    font-size: clamp(1.4rem, 2.6vw, 2.1rem);
+    color: var(--ink-muted);
+    transition: color var(--dur-micro) ease;
+  }
+
+  .chain__node:hover .chain__label {
+    color: var(--color-gold);
+  }
+
+  .rel-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 56em) {
+    .rel-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .rel {
+    display: grid;
+    gap: 0.9rem;
+    padding: 1.75rem;
+    border: 1px solid var(--line);
+    transition: border-color var(--dur-standard) ease;
+  }
+
+  .rel:hover {
+    border-color: var(--color-gold);
+  }
+
+  .rel__label {
+    font-size: clamp(1.3rem, 2vw, 1.7rem);
+  }
+</style>

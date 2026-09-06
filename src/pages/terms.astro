@@ -1,0 +1,96 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+
+const title = "Terms of Use | Third Eye Events";
+const description =
+  "Terms governing the use of the Third Eye Events website and the engagement of our experience design and execution services.";
+
+const sections = [
+  {
+    heading: "Acceptance",
+    body: ["By using this website you agree to these terms. If you do not agree, please discontinue use."],
+  },
+  {
+    heading: "About Our Services",
+    body: [
+      "Third Eye Events designs and delivers experiences — Vaidik luxury weddings, destination weddings, wedding concepts and signature entries; owned event IP properties; and production facilitation as an execution partner and network enabler.",
+      "Content on this website is illustrative. Each engagement is defined by its own agreement.",
+    ],
+  },
+  {
+    heading: "Engagements & Bookings",
+    body: [
+      "No enquiry or conversation through this website constitutes a confirmed booking. Engagements are governed exclusively by individually signed agreements covering scope, schedules, payments and cancellations.",
+    ],
+  },
+  {
+    heading: "Intellectual Property",
+    body: [
+      "All content on this website — text, design, concepts, experience formats and brand identity — belongs to Third Eye Events unless credited otherwise. Wedding concepts such as Vaidik experience systems and named signature entries remain Third Eye intellectual property. Reproduction without written permission is not permitted.",
+    ],
+  },
+  {
+    heading: "Imagery & Representation",
+    body: [
+      "Where imagery appears on this website it represents style direction rather than a specific deliverable, unless explicitly agreed in an engagement contract.",
+    ],
+  },
+  {
+    heading: "Limitation of Liability",
+    body: [
+      "This website is provided as-is. To the extent permitted by law, Third Eye Events is not liable for indirect damages arising from its use. Liability for services is defined in the applicable signed agreement.",
+    ],
+  },
+  {
+    heading: "Governing Law",
+    body: ["Governing law and dispute resolution will be specified in the signed engagement agreement."],
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path="/terms/" noindex>
+  <PageHero eyebrow="Legal" title="Terms of Use" statement="Clear terms are part of disciplined execution." />
+
+  <section class="section">
+    <div class="container legal">
+      <p class="microcopy reveal">Last updated · 2026</p>
+      {
+        sections.map((s) => (
+          <article class="legal__block reveal">
+            <h2 class="display">{s.heading}</h2>
+            {s.body.map((p) => (
+              <p>{p}</p>
+            ))}
+          </article>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal {
+    max-width: 46rem;
+  }
+
+  .legal__block {
+    border-top: 1px solid var(--line);
+    padding-block: clamp(1.75rem, 4vw, 2.75rem);
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: var(--ink-muted);
+    margin-bottom: 0.8em;
+    max-width: var(--measure);
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+</style>

@@ -1,0 +1,69 @@
+---
+/** Visible breadcrumb trail — pairs with buildBreadcrumbs() JSON-LD */
+import type { Crumb } from "../utils/schema";
+
+interface Props {
+  crumbs: Crumb[];
+}
+
+const { crumbs } = Astro.props;
+---
+
+{
+  crumbs.length > 0 && (
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <ol role="list">
+        {crumbs.map((c, i) => (
+          <li>
+            {c.href && i < crumbs.length - 1 ? (
+              <a href={c.href}>{c.label}</a>
+            ) : (
+              <span aria-current="page">{c.label}</span>
+            )}
+            {i < crumbs.length - 1 && <span class="crumbs__sep" aria-hidden="true">→</span>}
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}
+
+<style>
+  .crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .crumbs li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--text-micro);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .crumbs a,
+  .crumbs span {
+    color: var(--ink-faint);
+  }
+
+  .crumbs a {
+    transition: color var(--dur-micro) ease;
+  }
+
+  .crumbs a:hover {
+    color: var(--color-gold);
+  }
+
+  .crumbs li:last-child span {
+    color: var(--ink-muted);
+  }
+
+  .crumbs__sep {
+    color: var(--color-bronze);
+  }
+</style>

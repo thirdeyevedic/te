@@ -1,0 +1,94 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import CTA from "../../components/CTA.astro";
+
+const title = "Our Philosophy — Meaning Over Decoration, Emotion Over Performance | Third Eye Events";
+const description =
+  "Third Eye Events philosophy: meaning over decoration, emotion over performance, discipline over hype, culture over trend. No alcohol, no non-vegetarian food, only Satvik conscious celebrations.";
+---
+
+<BaseLayout title={title} description={description} path="/about/philosophy/">
+  <PageHero
+    eyebrow="About"
+    title="Philosophy"
+    statement="Meaning over decoration. Emotion over performance."
+  />
+
+  <section class="section-lg philosophy atmosphere-radial">
+    <div class="container">
+      <p class="display philosophy__line reveal" style="--reveal-delay: 120ms">
+        Meaning over decoration. Emotion over performance.
+      </p>
+      <p class="display philosophy__line reveal" style="--reveal-delay: 260ms">
+        Discipline over hype. Culture over trend.
+      </p>
+      <p class="text-muted measure reveal" style="--reveal-delay: 400ms">
+        These are not slogans. They are operating principles — visible in every mandap we build, every entry
+        we direct and every frame we facilitate.
+      </p>
+      <p class="text-muted measure reveal" style="--reveal-delay: 520ms">
+        Core belief: No alcohol, No non-vegetarian food, Only Satvik conscious celebrations. Because purity enhances experience and rituals deserve respect.
+      </p>
+    </div>
+  </section>
+
+  <section class="section related" aria-label="Related">
+    <div class="container rel-grid">
+      <a class="rel reveal" href="/about/story/">
+        <span class="microcopy">About</span>
+        <span class="display rel__label">Our Story →</span>
+      </a>
+      <a class="rel reveal" href="/about/founder/" style="--reveal-delay: 110ms">
+        <span class="microcopy">About</span>
+        <span class="display rel__label">Meet the Founder →</span>
+      </a>
+      <a class="rel reveal" href="/about/vision/" style="--reveal-delay: 220ms">
+        <span class="microcopy">About</span>
+        <span class="display rel__label">The Vision →</span>
+      </a>
+    </div>
+  </section>
+
+  <CTA />
+</BaseLayout>
+
+<style>
+  .philosophy {
+    scroll-margin-top: var(--nav-h);
+  }
+
+  .philosophy__line {
+    font-size: clamp(1.9rem, 4.6vw, 3.8rem);
+    font-style: italic;
+    max-width: 24ch;
+    margin-block: 0.9rem;
+  }
+
+  .rel-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 56em) {
+    .rel-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .rel {
+    display: grid;
+    gap: 0.9rem;
+    padding: 1.75rem;
+    border: 1px solid var(--line);
+    transition: border-color var(--dur-standard) ease;
+  }
+
+  .rel:hover {
+    border-color: var(--color-gold);
+  }
+
+  .rel__label {
+    font-size: clamp(1.3rem, 2vw, 1.7rem);
+  }
+</style>

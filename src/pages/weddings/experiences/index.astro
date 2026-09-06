@@ -1,0 +1,961 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import PageHero from "../../../components/PageHero.astro";
+import CTA from "../../../components/CTA.astro";
+import { signatureEntries } from "../../../data/signatureEntries";
+import { getImage } from 'astro:assets';
+
+const title = "Signature Entries — Moments That Define the Wedding | Third Eye Events";
+const description =
+  "The Shiva Entry, Royal Entry, Floral Entry and Celestial Entry — Third Eye signature experiences that define the wedding before it begins.";
+
+const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
+  slug: e.slug,
+  category: e.category,
+  title: e.title,
+  line: e.line,
+  descriptor: e.descriptor,
+  sound: e.sound,
+  targetAudience: e.targetAudience,
+  customizationOptions: e.customizationOptions,
+})));
+---
+
+<BaseLayout title={title} description={description} path="/weddings/experiences/">
+    <PageHero
+      eyebrow="Weddings · Signature Experiences"
+      title="Moments that define the wedding before it begins."
+      statement="An entry is not a walk. It is the first sentence of the story your guests will retell."
+    />
+
+    <!-- Micro-CTA Header -->
+    <div class="container">
+      <p class="text-center text-micro mb-6">
+        Choose the moment that defines your beginning.
+      </p>
+    </div>
+
+    <!-- Signature Entries Container -->
+    <section class="section">
+      <div class="signature-entries">
+        <div class="signature-entries__track">
+          {signatureEntries.map((entry, index) => (
+            <button
+              key={entry.slug}
+              class="signature-entries__card sig ph reveal"
+              data-entry={entry.slug}
+              style={`--reveal-delay: ${index * 110}ms; view-transition-name: entry-${entry.slug}`}
+              aria-label={`Explore ${entry.title}`}
+            >
+              {/* Visual/Image */}
+              {entry.heroImage && (
+                <div class="signature-entries__visual">
+                  <img 
+                    src={entry.heroImage} 
+                    alt={`${entry.title} hero image`}
+                    class="signature-entries__image"
+                    loading="lazy"
+                  />
+                </div>
+              )}
+
+              {/* Content */}
+              <div class="signature-entries__content">
+                <span class="signature-entries__category microcopy">{entry.category}</span>
+                <h2 class="signature-entries__title display sig__title">{entry.title}</h2>
+                <p class="signature-entries__line statement sig__line">{entry.line}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section sig-line">
+      <div class="container">
+        <p class="statement reveal">Before the rituals begin, we create a moment the world will remember.</p>
+      </div>
+    </section>
+
+    <CTA />
+
+<!-- Full-screen expansion dialog -->
+    <dialog class="entry-dialog" id="entry-dialog" aria-label="Signature entry detail">
+      <div class="entry-dialog__backdrop" id="entry-dialog-backdrop"></div>
+      <div class="entry-dialog__content">
+        <button class="entry-dialog__close" id="entry-dialog-close" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="entry-dialog__inner">
+          {/* Video Container (for cinematic video playback) */}
+          <div class="entry-dialog__video-container" id="dialog-video-container">
+            {/* Video will be inserted here when available */}
+            {/* Example: <video src="/videos/shiva-entry-cinematic.mp4" autoplay muted loop playsinline></video> */}
+          </div>
+          
+          <div class="entry-dialog__info">
+            <p class="microcopy entry-dialog__category" id="dialog-category"></p>
+            <h2 class="display entry-dialog__title" id="dialog-title"></h2>
+            <p class="statement entry-dialog__line" id="dialog-line"></p>
+            <p class="text-muted entry-dialog__descriptor" id="dialog-descriptor"></p>
+
+            <div class="entry-dialog__meta">
+              <div class="entry-dialog__sound">
+                <p class="eyebrow">Sound Identity</p>
+                <p class="text-muted" id="dialog-sound"></p>
+                {/* Optional sound controls */}
+                <button class="btn btn--ghost btn--small" id="dialog-sound-toggle" aria-label="Play sound">
+                  <span id="dialog-sound-icon">▶️</span>
+                </button>
+              </div>
+              <div class="entry-dialog__audience">
+                <p class="eyebrow">Who This Is For</p>
+                <p class="text-muted" id="dialog-audience"></p>
+              </div>
+            </div>
+
+            <div class="entry-dialog__custom">
+              <p class="eyebrow">Customization Options</p>
+              <ul role="list" id="dialog-custom"></ul>
+            </div>
+
+            <div class="entry-dialog__actions">
+              <a class="btn btn--solid" id="dialog-cta" href="/contact/">Book This Experience</a>
+              <a class="btn btn--ghost" id="dialog-detail" href="#">View Full Sequence</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+<script>
+    const entries = JSON.parse(document.getElementById("entries-data")?.textContent || "[]");
+    let cleanupFns: (() => void)[] = [];
+    let videoElements: HTMLVideoElement[] = [];
+    let audioElements: HTMLAudioElement[] = [];
+
+    function initExperiences() {
+      cleanupFns.forEach((fn) => fn());
+      cleanupFns = [];
+      
+      // Stop any playing videos and audio
+      videoElements.forEach(video => {
+        video.pause();
+        video.currentTime = 0;
+      });
+      videoElements = [];
+      
+      audioElements.forEach(audio => {
+        audio.pause();
+        audio.currentTime = 0;
+      });
+      audioElements = [];
+      
+      // Pause auto-scroll when dialog opens
+      stopAutoScroll();
+
+      const dialog = document.getElementById("entry-dialog") as HTMLDialogElement;
+      const backdrop = document.getElementById("entry-dialog-backdrop");
+      const closeBtn = document.getElementById("entry-dialog-close");
+      const videoContainer = document.getElementById("dialog-video-container");
+      const soundToggleBtn = document.getElementById("dialog-sound-toggle");
+      const soundIcon = document.getElementById("dialog-sound-icon");
+      const signatureTrack = document.querySelector('.signature-entries__track');
+      
+      if (!dialog || !backdrop || !closeBtn) return;
+
+      function openEntry(slug: string) {
+        const entry = entries.find((e: { slug: string }) => e.slug === slug);
+        if (!entry) return;
+
+        // Populate basic info
+        document.getElementById("dialog-category")!.textContent = entry.category;
+        document.getElementById("dialog-title")!.textContent = entry.title;
+        document.getElementById("dialog-line")!.textContent = entry.line;
+        document.getElementById("dialog-descriptor")!.textContent = entry.descriptor;
+        document.getElementById("dialog-sound")!.textContent = entry.sound || 'Curated per celebration';
+        document.getElementById("dialog-audience")!.textContent = entry.targetAudience;
+
+        // Populate customization options
+        const customList = document.getElementById("dialog-custom")!;
+        customList.innerHTML = entry.customizationOptions.map((opt: string) => `<li>${opt}</li>`).join("");
+
+        // Set up video if available
+        if (videoContainer && entry.videoUrl) {
+          // Clear container first
+          videoContainer.innerHTML = '';
+          
+          // Create video element
+          const video = document.createElement('video');
+          video.src = entry.videoUrl;
+          video.autoplay = true;
+          video.muted = true; // Start muted for autoplay policies
+          video.loop = true;
+          video.playsInline = true;
+          video.preload = 'auto';
+          
+          video.addEventListener('loadedmetadata', () => {
+            // Video is ready to play
+            video.play().catch(e => {
+              console.log("Autoplay prevented:", e);
+              // If autoplay fails, user can click to play
+              video.muted = false;
+            });
+          });
+          
+          videoContainer.appendChild(video);
+          videoElements.push(video);
+        } else if (videoContainer) {
+          // Show placeholder if no video
+          videoContainer.innerHTML = `
+            <div class="video-placeholder">
+              <div class="video-placeholder__icon">▶️</div>
+              <p class="video-placeholder__text">Cinematic video preview</p>
+              <p class="video-placeholder__subtitle">(Video asset would be loaded here)</p>
+            </div>
+          `;
+        }
+
+        // Set up audio if available
+        if (soundToggleBtn && soundIcon && entry.audioUrl) {
+          // Create audio element
+          const audio = new Audio(entry.audioUrl);
+          audio.loop = true;
+          audio.preload = 'auto';
+          
+          audioElements.push(audio);
+          
+          // Update sound toggle functionality
+          let isSoundPlaying = false;
+          function toggleSound() {
+            isSoundPlaying = !isSoundPlaying;
+            if (soundIcon) {
+              soundIcon.textContent = isSoundPlaying ? '⏸️' : '▶️';
+            }
+            
+            if (isSoundPlaying && audioElements.length > 0) {
+              // Play the audio
+              audioElements[audioElements.length - 1].play().catch(e => {
+                console.log("Audio play failed:", e);
+              });
+            } else if (audioElements.length > 0) {
+              // Pause the audio
+              audioElements[audioElements.length - 1].pause();
+            }
+          }
+          
+          // Replace the event listener
+          const existingListenerIndex = cleanupFns.findIndex(fn => 
+            fn.toString().includes('toggleSound') && fn.toString().includes(soundToggleBtn.outerHTML)
+          );
+          
+          if (existingListenerIndex >= 0) {
+            // Remove old listener
+            cleanupFns.splice(existingListenerIndex, 1);
+          }
+          
+          soundToggleBtn.removeEventListener('click', (() => {}) as EventListener); // Remove any existing
+          soundToggleBtn.addEventListener('click', toggleSound);
+          cleanupFns.push(() => soundToggleBtn.removeEventListener('click', toggleSound));
+        }
+
+        // Update CTA links
+        (document.getElementById("dialog-cta") as HTMLAnchorElement).href = '/contact/';
+        (document.getElementById("dialog-detail") as HTMLAnchorElement).href = `/weddings/experiences/${slug}/`;
+
+        dialog.showModal();
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeDialog() {
+        dialog.close();
+        document.body.style.overflow = '';
+        
+// Stop videos when closing
+      videoElements.forEach(video => {
+        video.pause();
+        video.currentTime = 0;
+      });
+      
+      // Stop audio when closing
+      audioElements.forEach(audio => {
+        audio.pause();
+        audio.currentTime = 0;
+      });
+      
+      // Resume auto-scroll when dialog closes
+      startAutoScroll();
+      }
+
+      const entryBtns = document.querySelectorAll("[data-entry]");
+      entryBtns.forEach((btn) => {
+        const handler = () => openEntry((btn as HTMLElement).dataset.entry || "");
+        btn.addEventListener("click", handler);
+        cleanupFns.push(() => btn.removeEventListener("click", handler));
+      });
+
+      const closeHandler = () => closeDialog();
+      closeBtn.addEventListener("click", closeHandler);
+      cleanupFns.push(() => closeBtn.removeEventListener("click", closeHandler));
+
+      backdrop.addEventListener("click", closeHandler);
+      cleanupFns.push(() => backdrop.removeEventListener("click", closeHandler));
+
+      const dialogClickHandler = (e: MouseEvent) => {
+        if (e.target === dialog) closeDialog();
+      };
+      dialog.addEventListener("click", dialogClickHandler);
+      cleanupFns.push(() => dialog.removeEventListener("click", dialogClickHandler));
+
+      const keydownHandler = (e: KeyboardEvent) => {
+        if (e.key === "Escape" && dialog.open) closeDialog();
+      };
+      document.addEventListener("keydown", keydownHandler);
+      cleanupFns.push(() => document.removeEventListener("keydown", keydownHandler));
+      
+      // Auto-scroll functionality for signature entries
+      let autoScrollTimeout: ReturnType<typeof setTimeout> | null = null;
+      let isUserInteracting = false;
+      const AUTO_SCROLL_DELAY = 5000; // 5 seconds of inactivity before auto-scroll
+      const AUTO_SCROLL_SPEED = 0.5; // pixels per second (very slow, premium feel)
+      
+      function startAutoScroll() {
+        // Respect reduced motion preferences
+        if (reducedMotion) return;
+        
+        if (!signatureTrack || isUserInteracting) return;
+        
+        // Clear any existing timeout
+        if (autoScrollTimeout) {
+          clearTimeout(autoScrollTimeout);
+        }
+        
+        // Set new timeout
+        autoScrollTimeout = window.setTimeout(() => {
+          if (signatureTrack && !isUserInteracting) {
+            // Start slow auto-scroll
+            signatureTrack.style.scrollBehavior = 'auto'; // Disable smooth scrolling during auto-scroll
+            signatureTrack.scrollLeft += AUTO_SCROLL_SPEED;
+            
+            // Continue auto-scrolling
+            autoScrollTimeout = window.setTimeout(startAutoScroll, 16); // ~60fps
+          }
+        }, AUTO_SCROLL_DELAY);
+      }
+
+      function stopAutoScroll() {
+        if (autoScrollTimeout) {
+          clearTimeout(autoScrollTimeout);
+          autoScrollTimeout = null;
+        }
+        // Restate smooth scrolling
+        if (signatureTrack) {
+          signatureTrack.style.scrollBehavior = 'smooth';
+        }
+      }
+
+      function resetAutoScrollTimer() {
+        stopAutoScroll();
+        isUserInteracting = true;
+        startAutoScroll(); // Restart the timer
+        
+        // Reset user interaction flag after a short delay
+        setTimeout(() => {
+          isUserInteracting = false;
+        }, 500); // 500ms after last interaction, consider user not interacting anymore
+      }
+
+      // Initialize auto-scroll
+      startAutoScroll();
+
+      // Add event listeners to detect user interaction
+      const interactionEvents = ['mousedown', 'mouseup', 'click', 'touchstart', 'touchend', 'scroll', 'wheel'];
+      interactionEvents.forEach(event => {
+        signatureTrack?.addEventListener(event, resetAutoScrollTimer, { passive: true });
+        cleanupFns.push(() => signatureTrack?.removeEventListener(event, resetAutoScrollTimer));
+      });
+
+    }
+
+    document.addEventListener("astro:page-load", initExperiences);
+  </script>
+
+  <script type="application/json" id="entries-data" set:html={entriesJSON} />
+
+  <style>
+    .sigs {
+      row-gap: 1.25rem;
+    }
+
+    .sig {
+      grid-column: span 4;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      min-height: clamp(20rem, 48vh, 28rem);
+      padding: 1.9rem;
+      border: 1px solid transparent;
+      background: none;
+      text-align: left;
+      cursor: pointer;
+      font: inherit;
+      color: inherit;
+      transition: border-color var(--dur-standard) ease, scale var(--dur-standard) var(--ease-out-expo);
+    }
+
+    .sig:hover {
+      border-color: var(--color-gold);
+      scale: 1.01;
+      box-shadow: 0 0 30px rgba(184, 155, 94, 0.1);
+    }
+
+    .sig .link-line {
+      opacity: 0;
+      transition: opacity var(--dur-standard) ease;
+    }
+
+    .sig:hover .link-line {
+      opacity: 1;
+    }
+
+    @media (min-width: 48em) {
+      .sig {
+        grid-column: span 8;
+      }
+    }
+
+    @media (min-width: 72em) {
+      .sig {
+        grid-column: span 6;
+      }
+    }
+
+    .sig__title {
+      font-size: clamp(1.9rem, 3.4vw, 2.8rem);
+      margin-block-start: auto;
+    }
+
+    .sig__line {
+      font-family: var(--font-body);
+      font-style: normal;
+      font-size: 0.98rem;
+    }
+
+    .sig-line {
+      text-align: center;
+    }
+
+    .sig-line .statement {
+      max-width: 32ch;
+      margin-inline: auto;
+      font-size: clamp(1.05rem, 1.8vw, 1.4rem);
+    }
+
+    /* ── Dialog ── */
+    .entry-dialog {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      max-height: none;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      overflow: hidden;
+    }
+
+    .entry-dialog::backdrop {
+      display: none;
+    }
+
+    .entry-dialog__backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 10, 10, 0.92);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+    }
+
+    .entry-dialog__content {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      display: grid;
+      place-items: center;
+      padding: clamp(2rem, 5vw, 4rem);
+    }
+
+    .entry-dialog__close {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      z-index: 10;
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--ink-muted);
+      font-size: 1.6rem;
+      transition: border-color var(--dur-micro) ease, color var(--dur-micro) ease;
+    }
+
+    .entry-dialog__close:hover {
+      border-color: var(--color-gold);
+      color: var(--color-gold);
+    }
+
+    .entry-dialog__inner {
+      max-width: 52rem;
+      width: 100%;
+      display: grid;
+      gap: 1.8rem;
+      justify-items: start;
+      padding-block: clamp(2rem, 6vh, 5rem);
+    }
+
+    .entry-dialog__category {
+      color: var(--color-gold);
+    }
+
+    .entry-dialog__title {
+      font-size: clamp(2.6rem, 7vw, 5.5rem);
+    }
+
+    .entry-dialog__line {
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+    }
+
+    .entry-dialog__descriptor {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      max-width: 48ch;
+    }
+
+    .entry-dialog__meta {
+      display: grid;
+      gap: 2rem;
+      width: 100%;
+      padding-block: 1.5rem;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    @media (min-width: 48em) {
+      .entry-dialog__meta {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .entry-dialog__meta .eyebrow {
+      margin-bottom: 0.6rem;
+    }
+
+    .entry-dialog__custom {
+      width: 100%;
+    }
+
+    .entry-dialog__custom .eyebrow {
+      margin-bottom: 1rem;
+    }
+
+    #dialog-custom {
+      display: grid;
+      gap: 0;
+    }
+
+    #dialog-custom li {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      padding-block: 0.7rem;
+      border-bottom: 1px solid var(--line);
+      color: var(--ink-muted);
+      font-size: 0.95rem;
+    }
+
+    #dialog-custom li:first-child {
+      border-top: 1px solid var(--line);
+    }
+
+    #dialog-custom li::before {
+      content: "—";
+      color: var(--color-gold);
+      flex-shrink: 0;
+    }
+
+.entry-dialog__actions {
+       display: flex;
+       flex-wrap: wrap;
+       gap: 1rem;
+       margin-top: 0.5rem;
+     }
+
+     .video-placeholder {
+       text-align: center;
+       padding: 3rem;
+       color: var(--ink-muted);
+       background: var(--bg-raised);
+       border-radius: 0.5rem;
+     }
+
+     .video-placeholder__icon {
+       font-size: 4rem;
+       margin-bottom: 1.5rem;
+     }
+
+     .video-placeholder__text {
+       font-size: 1.5rem;
+       font-weight: 600;
+       margin-bottom: 0.75rem;
+     }
+
+     .video-placeholder__subtitle {
+       font-size: 1rem;
+       opacity: 0.7;
+     }
+
+     @media (prefers-reduced-motion: reduce) {
+       .entry-dialog__backdrop {
+         transition: none;
+       }
+     }
+   </style>
+
+  <style>
+    /* Signature Entries Layout */
+    .signature-entries {
+      position: relative;
+      overflow: hidden;
+      padding-block: calc(var(--space-section) * 1.5);
+      background: var(--bg); /* Black background */
+    }
+
+    .signature-entries::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 50% 50%, rgba(184, 155, 94, 0.03) 0%, transparent 70%),
+        repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(184, 155, 94, 0.01) 2px, rgba(184, 155, 94, 0.01) 4px);
+      pointer-events: none;
+    }
+
+    .signature-entries__track {
+      display: flex;
+      gap: clamp(2rem, 5vw, 3rem);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      padding-block-end: clamp(3rem, 8vh, 6rem);
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .signature-entries__track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .signature-entries__card {
+      flex: 0 0 auto;
+      width: clamp(26rem, 32vw, 30rem);
+      height: clamp(32rem, 45vh, 40rem);
+      scroll-snap-align: start;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      transition: 
+        border-color var(--dur-standard) ease,
+        transform var(--dur-standard) var(--ease-out-expo),
+        box-shadow var(--dur-standard) var(--ease-out-expo);
+    }
+
+    .signature-entries__card:hover {
+      border-color: var(--color-gold);
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 20px 40px rgba(184, 155, 94, 0.15);
+    }
+
+    .signature-entries__visual {
+      position: relative;
+      height: 45%;
+      overflow: hidden;
+      background: var(--bg-raised);
+    }
+
+    .signature-entries__image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform var(--dur-standard) var(--ease-out-expo);
+    }
+
+    .signature-entries__card:hover .signature-entries__image {
+      transform: scale(1.05);
+    }
+
+    .signature-entries__content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(1.5rem, 4vw, 2rem);
+      gap: 0.5rem;
+    }
+
+    .signature-entries__category {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: rgba(184, 155, 94, 0.1);
+      border: 1px solid rgba(184, 155, 94, 0.2);
+      border-radius: 9999px;
+      font-size: var(--text-micro);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-gold);
+    }
+
+    .signature-entries__title {
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .signature-entries__line {
+      margin: 0;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Touch indicators for mobile */
+    @media (pointer: coarse) {
+      .signature-entries__track {
+        padding-bottom: clamp(4rem, 10vh, 8rem);
+      }
+      
+      .signature-entries__card {
+        border-width: 2px;
+      }
+      
+      .signature-entries__card:active {
+        transform: scale(0.98);
+      }
+    }
+
+    /* Hide scrollbar but allow scrolling */
+    .signature-entries__track {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+
+    /* Enhanced Dialog Styles */
+    .entry-dialog__video-container {
+      position: relative;
+      width: 100%;
+      height: 40%;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+
+    .video-placeholder {
+      text-align: center;
+      padding: 2rem;
+      color: var(--ink-muted);
+    }
+
+    .video-placeholder__icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .video-placeholder__text {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .video-placeholder__subtitle {
+      font-size: 0.875rem;
+      opacity: 0.7;
+    }
+
+    .entry-dialog__info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .entry-dialog__meta {
+      display: flex;
+      gap: 2rem;
+      margin: 1.5rem 0;
+      padding: 1rem 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .entry-dialog__sound,
+    .entry-dialog__audience {
+      flex: 1;
+    }
+
+    .btn--small {
+      padding: 0.5rem 1rem;
+      font-size: var(--text-micro);
+    }
+
+    .entry-dialog__custom {
+      margin: 1.5rem 0;
+    }
+
+    .entry-dialog__actions {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--line);
+    }
+  </style>
+
+  <style>
+    /* Signature Entries Layout */
+    .signature-entries {
+      position: relative;
+      overflow: hidden;
+      padding-block: calc(var(--space-section) * 1.5);
+      background: var(--bg); /* Black background */
+    }
+
+    .signature-entries::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 50% 50%, rgba(184, 155, 94, 0.03) 0%, transparent 70%),
+        repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(184, 155, 94, 0.01) 2px, rgba(184, 155, 94, 0.01) 4px);
+      pointer-events: none;
+    }
+
+    .signature-entries__track {
+      display: flex;
+      gap: clamp(2rem, 5vw, 3rem);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      padding-block-end: clamp(3rem, 8vh, 6rem);
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .signature-entries__track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .signature-entries__card {
+      flex: 0 0 auto;
+      width: clamp(26rem, 32vw, 30rem);
+      height: clamp(32rem, 45vh, 40rem);
+      scroll-snap-align: start;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      transition: 
+        border-color var(--dur-standard) ease,
+        transform var(--dur-standard) var(--ease-out-expo),
+        box-shadow var(--dur-standard) var(--ease-out-expo);
+    }
+
+    .signature-entries__card:hover {
+      border-color: var(--color-gold);
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 20px 40px rgba(184, 155, 94, 0.15);
+    }
+
+    .signature-entries__visual {
+      position: relative;
+      height: 45%;
+      overflow: hidden;
+      background: var(--bg-raised);
+    }
+
+    .signature-entries__image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform var(--dur-standard) var(--ease-out-expo);
+    }
+
+    .signature-entries__card:hover .signature-entries__image {
+      transform: scale(1.05);
+    }
+
+    .signature-entries__content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(1.5rem, 4vw, 2rem);
+      gap: 0.5rem;
+    }
+
+    .signature-entries__category {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: rgba(184, 155, 94, 0.1);
+      border: 1px solid rgba(184, 155, 94, 0.2);
+      border-radius: 9999px;
+      font-size: var(--text-micro);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-gold);
+    }
+
+    .signature-entries__title {
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .signature-entries__line {
+      margin: 0;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Touch indicators for mobile */
+    @media (pointer: coarse) {
+      .signature-entries__track {
+        padding-bottom: clamp(4rem, 10vh, 8rem);
+      }
+      
+      .signature-entries__card {
+        border-width: 2px;
+      }
+      
+      .signature-entries__card:active {
+        transform: scale(0.98);
+      }
+    }
+
+    /* Hide scrollbar but allow scrolling */
+    .signature-entries__track {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+  </style>
+</BaseLayout>
