@@ -21,6 +21,7 @@ const personSchema = {
 
 <BaseLayout title={title} description={description} path="/about/" structuredData={[personSchema]}>
   <PageHero
+    image="/images/about/hero.jpg"
     eyebrow="About"
     title="Not built on events. Built on vision."
     statement="From struggle to stage. From stage to scale. From scale to purpose."
@@ -29,8 +30,15 @@ const personSchema = {
   <!-- STORY -->
   <section class="section" id="story" aria-labelledby="story-title">
     <div class="container story__grid">
-      <figure class="ph story__portrait reveal-mask" aria-hidden="true">
-        <!-- [CONTENT REQUIRED] Founder portrait & archival imagery -->
+      <figure class="ph ph--imaged ph--framed story__portrait reveal-mask">
+        <img
+          src="/images/about/archival-dance.jpg"
+          alt="Archival performance imagery from the years on stage"
+          class="xi__media xi--fill"
+          loading="lazy"
+          decoding="async"
+        />
+        <span class="ph__scrim" aria-hidden="true"></span>
       </figure>
       <div>
         <p class="eyebrow reveal">The Story</p>

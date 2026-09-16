@@ -2,8 +2,8 @@
  * DESTINATIONS — Different destinations. Different worlds.
  * Each destination is an experience, not a pin on a map.
  *
- * Imagery: heroImage/secondaryImages hold [CONTENT REQUIRED] until
- * photography is supplied. Pages render atmospheric placeholders meanwhile.
+ * Imagery: heroImage is the wide crop used by page heroes; cardImage is the
+ * portrait crop used by listing cards. Both are supplied.
  *
  * Venues live in ./venues.ts as the single source of truth — read them with
  * getVenuesByCountry(destination.slug). Do not duplicate venue names or
@@ -16,8 +16,10 @@ export interface Destination {
   region: string;
   country: string;
   tagline: string;
-  /** Imagery path when supplied — public/ URL or imported asset */
+  /** Wide hero imagery — public/ URL or imported asset */
   heroImage?: string;
+  /** Portrait crop of the same photograph, used by listing cards */
+  cardImage?: string;
   landscape: string;
   culturalContext: string;
   luxuryContext: string;
@@ -37,6 +39,8 @@ export const destinations: Destination[] = [
     region: "Indian Ocean",
     country: "Maldives",
     tagline: "Ocean silence. Sky infinity.",
+    heroImage: "/images/destinations/maldives/hero.jpg",
+    cardImage: "/images/destinations/maldives/card.jpg",
     landscape:
       "Low coral islands, turquoise lagoons and sand that dissolves into shallow sea — a horizon with almost no edges.",
     culturalContext:
@@ -62,6 +66,8 @@ export const destinations: Destination[] = [
     region: "North India",
     country: "India",
     tagline: "Where royal memory is still alive.",
+    heroImage: "/images/destinations/rajasthan/hero.jpg",
+    cardImage: "/images/destinations/rajasthan/card.jpg",
     landscape:
       "Lake palaces, golden dunes, blue-washed hills and fortress cities rising from arid earth.",
     culturalContext:
@@ -87,6 +93,8 @@ export const destinations: Destination[] = [
     region: "The Alps",
     country: "Switzerland",
     tagline: "Fire meets ice. Vows meet silence.",
+    heroImage: "/images/destinations/switzerland/hero.jpg",
+    cardImage: "/images/destinations/switzerland/card.jpg",
     landscape:
       "Glaciated peaks, meadow valleys, waterfalls falling from cliff villages and trains crossing the high snow.",
     culturalContext:
@@ -112,6 +120,8 @@ export const destinations: Destination[] = [
     region: "Kansai",
     country: "Japan",
     tagline: "Precision as devotion.",
+    heroImage: "/images/destinations/kyoto/hero.jpg",
+    cardImage: "/images/destinations/kyoto/card.jpg",
     landscape:
       "Wooden machiya lanes, vermilion gates climbing forested hills, moss gardens and bamboo moving in wind.",
     culturalContext:
@@ -137,6 +147,8 @@ export const destinations: Destination[] = [
     region: "Mediterranean Europe",
     country: "Italy",
     tagline: "La dolce vita, sacred.",
+    heroImage: "/images/destinations/italy/hero.jpg",
+    cardImage: "/images/destinations/italy/card.jpg",
     landscape:
       "Lake villas mirrored in still water, cypress-lined Tuscan ridges, Amalfi cliffs stacked above the sea.",
     culturalContext:
@@ -162,6 +174,8 @@ export const destinations: Destination[] = [
     region: "Indonesia",
     country: "Indonesia",
     tagline: "Island of the gods.",
+    heroImage: "/images/destinations/bali/hero.jpg",
+    cardImage: "/images/destinations/bali/card.jpg",
     landscape:
       "Cliff temples above breaking surf, rice terraces stepped into volcano slopes, mist rising from river gorges.",
     culturalContext:
@@ -187,6 +201,8 @@ export const destinations: Destination[] = [
     region: "International waters",
     country: "Multiple",
     tagline: "A world that moves with you.",
+    heroImage: "/images/destinations/cruises/hero.jpg",
+    cardImage: "/images/destinations/cruises/card.jpg",
     landscape:
       "Open ocean horizons, ports changing outside your window, decks that become venues at night.",
     culturalContext:

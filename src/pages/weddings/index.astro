@@ -10,6 +10,7 @@ const description =
 
 <BaseLayout title={title} description={description} path="/weddings/">
   <PageHero
+    image="/images/weddings/index-hero.jpg"
     eyebrow="Weddings"
     title="Where celebration becomes experience."
     statement="Not coordination. Composition — of ritual, place, emotion and precision."
@@ -24,27 +25,37 @@ const description =
             num: "01",
             name: "Vaidik Weddings",
             line: "Sacred. Pure. Conscious. Marriage as a sacred sanskar.",
+            image: "/images/weddings/vaidik-hero.jpg",
           },
           {
             href: "/weddings/destination/",
             num: "02",
             name: "Destination Weddings",
             line: "Different destinations. Different worlds.",
+            image: "/images/weddings/destination-hero.jpg",
           },
           {
             href: "/weddings/concepts/",
             num: "03",
             name: "Wedding Concepts",
             line: "Locations are common. Concepts create emotion.",
+            image: "/images/weddings/concepts-hero.jpg",
           },
           {
             href: "/weddings/experiences/",
             num: "04",
             name: "Signature Entries",
             line: "Moments that define the wedding before it begins.",
+            image: "/images/weddings/experiences-hero.jpg",
           },
         ].map((p, i) => (
-          <a class="path ph reveal" href={p.href} style={`--reveal-delay: ${i * 110}ms`}>
+          <a
+            class="path ph ph--imaged reveal"
+            href={p.href}
+            style={`--reveal-delay: ${i * 110}ms`}
+          >
+            <img src={p.image} alt="" class="xi__media xi--fill" loading="lazy" decoding="async" />
+            <span class="ph__scrim" aria-hidden="true" />
             <span class="microcopy">{p.num}</span>
             <h2 class="display path__name">{p.name}</h2>
             <p class="text-muted">{p.line}</p>

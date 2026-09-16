@@ -11,11 +11,14 @@ export interface EventIPCategory {
   potentialFormat: string;
   audience: string;
   scalability: string;
+  /** Wide hero imagery — public/ URL */
+  heroImage?: string;
 }
 
 export const eventIPs: EventIPCategory[] = [
   {
     id: "exhibitions",
+    heroImage: "/images/ip/exhibitions-hero.jpg",
     name: "Exhibitions & Expos",
     description:
       "Industry platforms where Third Eye designs not just stalls but entire exhibition worlds — flow, pacing, dwell and discovery.",
@@ -26,6 +29,7 @@ export const eventIPs: EventIPCategory[] = [
   },
   {
     id: "automotive",
+    heroImage: "/images/ip/automotive-hero.jpg",
     name: "Automotive & Mobility",
     description:
       "Launch environments and motoring spectacles built with mechanical precision — vehicles presented as protagonists.",
@@ -36,6 +40,7 @@ export const eventIPs: EventIPCategory[] = [
   },
   {
     id: "awards",
+    heroImage: "/images/ip/awards-hero.jpg",
     name: "Awards & Gala",
     description:
       "Ceremonies engineered for gravity — staging, script, reveal rhythm and the discipline a credible stage demands.",
@@ -46,6 +51,7 @@ export const eventIPs: EventIPCategory[] = [
   },
   {
     id: "products",
+    heroImage: "/images/ip/best-products-hero.jpg",
     name: "Best Products of India",
     description:
       "A platform format celebrating Indian excellence — products staged with the respect of museum curation.",
@@ -56,6 +62,7 @@ export const eventIPs: EventIPCategory[] = [
   },
   {
     id: "sports",
+    heroImage: "/images/ip/sports-hero.jpg",
     name: "Sports Leagues & Tournaments",
     description:
       "League formats owned end to end — fixture design, venue experience, broadcast readiness and season arc.",
@@ -66,6 +73,7 @@ export const eventIPs: EventIPCategory[] = [
   },
   {
     id: "fashion",
+    heroImage: "/images/ip/fashion-hero.jpg",
     name: "Fashion & Modeling",
     description:
       "Runways and model platforms directed like cinema — walk choreography drawn from Third Eye's performance roots.",
@@ -76,6 +84,7 @@ export const eventIPs: EventIPCategory[] = [
   },
   {
     id: "political",
+    heroImage: "/images/ip/political-hero.jpg",
     name: "Political & Public",
     description:
       "Large-scale public gatherings executed with protocol discipline — crowd architecture, security coordination, zero-error stages.",
@@ -86,6 +95,7 @@ export const eventIPs: EventIPCategory[] = [
   },
   {
     id: "devotional",
+    heroImage: "/images/ip/devotional-hero.jpg",
     name: "Devotional & Spiritual",
     description:
       "Sacred gatherings produced with reverence — sound, seating and sightlines designed around devotion rather than spectacle.",
@@ -96,6 +106,7 @@ export const eventIPs: EventIPCategory[] = [
   },
   {
     id: "concerts",
+    heroImage: "/images/ip/concerts-hero.jpg",
     name: "Concerts & Live Entertainment",
     description:
       "Live entertainment as total environment — stage, light, artist logistics and crowd energy managed as one instrument.",

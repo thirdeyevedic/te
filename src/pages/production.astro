@@ -24,6 +24,7 @@ const structuredData = [
 
 <BaseLayout title={title} description={description} path="/production/" structuredData={structuredData}>
   <PageHero
+    image="/images/production/index-hero.jpg"
     eyebrow="Production Facilitation"
     title="Behind every frame."
     statement="Structured. Managed. Delivered by Third Eye."
@@ -43,6 +44,9 @@ const structuredData = [
       {
         productionServices.map((s, i) => (
           <article class="svc reveal" id={s.id} style={`--reveal-delay: ${(i % 3) * 90}ms`}>
+            <figure class="svc__visual">
+              <img src={s.heroImage} alt="" class="xi__media xi--fill" loading="lazy" decoding="async" />
+            </figure>
             <h2 class="display svc__name">{s.name}</h2>
             <ul role="list">
               {s.capabilities.map((c) => (
@@ -88,6 +92,13 @@ const structuredData = [
 
   .svcs {
     row-gap: 2rem;
+  }
+
+  .svc__visual {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    margin: -1.75rem -1.75rem 0;
   }
 
   .svc {

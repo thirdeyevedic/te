@@ -9,8 +9,10 @@ export interface SignatureEntry {
   title: string;
   line: string;
   descriptor: string;
-  /** Imagery path when supplied — public/ URL or imported asset */
+  /** Wide hero imagery — public/ URL or imported asset */
   heroImage?: string;
+  /** Portrait crop of the same photograph, used by listing cards */
+  cardImage?: string;
   /** Video URL for cinematic playback */
   videoUrl?: string;
   /** Audio URL for sound identity */
@@ -30,7 +32,8 @@ export const signatureEntries: SignatureEntry[] = [
     title: "The Shiva Entry",
     line: "A powerful beginning, where energy takes form.",
     descriptor: "The groom doesn’t just arrive — he emerges like Shiva, surrounded by smoke, beats, and raw spiritual intensity.",
-    heroImage: "/images/signature/shiva-entry-hero.jpg.svg",
+    heroImage: "/images/signature/shiva-entry-hero.jpg",
+    cardImage: "/images/signature/shiva-entry-card.jpg",
     videoUrl: "/videos/shiva-entry-cinematic.mp4",
     audioUrl: "/audio/shiva-entry-sound-identity.mp3",
     sequence: [
@@ -59,7 +62,8 @@ export const signatureEntries: SignatureEntry[] = [
     title: "The Royal Entry",
     line: "Walk the path of kings before you take your vows.",
     descriptor: "A golden pathway unfolds lined with florals, lights and legacy. Every step echoes royalty, grace and timeless grandeur.",
-    heroImage: "/images/signature/royal-entry-hero.jpg.svg",
+    heroImage: "/images/signature/royal-entry-hero.jpg",
+    cardImage: "/images/signature/royal-entry-card.jpg",
     videoUrl: "/videos/royal-entry-cinematic.mp4",
     audioUrl: "/audio/royal-entry-sound-identity.mp3",
     sequence: [
@@ -88,7 +92,8 @@ export const signatureEntries: SignatureEntry[] = [
     title: "The Floral Entry",
     line: "A moment where love is celebrated like a festival.",
     descriptor: "Petals fall. Music flows. The air itself feels alive. A joyful, vibrant entry where the bride/groom is welcomed like a celebration of life.",
-    heroImage: "/images/signature/floral-entry-hero.jpg.svg",
+    heroImage: "/images/signature/floral-entry-hero.jpg",
+    cardImage: "/images/signature/floral-entry-card.jpg",
     videoUrl: "/videos/floral-entry-cinematic.mp4",
     audioUrl: "/audio/floral-entry-sound-identity.mp3",
     sequence: [
@@ -118,7 +123,8 @@ export const signatureEntries: SignatureEntry[] = [
     title: "The Celestial Entry",
     line: "Not an entry… a descent from the divine.",
     descriptor: "Floating. Elevated. Surreal. A heavenly arrival designed with light, sound and sacred symbolism creating a moment beyond this world.",
-    heroImage: "/images/signature/celestial-entry-hero.jpg.svg",
+    heroImage: "/images/signature/celestial-entry-hero.jpg",
+    cardImage: "/images/signature/celestial-entry-card.jpg",
     videoUrl: "/videos/celestial-entry-cinematic.mp4",
     audioUrl: "/audio/celestial-entry-sound-identity.mp3",
     sequence: [

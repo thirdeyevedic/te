@@ -6,9 +6,14 @@
  */
 ---
 
-<div class="opening" id="opening" aria-hidden="true">
-  <div class="opening__om display">ॐ</div>
-  <div class="opening__mantra" lang="sa">
+<div class="opening" id="opening">
+  {/* `aria-hidden` sits on the decorative glyph and mantra, not on the overlay.
+      Putting it on the overlay made the Skip button a focusable element inside
+      an aria-hidden subtree — an axe `aria-hidden-focus` violation, and it left
+      screen-reader users with no way to dismiss the intro at all. The verse is
+      atmospheric here rather than content, so it stays hidden from AT. */}
+  <div class="opening__om display" aria-hidden="true">ॐ</div>
+  <div class="opening__mantra" lang="sa" aria-hidden="true">
     <p>यदा यदा हि धर्मस्य ग्लानिर्भवति भारत।</p>
     <p>अभ्युत्थानमधर्मस्य तदात्मानं सृजाम्यहम् ॥</p>
   </div>
@@ -111,7 +116,10 @@
     position: absolute;
     right: var(--space-gutter);
     bottom: 2rem;
-    color: var(--ink-faint);
+    /* --ink-faint (0.38 alpha) is ~3.3:1 on the near-black overlay and fails
+       WCAG AA for the button's text; --ink-muted (~7:1) keeps it subtle but
+       legible — axe `color-contrast`. */
+    color: var(--ink-muted);
     padding: 0.8em;
     letter-spacing: 0.22em;
     transition: color var(--dur-micro) ease;
@@ -129,14 +137,27 @@
 </style>
 
 <script>
-  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let timers = [];
+const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  function finish(el) {
-    el.classList.add("is-exiting");
-    document.body.style.overflow = "";
-    setTimeout(() => el.remove(), reducedMotion ? 0 : 1350);
-  }
+/* window.setTimeout returns a number in the DOM lib, but the ambient workers
+   types redefine the global setTimeout, so pin the type explicitly. */
+type Timer = number;
+let timers: Timer[] = [];
+
+function finish(el: HTMLElement) {
+  el.classList.add("is-exiting");
+  document.body.style.overflow = "";
+  timers.forEach(clearTimeout);
+  timers = [];
+  removeEventListener("keydown", onKeydown);
+  setTimeout(() => el.remove(), reducedMotion ? 0 : 1350);
+}
+
+function onKeydown(e: KeyboardEvent) {
+  if (e.key !== "Escape") return;
+  const el = document.getElementById("opening");
+  if (el) finish(el);
+}
 
   function initOpening() {
     const el = document.getElementById("opening");
@@ -156,25 +177,17 @@
     skipBtn?.removeAttribute("tabindex");
 
     timers = [
-      setTimeout(() => el.classList.add("is-mantra"), 3400),
-      setTimeout(() => finish(el), 7400),
+      window.setTimeout(() => el.classList.add("is-mantra"), 3400),
+      window.setTimeout(() => finish(el), 7400),
     ];
 
-    skipBtn?.addEventListener("click", () => {
-      timers.forEach(clearTimeout);
-      finish(el);
-    });
+    skipBtn?.addEventListener("click", () => finish(el));
 
-    addEventListener(
-      "keydown",
-      (e) => {
-        if (e.key === "Escape") {
-          timers.forEach(clearTimeout);
-          finish(el);
-        }
-      },
-      { once: true },
-    );
+    /* Bound for the whole life of the overlay and removed by finish(). The
+       previous `{ once: true }` was consumed by the first keydown of *any*
+       kind, so a single Tab press silently disabled the Escape-to-skip
+       shortcut this component advertises. */
+    addEventListener("keydown", onKeydown);
   }
 
   document.addEventListener("astro:page-load", initOpening);

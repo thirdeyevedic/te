@@ -11,6 +11,7 @@ const description =
 
 <BaseLayout title={title} description={description} path="/event-ip/">
   <PageHero
+    image="/images/ip/index-hero.jpg"
     eyebrow="Event IP"
     title="An ecosystem of signature experiences."
     statement="Owned. Designed. Delivered by Third Eye."
@@ -41,6 +42,9 @@ const description =
       {
         eventIPs.map((ip, i) => (
           <article class="ip reveal" id={ip.id} style={`--reveal-delay: ${(i % 3) * 60}ms`}>
+            <figure class="ip__visual">
+              <img src={ip.heroImage} alt="" class="xi__media xi--fill" loading="lazy" decoding="async" />
+            </figure>
             <span class="microcopy ip__num">{String(i + 1).padStart(2, "0")}</span>
             <div>
               <h2 class="display ip__name">{ip.name}</h2>
@@ -87,6 +91,19 @@ const description =
 
   .portfolio {
     background: linear-gradient(180deg, transparent, rgba(23, 23, 23, 0.55));
+  }
+
+  .ip__visual {
+    position: relative;
+    aspect-ratio: 21 / 9;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+
+  @media (min-width: 48em) {
+    .ip__visual {
+      aspect-ratio: 16 / 5;
+    }
   }
 
   .ip {

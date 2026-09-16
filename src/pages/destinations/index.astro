@@ -11,6 +11,7 @@ const description =
 
 <BaseLayout title={title} description={description} path="/destinations/">
   <PageHero
+    image="/images/destinations/index-hero.jpg"
     eyebrow="Destinations"
     title="Different worlds. One standard."
     statement="Every destination is an experience system — landscape, culture, concept and ritual, composed together."
@@ -21,10 +22,12 @@ const description =
       {
         destinations.map((d, i) => (
           <a
-            class={`world ph reveal`}
+            class="world ph ph--imaged reveal"
             href={`/destinations/${d.slug}/`}
             style={`--reveal-delay: ${(i % 3) * 110}ms; view-transition-name: dest-${d.slug}`}
           >
+            <img src={d.cardImage} alt="" class="xi__media xi--fill" loading="lazy" decoding="async" />
+            <span class="ph__scrim" aria-hidden="true" />
             <span class="microcopy">{d.region}</span>
             <h2 class="display world__name">{d.name}</h2>
             <p class="statement world__tagline">{d.tagline}</p>

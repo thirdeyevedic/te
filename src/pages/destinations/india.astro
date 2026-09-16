@@ -9,14 +9,14 @@ const title = "India Destination Weddings — Seven Worlds, One Country | Third 
 const description =
   "India destination weddings by Third Eye Events across seven master worlds — royal heritage palaces, desert dunes, forest retreats, coastlines, mountains, spiritual centres and metro luxury.";
 
+/* Only worlds with a real destination page behind them get a link. The four
+   omitted keys previously pointed at /destinations/india/ — this page — so they
+   rendered as self-referencing no-ops. Omitting them makes the template below
+   fall back to a plain <span>, which is honest: there is no page to visit. */
 const categoryHref: Record<string, string> = {
   "royal-heritage": "/destinations/rajasthan/",
   "desert-offbeat": "/destinations/rajasthan/",
   "nature-forest": "/destinations/rajasthan/",
-  "beach-coastal": "/destinations/india/",
-  "mountains-hills": "/destinations/india/",
-  "spiritual-vaidik": "/destinations/india/",
-  "metro-luxury": "/destinations/india/",
 };
 
 const structuredData = [
@@ -34,6 +34,7 @@ const structuredData = [
 
 <BaseLayout title={title} description={description} path="/destinations/india/" structuredData={structuredData}>
   <PageHero
+    image="/images/destinations/india-hero.jpg"
     eyebrow="Destinations · India"
     title="One country. Seven worlds."
     statement="India is not one destination — it is an architecture of worlds. Each master category carries its own climate, culture and ceremony logic."
@@ -43,15 +44,13 @@ const structuredData = [
     <div class="container grid cats">
       {
         indiaCategories.map((c, i) => (
-          <article class={`cat reveal ${c.destinations[0].startsWith("[CONTENT") ? "cat--pending" : ""}`} id={c.id} style={`--reveal-delay: ${(i % 3) * 100}ms`}>
+          <article class="cat reveal" id={c.id} style={`--reveal-delay: ${(i % 3) * 100}ms`}>
             <span class="microcopy">World {String(i + 1).padStart(2, "0")}</span>
             <h2 class="display cat__name">{c.name}</h2>
             <p class="text-muted cat__essence">{c.essence}</p>
             <p class="cat__list">
               {c.destinations.map((d) =>
-                d === "[CONTENT REQUIRED]" ? (
-                  <span>In curation</span>
-                ) : categoryHref[c.id] ? (
+                categoryHref[c.id] ? (
                   <a href={`${categoryHref[c.id]}`}>{d}</a>
                 ) : (
                   <span>{d}</span>
@@ -100,9 +99,6 @@ const structuredData = [
     }
   }
 
-  .cat--pending {
-    opacity: 0.6;
-  }
 
   .cat__name {
     font-size: clamp(1.7rem, 2.8vw, 2.3rem);

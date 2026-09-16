@@ -27,7 +27,14 @@ const related = signatureEntries.filter((e) => e.slug !== entry.slug).slice(0, 3
   <section class="section">
     <div class="container seq-head">
       <p class="statement measure reveal">{entry.descriptor}</p>
-      <!-- [CONTENT REQUIRED] Cinematic sequence film/stills -->
+      {
+        entry.cardImage && (
+          <figure class="seq-head__visual ph ph--imaged">
+            <img src={entry.cardImage} alt="" class="xi__media xi--fill" loading="lazy" decoding="async" />
+            <span class="ph__scrim" aria-hidden="true" />
+          </figure>
+        )
+      }
     </div>
     <ol class="container seq" role="list" style="list-style:none">
       {
@@ -83,6 +90,21 @@ const related = signatureEntries.filter((e) => e.slug !== entry.slug).slice(0, 3
   <style>
     .seq-head {
       margin-bottom: clamp(3rem, 7vw, 5rem);
+      display: grid;
+      gap: clamp(2rem, 5vw, 4rem);
+    }
+
+    @media (min-width: 64em) {
+      .seq-head {
+        grid-template-columns: 1.4fr 1fr;
+        align-items: center;
+      }
+    }
+
+    .seq-head__visual {
+      position: relative;
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
     }
 
     .seq {

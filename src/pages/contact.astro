@@ -20,6 +20,7 @@ const eventTypes = [
 
 <BaseLayout title={title} description={description} path="/contact/">
   <PageHero
+    image="/images/contact-hero.jpg"
     eyebrow="Contact"
     title="Every celebration has a beginning."
     statement="Let yours have meaning. Tell us what you're envisioning — we'll listen before we propose."
@@ -182,7 +183,11 @@ const eventTypes = [
 </style>
 
 <script>
+  /* Keys must cover every `error` value /api/enquiry can return — an unmapped
+     key silently falls back to the network message, which misdescribes the
+     problem. The server returns: invalid_form, validation, turnstile, storage. */
   const messages: Record<string, string> = {
+    invalid_form: "That submission didn't arrive intact. Kindly send it once more.",
     validation: "Please check your name and email — something needs correcting.",
     turnstile: "Verification failed. Please try once more.",
     storage: "Your enquiry could not be saved. Kindly write to us directly instead.",
@@ -243,5 +248,29 @@ const eventTypes = [
     });
   }
 
+  /* No-JS fallback: /api/enquiry answers a native form post with a 303 to
+     ?sent=1 (or ?error=<key>) rather than raw JSON. This surfaces that result,
+     so a visitor without JavaScript still sees a confirmation instead of a
+     blank page reading {"ok":true}. */
+  function initResult() {
+    const status = document.querySelector<HTMLElement>(".form-status");
+    if (!status) return;
+
+    const params = new URLSearchParams(location.search);
+    if (!params.has("sent") && !params.has("error")) return;
+
+    if (params.has("sent")) {
+      status.textContent = "Received. We will reach out personally.";
+    } else {
+      const key = params.get("error") ?? "network";
+      status.classList.add("is-error");
+      status.textContent = `${messages[key] ?? messages.network} · ${mailto}`;
+    }
+
+    /* Drop the query string so a refresh doesn't re-announce a stale result. */
+    history.replaceState(null, "", location.pathname);
+  }
+
   document.addEventListener("astro:page-load", initForm);
+  document.addEventListener("astro:page-load", initResult);
 </script>

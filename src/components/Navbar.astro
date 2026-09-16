@@ -1,4 +1,6 @@
 ---
+import { destinations } from "../data/destinations";
+
 interface Props {
   solid?: boolean;
 }
@@ -12,27 +14,63 @@ interface NavLink {
 }
 
 interface MenuItem {
+  /** Stable id — never derive ids from the visible label. */
+  id: string;
   label: string;
+  /** Section index page. Reachable from the panel's overview link. */
   href: string;
+  overview: string;
   intro: string;
   links: NavLink[];
 }
 
 const menu: MenuItem[] = [
   {
+    id: "weddings",
     label: "Weddings",
     href: "/weddings/",
+    overview: "All weddings",
     intro: "Where celebration becomes experience.",
     links: [
       { label: "Vaidik Weddings", href: "/weddings/vaidik/", note: "Sacred. Pure. Conscious." },
-      { label: "Destination Weddings", href: "/weddings/destination/", note: "Different destinations. Different worlds." },
-      { label: "Wedding Concepts", href: "/weddings/concepts/", note: "Locations are common. Concepts create emotion." },
-      { label: "Signature Entries", href: "/weddings/experiences/", note: "Moments that define the wedding before it begins." },
+      {
+        label: "Destination Weddings",
+        href: "/weddings/destination/",
+        note: "Different destinations. Different worlds.",
+      },
+      {
+        label: "Wedding Concepts",
+        href: "/weddings/concepts/",
+        note: "Locations are common. Concepts create emotion.",
+      },
+      {
+        label: "Signature Entries",
+        href: "/weddings/experiences/",
+        note: "Moments that define the wedding before it begins.",
+      },
     ],
   },
   {
+    id: "destinations",
+    label: "Destinations",
+    href: "/destinations/",
+    overview: "All destinations",
+    intro: "Different destinations. Different worlds.",
+    links: [
+      { label: "India", href: "/destinations/india/", note: "One country. Seven worlds." },
+      // Single source of truth — see src/data/destinations.ts
+      ...destinations.map((d) => ({
+        label: d.name,
+        href: `/destinations/${d.slug}/`,
+        note: d.region,
+      })),
+    ],
+  },
+  {
+    id: "event-ip",
     label: "Event IP",
     href: "/event-ip/",
+    overview: "All event IP",
     intro: "An ecosystem of signature experiences — owned, designed and delivered by Third Eye.",
     links: [
       { label: "Exhibitions & Expos", href: "/event-ip/exhibitions/" },
@@ -47,8 +85,10 @@ const menu: MenuItem[] = [
     ],
   },
   {
+    id: "production",
     label: "Production",
     href: "/production/",
+    overview: "All production",
     intro: "Behind every frame — structured, managed, delivered.",
     links: [
       { label: "Feature Films", href: "/production/feature-films/" },
@@ -60,8 +100,10 @@ const menu: MenuItem[] = [
     ],
   },
   {
+    id: "about",
     label: "About",
     href: "/about/",
+    overview: "About Third Eye",
     intro: "Not built on events. Built on vision.",
     links: [
       { label: "Our Story", href: "/about/story/" },
@@ -71,13 +113,23 @@ const menu: MenuItem[] = [
     ],
   },
 ];
+
+const path = Astro.url.pathname;
+
+/** True when the current page lives inside a section. */
+function isCurrent(href: string): boolean {
+  return path === href || path.startsWith(href);
+}
+
+/** Columns for a panel's link grid — keeps rows even instead of ragged. */
+function columnsFor(count: number): number {
+  return count >= 8 ? 3 : 2;
+}
 ---
 
 <header class="nav" data-solid={solid ? "" : undefined}>
   <div class="nav__inner container">
-    <a class="nav__brand display" href="/" aria-label="Third Eye Events — home">
-      Third&nbsp;Eye
-    </a>
+    <a class="nav__brand display" href="/" aria-label="Third Eye Events — home">Third&nbsp;Eye</a>
 
     <nav class="nav__desktop" aria-label="Primary">
       <ul role="list">
@@ -86,8 +138,11 @@ const menu: MenuItem[] = [
             <li class="nav__item">
               <button
                 class="nav__link"
+                id={`nav-btn-${item.id}`}
+                type="button"
                 aria-expanded="false"
-                aria-controls={`menu-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
+                aria-controls={`nav-panel-${item.id}`}
+                aria-current={isCurrent(item.href) ? "true" : undefined}
               >
                 {item.label}
               </button>
@@ -99,21 +154,49 @@ const menu: MenuItem[] = [
 
     <a class="btn btn--ghost nav__cta" href="/contact/">Start a Conversation</a>
 
-    <button class="nav__toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+    <button
+      class="nav__toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Open menu"
+    >
       <span></span><span></span>
     </button>
   </div>
 
-  <!-- Desktop mega panels -->
+  <!-- Desktop mega panels. `hidden` is the single source of truth for closed:
+       the stylesheet never overrides it, so closed panels stay out of the tab
+       order and out of the accessibility tree. -->
   {
     menu.map((item) => (
-      <div class="mega" id={`menu-${item.label.toLowerCase().replace(/\s+/g, "-")}`} hidden>
+      <div
+        class="mega"
+        id={`nav-panel-${item.id}`}
+        role="group"
+        aria-labelledby={`nav-btn-${item.id}`}
+        hidden
+        inert
+      >
         <div class="container mega__grid">
-          <p class="mega__intro statement">{item.intro}</p>
-          <ul role="list" class="mega__links">
+          <div class="mega__aside">
+            <p class="mega__intro statement">{item.intro}</p>
+            <a class="link-line mega__overview" href={item.href} aria-current={isCurrent(item.href) ? "page" : undefined}>
+              {item.overview}
+            </a>
+          </div>
+          <ul
+            role="list"
+            class="mega__links"
+            style={`--mega-cols: ${columnsFor(item.links.length)}`}
+          >
             {item.links.map((link) => (
               <li>
-                <a class="mega__link" href={link.href}>
+                <a
+                  class="mega__link"
+                  href={link.href}
+                  aria-current={isCurrent(link.href) ? "page" : undefined}
+                >
                   <span>{link.label}</span>
                   {link.note && <small>{link.note}</small>}
                 </a>
@@ -126,29 +209,42 @@ const menu: MenuItem[] = [
   }
 </header>
 
+<!-- Scrim sits under the panels, over the page. Gives the mega a clear click-out target. -->
+<div class="nav__scrim" aria-hidden="true"></div>
+
 <!-- Mobile full-screen menu -->
-<div class="mobile-menu" id="mobile-menu" hidden aria-hidden="true" inert>
+<div class="mobile-menu" id="mobile-menu" hidden inert aria-hidden="true" role="dialog" aria-label="Site menu">
   <nav aria-label="Mobile" class="mobile-menu__nav container">
-    <a class="mobile-menu__home display" href="/">Third Eye</a>
     {
       menu.map((item) => (
         <section class="mobile-menu__group">
           <h2>
-            <button class="mobile-menu__trigger" aria-expanded="false">
-              {item.label}
-              <span aria-hidden="true">+</span>
+            <button
+              class="mobile-menu__trigger"
+              type="button"
+              aria-expanded="false"
+              aria-controls={`mob-panel-${item.id}`}
+            >
+              <span class="mobile-menu__label">{item.label}</span>
+              <span class="mobile-menu__sign" aria-hidden="true" />
             </button>
           </h2>
-          <ul role="list" hidden>
-            <li>
-              <a href={item.href}>Overview</a>
-            </li>
-            {item.links.map((link) => (
+          <div class="mobile-menu__panel" id={`mob-panel-${item.id}`}>
+            <ul role="list">
               <li>
-                <a href={link.href}>{link.label}</a>
+                <a href={item.href} aria-current={path === item.href ? "page" : undefined}>
+                  {item.overview}
+                </a>
               </li>
-            ))}
-          </ul>
+              {item.links.map((link) => (
+                <li>
+                  <a href={link.href} aria-current={isCurrent(link.href) ? "page" : undefined}>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </section>
       ))
     }
@@ -163,18 +259,20 @@ const menu: MenuItem[] = [
     inset-inline: 0;
     top: 0;
     z-index: 100;
+    /* Compensates the scrollbar that disappears while the mobile menu locks
+       the page, so the header does not shift horizontally. */
+    padding-right: var(--scrollbar-comp, 0px);
     transition:
       background-color var(--dur-standard) ease,
-      backdrop-filter var(--dur-standard) ease,
-      translate var(--dur-standard) var(--ease-out-expo),
-      border-color var(--dur-standard) ease;
+      border-color var(--dur-standard) ease,
+      translate var(--dur-standard) var(--ease-out-expo);
     border-bottom: 1px solid transparent;
   }
 
   .nav__inner {
     display: flex;
     align-items: center;
-    gap: clamp(1.5rem, 3vw, 3rem);
+    gap: clamp(1.25rem, 2.5vw, 2.5rem);
     height: var(--nav-h);
   }
 
@@ -196,17 +294,31 @@ const menu: MenuItem[] = [
     color: var(--ink);
   }
 
+  /* ---------- Desktop nav ----------
+     The items stretch to the full header height so the pointer never crosses
+     dead space on its way from a label down into its panel. */
   .nav__desktop {
     margin-inline-start: auto;
+    align-self: stretch;
+    display: flex;
+    align-items: stretch;
   }
 
   .nav__desktop ul {
     display: flex;
-    gap: clamp(1.25rem, 2.5vw, 2.75rem);
+    align-items: stretch;
+    gap: clamp(0.9rem, 1.6vw, 2.25rem);
+    height: 100%;
+  }
+
+  .nav__item {
+    display: flex;
   }
 
   .nav__link {
     position: relative;
+    display: inline-flex;
+    align-items: center;
     padding-block: 0.6em;
     font-size: var(--text-label);
     font-weight: 600;
@@ -230,12 +342,14 @@ const menu: MenuItem[] = [
   }
 
   .nav__link:hover,
-  .nav__link[aria-expanded="true"] {
+  .nav__link[aria-expanded="true"],
+  .nav__link[aria-current="true"] {
     color: var(--ink);
   }
 
   .nav__link:hover::after,
-  .nav__link[aria-expanded="true"]::after {
+  .nav__link[aria-expanded="true"]::after,
+  .nav__link[aria-current="true"]::after {
     scale: 1 1;
   }
 
@@ -243,33 +357,65 @@ const menu: MenuItem[] = [
     white-space: nowrap;
   }
 
-  /* ---------- Mega ---------- */
+  /* ---------- Scrim ---------- */
+  .nav__scrim {
+    position: fixed;
+    inset: var(--nav-h) 0 0 0;
+    z-index: 99;
+    background: rgba(10, 10, 10, 0.55);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur-standard) ease;
+  }
+
+  .nav__scrim.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ---------- Mega panels ----------
+     `hidden` is authoritative: nothing here sets `display`, so a closed panel
+     is display:none and cannot be tabbed into. `visibility` is transitioned
+     with a delay so the fade-out still plays. */
   .mega {
     position: absolute;
     inset-inline: 0;
     top: 100%;
-    background: rgba(12, 12, 12, 0.94);
+    background: rgba(12, 12, 12, 0.96);
     -webkit-backdrop-filter: blur(18px);
     backdrop-filter: blur(18px);
     border-bottom: 1px solid var(--line);
     opacity: 0;
+    visibility: hidden;
     translate: 0 -0.6rem;
     transition:
-      opacity var(--dur-standard) ease,
-      translate var(--dur-standard) var(--ease-out-expo);
+      opacity 240ms ease,
+      translate 420ms var(--ease-out-expo),
+      visibility 0s linear 300ms;
   }
 
   .mega.is-open {
     opacity: 1;
+    visibility: visible;
     translate: 0 0;
-    z-index: 1;
+    transition:
+      opacity 240ms ease,
+      translate 420ms var(--ease-out-expo),
+      visibility 0s linear 0s;
   }
 
   .mega__grid {
     display: grid;
-    grid-template-columns: minmax(16rem, 1fr) 2fr;
+    grid-template-columns: minmax(15rem, 1fr) 2.2fr;
     gap: clamp(2rem, 5vw, 6rem);
     padding-block: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .mega__aside {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.75rem;
   }
 
   .mega__intro {
@@ -277,9 +423,13 @@ const menu: MenuItem[] = [
     font-size: 1.15rem;
   }
 
+  .mega__overview {
+    color: var(--color-gold);
+  }
+
   .mega__links {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--mega-cols, 2), minmax(0, 1fr));
     gap: 0.35rem 3rem;
     align-content: start;
   }
@@ -304,7 +454,8 @@ const menu: MenuItem[] = [
     line-height: 1.4;
   }
 
-  .mega__link:hover span {
+  .mega__link:hover span,
+  .mega__link[aria-current="page"] span {
     color: var(--color-gold);
   }
 
@@ -314,7 +465,7 @@ const menu: MenuItem[] = [
     display: none;
   }
 
-  @media (max-width: 64em) {
+  @media (max-width: 67.99em) {
     .nav__desktop,
     .nav__cta {
       display: none;
@@ -348,33 +499,40 @@ const menu: MenuItem[] = [
       translate: 0 -4.25px;
     }
 
-    .mobile-menu {
+    /* `:not([hidden])` keeps the hidden attribute in charge — the overlay is
+       display:none when closed rather than an invisible focusable layer. */
+    .mobile-menu:not([hidden]) {
       display: block;
+    }
+
+    .mobile-menu {
       position: fixed;
       inset: 0;
       z-index: 90;
       overflow-y: auto;
+      overscroll-behavior: contain;
+      padding-right: var(--scrollbar-comp, 0px);
       background: var(--color-ink);
       opacity: 0;
-      pointer-events: none;
-      transition: opacity var(--dur-standard) ease;
+      visibility: hidden;
+      transition:
+        opacity 320ms ease,
+        visibility 0s linear 340ms;
     }
 
     .mobile-menu.is-open {
       opacity: 1;
-      pointer-events: auto;
+      visibility: visible;
+      transition:
+        opacity 320ms ease,
+        visibility 0s linear 0s;
     }
 
     .mobile-menu__nav {
       display: flex;
       flex-direction: column;
-      padding-block: calc(var(--nav-h) + 2rem) 4rem;
+      padding-block: calc(var(--nav-h) + 1rem) 3rem;
       min-height: 100dvh;
-    }
-
-    .mobile-menu__home {
-      font-size: 2rem;
-      margin-bottom: 2.5rem;
     }
 
     .mobile-menu__group {
@@ -389,30 +547,91 @@ const menu: MenuItem[] = [
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 1rem;
       width: 100%;
       padding-block: 1.1rem;
       font-family: var(--font-display);
       font-size: 1.7rem;
       font-weight: 340;
       text-align: left;
+      color: var(--ink);
     }
 
-    .mobile-menu__trigger span {
-      font-family: var(--font-body);
-      font-weight: 300;
+    .mobile-menu__sign {
+      position: relative;
+      flex: none;
+      width: 15px;
+      height: 15px;
       color: var(--color-gold);
-      transition: rotate var(--dur-standard) var(--ease-out-expo);
     }
 
-    .mobile-menu__trigger[aria-expanded="true"] span {
-      rotate: 45deg;
+    .mobile-menu__sign::before,
+    .mobile-menu__sign::after {
+      content: "";
+      position: absolute;
+      background: currentColor;
     }
 
-    .mobile-menu__group ul li a {
+    .mobile-menu__sign::before {
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 1px;
+    }
+
+    .mobile-menu__sign::after {
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 1px;
+      transition: scale var(--dur-standard) var(--ease-out-expo);
+    }
+
+    .mobile-menu__trigger[aria-expanded="true"] .mobile-menu__sign::after {
+      scale: 1 0;
+    }
+
+    /* Accordion without the hidden attribute: a collapsed panel is clipped to
+       zero height AND visibility:hidden, so its links are never focusable. */
+    .mobile-menu__panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      visibility: hidden;
+      transition:
+        grid-template-rows 420ms var(--ease-out-expo),
+        visibility 0s linear 340ms;
+    }
+
+    .mobile-menu__panel.is-open {
+      grid-template-rows: 1fr;
+      visibility: visible;
+      transition:
+        grid-template-rows 420ms var(--ease-out-expo),
+        visibility 0s linear 0s;
+    }
+
+    /* The panel's own box must be zero-height when collapsed, so the bottom
+       spacing lives on the last link rather than on the clipped list. */
+    .mobile-menu__panel > ul {
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .mobile-menu__panel ul li:last-child a {
+      padding-bottom: 1.3rem;
+    }
+
+    .mobile-menu__panel ul li a {
       display: block;
       padding-block: 0.55rem;
       color: var(--ink-muted);
       font-size: 1rem;
+      transition: color var(--dur-micro) ease;
+    }
+
+    .mobile-menu__panel ul li a:hover,
+    .mobile-menu__panel ul li a[aria-current="page"] {
+      color: var(--color-gold);
     }
 
     .mobile-menu__cta {
@@ -422,171 +641,404 @@ const menu: MenuItem[] = [
     }
   }
 
-  @media (min-width: 64.0625em) {
-    .mega[hidden] {
-      display: block;
-      pointer-events: none;
-    }
+  /* While the mobile overlay is open the header must read as a solid bar. */
+  :global(html.is-menu-open) .nav {
+    background: rgba(10, 10, 10, 0.94);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border-bottom-color: var(--line);
   }
 </style>
 
 <script>
-  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* window.setTimeout returns a number in the DOM lib; the ambient workers
+     types redefine the global setTimeout, so pin the type explicitly. */
+  type Timer = number;
 
-  /* ── Window-level state (attached once, survives navigations) ── */
-  let lastY = window.scrollY;
-  let headerEl = null;
-  let closeTimer;
-  let closeMobileTimer: ReturnType<typeof setTimeout> | undefined;
+  const desktopMq = matchMedia("(min-width: 68em)");
+  const motionMq = matchMedia("(prefers-reduced-motion: reduce)");
+  const hoverCapable = matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+  let reducedMotion = motionMq.matches;
+  motionMq.addEventListener("change", (e) => (reducedMotion = e.matches));
+
+  /* ── Window-level state — attached once, survives view transitions ── */
+  let headerEl: HTMLElement | null = null;
+  let openBtn: HTMLButtonElement | null = null;
+  let openedByHover = false;
+  let hoverCloseTimer: Timer | undefined;
+  let panelHideTimer: Timer | undefined;
   let mobileOpen = false;
+  let mobileHideTimer: Timer | undefined;
+  let lastY = window.scrollY;
+  let scrollQueued = false;
 
+  const INERT_SELECTORS = ["main", "footer", ".grain", "#cursor", ".skip-link"].join(",");
+
+  /* ── Header chrome ── */
   function onScroll() {
-    if (!headerEl) return;
-    const y = window.scrollY;
-    headerEl.classList.toggle("is-scrolled", y > 24);
-    if (!reducedMotion && !mobileOpen) {
-      const goingDown = y > lastY && y > 420;
-      headerEl.classList.toggle("is-hidden", goingDown);
-    }
-    lastY = y;
+    if (scrollQueued) return;
+    scrollQueued = true;
+    requestAnimationFrame(() => {
+      scrollQueued = false;
+      if (!headerEl) return;
+      const y = window.scrollY;
+      headerEl.classList.toggle("is-scrolled", y > 24);
+      // Never slide the bar away while a panel or the mobile menu is open —
+      // the panel travels with the header and would vanish mid-interaction.
+      if (!reducedMotion && !mobileOpen && !openBtn) {
+        headerEl.classList.toggle("is-hidden", y > lastY && y > 420);
+      }
+      lastY = y;
+    });
   }
   addEventListener("scroll", onScroll, { passive: true });
 
-  function closeAllMegas() {
-    document.querySelectorAll(".nav__link").forEach((t) => t.setAttribute("aria-expanded", "false"));
-    document.querySelectorAll(".mega").forEach((m) => {
-      m.classList.remove("is-open");
-      m.setAttribute("hidden", "");
-    });
+  /* ── Mega panels ── */
+  function panelOf(btn: HTMLElement | null): HTMLElement | null {
+    const id = btn?.getAttribute("aria-controls");
+    return id ? document.getElementById(id) : null;
   }
 
-  function openMegaFor(btn) {
-    clearTimeout(closeTimer);
-    document.querySelectorAll(".nav__link").forEach((t) => t.setAttribute("aria-expanded", String(t === btn)));
-    document.querySelectorAll(".mega").forEach((m) => {
-      if (m.id === btn.getAttribute("aria-controls")) {
-        m.removeAttribute("hidden");
-        requestAnimationFrame(() => m.classList.add("is-open"));
-      } else {
-        m.classList.remove("is-open");
-        m.setAttribute("hidden", "");
-      }
-    });
+  function setScrim(on: boolean) {
+    document.querySelector(".nav__scrim")?.classList.toggle("is-open", on);
   }
 
+  function syncExpanded() {
+    document
+      .querySelectorAll<HTMLElement>(".nav__link")
+      .forEach((b) => b.setAttribute("aria-expanded", String(b === openBtn)));
+  }
+
+  function openPanel(btn: HTMLButtonElement, focusEdge?: "first" | "last") {
+    if (openBtn === btn) return;
+    const panel = panelOf(btn);
+    if (!panel) return;
+
+    clearTimeout(panelHideTimer);
+    clearTimeout(hoverCloseTimer);
+
+    if (openBtn) {
+      const prev = panelOf(openBtn);
+      prev?.classList.remove("is-open");
+      prev?.setAttribute("inert", "");
+      prev?.setAttribute("hidden", "");
+    }
+
+    openBtn = btn;
+    syncExpanded();
+    panel.removeAttribute("inert");
+    panel.removeAttribute("hidden");
+    requestAnimationFrame(() => {
+      if (openBtn !== btn) return;
+      panel.classList.add("is-open");
+      // Focus only once `is-open` has made the panel visible — a
+      // visibility:hidden element cannot take focus.
+      if (!focusEdge) return;
+      const links = panel.querySelectorAll<HTMLElement>("a[href]");
+      if (links.length === 0) return;
+      links[focusEdge === "first" ? 0 : links.length - 1].focus();
+    });
+    setScrim(true);
+  }
+
+  function closePanel({ focusButton = false }: { focusButton?: boolean } = {}) {
+    const btn = openBtn;
+    if (!btn) return;
+    const panel = panelOf(btn);
+    const hadFocus = !!panel && panel.contains(document.activeElement);
+
+    openBtn = null;
+    openedByHover = false;
+    syncExpanded();
+    setScrim(false);
+    clearTimeout(panelHideTimer);
+
+    if (panel) {
+      // `inert` takes it out of the tab order immediately, so the fade-out
+      // cannot be tabbed into; `hidden` follows once the fade has played.
+      panel.classList.remove("is-open");
+      panel.setAttribute("inert", "");
+      panelHideTimer = window.setTimeout(
+        () => panel.setAttribute("hidden", ""),
+        reducedMotion ? 0 : 320,
+      );
+    }
+    if ((focusButton || hadFocus) && btn.isConnected) btn.focus();
+  }
+
+  /* Escape only acts when something is actually open, and returns focus to
+     the control that owns it. */
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
-    closeAllMegas();
-    closeMobile();
-    document.querySelector(".nav__toggle")?.focus();
+    if (mobileOpen) {
+      e.preventDefault();
+      closeMobile({ restoreFocus: true });
+      return;
+    }
+    if (openBtn) {
+      e.preventDefault();
+      closePanel({ focusButton: true });
+    }
+  });
+
+  /* Click anywhere outside the open panel closes it. */
+  document.addEventListener("pointerdown", (e) => {
+    if (!openBtn) return;
+    const target = e.target;
+    if (!(target instanceof Node)) return;
+    if (openBtn.contains(target)) return;
+    if (panelOf(openBtn)?.contains(target)) return;
+    closePanel();
   });
 
   /* ── Mobile menu ── */
-  let mobileFocusTrap: ((e: KeyboardEvent) => void) | null = null;
-
-  function openMobile() {
-    const burger = document.querySelector(".nav__toggle");
-    const menu = document.getElementById("mobile-menu");
-    if (!burger || !menu || mobileOpen) return;
-    mobileOpen = true;
-    menu.removeAttribute("hidden");
-    menu.removeAttribute("aria-hidden");
-    menu.removeAttribute("inert");
-    requestAnimationFrame(() => menu.classList.add("is-open"));
-    burger.setAttribute("aria-expanded", "true");
-    burger.setAttribute("aria-label", "Close menu");
-    document.body.style.overflow = "hidden";
-
-    // Focus trap: cycle Tab within the mobile menu
-    mobileFocusTrap = (e: KeyboardEvent) => {
-      if (e.key !== "Tab" || !mobileOpen) return;
-      const focusable = menu.querySelectorAll<HTMLElement>(
-        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
-      );
-      if (focusable.length === 0) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (e.shiftKey) {
-        if (document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        }
-      } else {
-        if (document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
-    };
-    document.addEventListener("keydown", mobileFocusTrap);
+  function setPageInert(on: boolean) {
+    document
+      .querySelectorAll<HTMLElement>(INERT_SELECTORS)
+      .forEach((el) => el.toggleAttribute("inert", on));
   }
 
-  function closeMobile() {
-    const burger = document.querySelector(".nav__toggle");
-    const menu = document.getElementById("mobile-menu");
-    if (!burger || !menu || !mobileOpen) return;
-    mobileOpen = false;
-    menu.classList.remove("is-open");
-    closeMobileTimer = setTimeout(() => {
-      menu.setAttribute("hidden", "");
-      menu.setAttribute("aria-hidden", "true");
-      menu.setAttribute("inert", "");
-    }, reducedMotion ? 0 : 350);
-    burger.setAttribute("aria-expanded", "false");
-    burger.setAttribute("aria-label", "Open menu");
-    document.body.style.overflow = "";
-
-    if (mobileFocusTrap) {
-      document.removeEventListener("keydown", mobileFocusTrap);
-      mobileFocusTrap = null;
+  function setMenuOpenClass(on: boolean) {
+    const root = document.documentElement;
+    if (on) {
+      const scrollbar = window.innerWidth - root.clientWidth;
+      if (scrollbar > 0) root.style.setProperty("--scrollbar-comp", `${scrollbar}px`);
+      root.classList.add("is-menu-open");
+    } else {
+      root.classList.remove("is-menu-open");
+      root.style.removeProperty("--scrollbar-comp");
     }
   }
 
-  /* ── Per-page DOM bindings — fresh elements each navigation ── */
-  function initNav() {
-    headerEl = document.querySelector(".nav");
+  function openMobile() {
+    const menu = document.getElementById("mobile-menu");
+    const burger = document.querySelector<HTMLElement>(".nav__toggle");
+    if (!menu || !burger || mobileOpen) return;
+
+    clearTimeout(mobileHideTimer);
+    mobileOpen = true;
+    headerEl?.classList.remove("is-hidden");
+    menu.removeAttribute("hidden");
+    menu.removeAttribute("inert");
+    menu.removeAttribute("aria-hidden");
+    burger.setAttribute("aria-expanded", "true");
+    burger.setAttribute("aria-label", "Close menu");
+    setMenuOpenClass(true);
+    setPageInert(true);
+
+    // Focus after the overlay is actually visible, otherwise it is unfocusable.
+    requestAnimationFrame(() => {
+      if (!mobileOpen) return;
+      menu.classList.add("is-open");
+      menu
+        .querySelector<HTMLElement>("a[href], button:not([disabled])")
+        ?.focus({ preventScroll: true });
+    });
+  }
+
+  function closeMobile({ restoreFocus = false }: { restoreFocus?: boolean } = {}) {
+    const menu = document.getElementById("mobile-menu");
+    const burger = document.querySelector<HTMLElement>(".nav__toggle");
+    if (!menu || !burger || !mobileOpen) return;
+
     mobileOpen = false;
-    document.body.style.overflow = "";
-    clearTimeout(closeMobileTimer);
+    menu.classList.remove("is-open");
+    menu.setAttribute("inert", "");
+    clearTimeout(mobileHideTimer);
+    mobileHideTimer = window.setTimeout(
+      () => {
+        menu.setAttribute("hidden", "");
+        menu.setAttribute("aria-hidden", "true");
+      },
+      reducedMotion ? 0 : 340,
+    );
+    burger.setAttribute("aria-expanded", "false");
+    burger.setAttribute("aria-label", "Open menu");
+    setMenuOpenClass(false);
+    setPageInert(false);
+
+    if (restoreFocus && burger.isConnected) burger.focus();
+  }
+
+  /* Tab cycles through the controls that are actually reachable: the header
+     chrome plus the overlay. Everything behind the overlay is inert. */
+  function onTab(e: KeyboardEvent) {
+    if (e.key !== "Tab" || !mobileOpen) return;
+    const focusable = Array.from(
+      document.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ),
+    ).filter((el) => !el.closest("[inert]") && el.getClientRects().length > 0);
+    if (focusable.length === 0) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+  document.addEventListener("keydown", onTab);
+
+  /* Crossing back to desktop with the overlay open would otherwise leave the
+     page scroll-locked with no visible menu. */
+  desktopMq.addEventListener("change", (e) => {
+    if (e.matches && mobileOpen) closeMobile();
+    closePanel();
+  });
+
+  /* ── Per-page DOM bindings — fresh elements on every navigation ── */
+  function initNav() {
+    const root = document.querySelector<HTMLElement>(".nav");
+    if (!root || root.dataset.navReady) return;
+    root.dataset.navReady = "1";
+    headerEl = root;
+
+    /* Reset everything, including state that lives on <html> and therefore
+       survives the body swap. */
+    openBtn = null;
+    openedByHover = false;
+    mobileOpen = false;
+    clearTimeout(hoverCloseTimer);
+    clearTimeout(panelHideTimer);
+    clearTimeout(mobileHideTimer);
+    setScrim(false);
+    setMenuOpenClass(false);
+    setPageInert(false);
+    document.querySelectorAll<HTMLElement>(".mega").forEach((panel) => {
+      panel.classList.remove("is-open");
+      panel.setAttribute("inert", "");
+      panel.setAttribute("hidden", "");
+    });
+    document.querySelectorAll(".nav__link").forEach((b) => b.setAttribute("aria-expanded", "false"));
+
+    const menu = document.getElementById("mobile-menu");
+    menu?.classList.remove("is-open");
+    menu?.setAttribute("hidden", "");
+    menu?.setAttribute("inert", "");
+    menu?.setAttribute("aria-hidden", "true");
+    document.querySelectorAll<HTMLElement>(".mobile-menu__panel").forEach((p) => p.classList.remove("is-open"));
+    document
+      .querySelectorAll<HTMLElement>(".mobile-menu__trigger")
+      .forEach((t) => t.setAttribute("aria-expanded", "false"));
+
     onScroll();
 
-    document.querySelectorAll(".nav__link").forEach((btn) => {
-      btn.addEventListener("click", () =>
-        btn.getAttribute("aria-expanded") === "true" ? closeAllMegas() : openMegaFor(btn),
-      );
+    /* Reveal the bar if focus ever lands on it while it is slid away. */
+    root.addEventListener("focusin", () => root.classList.remove("is-hidden"));
+
+    /* Close the panel once focus leaves the header entirely (Tab past the
+       last link). */
+    root.addEventListener("focusout", (e) => {
+      if (!openBtn) return;
+      const next = e.relatedTarget;
+      if (next instanceof Node && root.contains(next)) return;
+      closePanel();
+    });
+
+    document.querySelectorAll<HTMLButtonElement>(".nav__link").forEach((btn) => {
       const item = btn.closest(".nav__item");
-      item?.addEventListener("mouseenter", () => {
-        clearTimeout(closeTimer);
-        openMegaFor(btn);
+      const panel = panelOf(btn);
+
+      btn.addEventListener("click", () => {
+        const isOpen = openBtn === btn;
+        // A hover-open followed by a click means "keep it open", not "close it".
+        if (isOpen && openedByHover) {
+          openedByHover = false;
+          return;
+        }
+        if (isOpen) closePanel();
+        else openPanel(btn);
       });
-      item?.addEventListener("mouseleave", () => {
-        closeTimer = window.setTimeout(closeAllMegas, 350);
+
+      btn.addEventListener("keydown", (e) => {
+        if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+        e.preventDefault();
+        const edge = e.key === "ArrowDown" ? "first" : "last";
+        if (openBtn === btn) {
+          const links = panel?.querySelectorAll<HTMLElement>("a[href]");
+          if (links?.length) links[edge === "first" ? 0 : links.length - 1].focus();
+          return;
+        }
+        openPanel(btn, edge);
       });
+
+      if (hoverCapable && item) {
+        item.addEventListener("mouseenter", () => {
+          clearTimeout(hoverCloseTimer);
+          if (openBtn === btn) return;
+          openPanel(btn);
+          openedByHover = true;
+        });
+        item.addEventListener("mouseleave", () => {
+          clearTimeout(hoverCloseTimer);
+          hoverCloseTimer = window.setTimeout(() => {
+            if (openedByHover) closePanel();
+          }, 220);
+        });
+      }
+
+      if (panel) {
+        panel.addEventListener("keydown", (e) => {
+          const links = Array.from(panel.querySelectorAll<HTMLElement>("a[href]"));
+          if (links.length === 0) return;
+          const i = links.indexOf(document.activeElement as HTMLElement);
+          if (e.key === "ArrowDown") {
+            e.preventDefault();
+            links[(i + 1) % links.length].focus();
+          } else if (e.key === "ArrowUp") {
+            e.preventDefault();
+            links[(i - 1 + links.length) % links.length].focus();
+          } else if (e.key === "Home") {
+            e.preventDefault();
+            links[0].focus();
+          } else if (e.key === "End") {
+            e.preventDefault();
+            links[links.length - 1].focus();
+          }
+        });
+
+        if (hoverCapable) {
+          panel.addEventListener("mouseenter", () => clearTimeout(hoverCloseTimer));
+          panel.addEventListener("mouseleave", () => {
+            clearTimeout(hoverCloseTimer);
+            hoverCloseTimer = window.setTimeout(() => {
+              if (openedByHover) closePanel();
+            }, 220);
+          });
+        }
+      }
     });
 
-    // Keep mega open when hovering the panel itself
-    document.querySelectorAll(".mega").forEach((mega) => {
-      mega.addEventListener("mouseenter", () => clearTimeout(closeTimer));
-      mega.addEventListener("mouseleave", () => {
-        closeTimer = window.setTimeout(closeAllMegas, 200);
-      });
-    });
+    document
+      .querySelector<HTMLElement>(".nav__toggle")
+      ?.addEventListener("click", () => (mobileOpen ? closeMobile({ restoreFocus: true }) : openMobile()));
 
-    document.querySelector(".nav__toggle")?.addEventListener("click", () =>
-      mobileOpen ? closeMobile() : openMobile(),
-    );
-
-    document.querySelectorAll(".mobile-menu__trigger").forEach((trigger) => {
+    document.querySelectorAll<HTMLElement>(".mobile-menu__trigger").forEach((trigger) => {
+      // The trigger lives inside an <h2>, so nextElementSibling is null here.
+      // Resolve the panel through aria-controls instead.
+      const panelId = trigger.getAttribute("aria-controls");
+      const panel = panelId ? document.getElementById(panelId) : null;
+      if (!panel) return;
       trigger.addEventListener("click", () => {
-        const panel = trigger.nextElementSibling;
-        const open = trigger.getAttribute("aria-expanded") === "true";
-        trigger.setAttribute("aria-expanded", String(!open));
-        panel?.toggleAttribute("hidden", open);
+        const expanded = trigger.getAttribute("aria-expanded") === "true";
+        trigger.setAttribute("aria-expanded", String(!expanded));
+        panel.classList.toggle("is-open", !expanded);
       });
     });
 
-    document.querySelectorAll("#mobile-menu a").forEach((a) => a.addEventListener("click", closeMobile));
+    document
+      .querySelectorAll<HTMLAnchorElement>("#mobile-menu a")
+      .forEach((a) => a.addEventListener("click", () => closeMobile()));
   }
 
   document.addEventListener("astro:page-load", initNav);
+  // The router dispatches astro:page-load after the first paint; this covers
+  // the case where it has already fired by the time this module executes.
+  // initNav is idempotent per DOM, so a double call is harmless.
+  initNav();
 </script>

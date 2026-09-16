@@ -13,6 +13,7 @@ const description =
 
 <BaseLayout title={title} description={description} path="/weddings/destination/">
   <PageHero
+    image="/images/weddings/destination-hero.jpg"
     eyebrow="Weddings · Destination"
     title="From dream destinations to divine celebrations."
     statement="Different destinations. Different worlds. We don't move your wedding — we translate it into a new landscape."
@@ -24,10 +25,12 @@ const description =
         destinations.map((d) => (
           <li class="world">
             <a
-              class="world__card ph"
+              class="world__card ph ph--imaged"
               href={`/destinations/${d.slug}/`}
               style={`view-transition-name: dest-${d.slug}`}
             >
+              <img src={d.cardImage} alt="" class="xi__media xi--fill" loading="lazy" decoding="async" />
+              <span class="ph__scrim" aria-hidden="true" />
               <span class="microcopy">{d.region} · {d.country}</span>
               <span class="display world__name">{d.name}</span>
               <span class="statement world__tagline">{d.tagline}</span>
@@ -56,12 +59,12 @@ const description =
       <div class="grid cats">
         {
           indiaCategories.map((c, i) => (
-            <article class={`cat reveal ${c.destinations[0].startsWith("[CONTENT") ? "cat--pending" : ""}`} style={`--reveal-delay: ${i * 80}ms`}>
+            <article class="cat reveal" style={`--reveal-delay: ${i * 80}ms`}>
               <h3 class="display cat__name">{c.name}</h3>
               <p class="text-muted cat__essence">{c.essence}</p>
               <p class="cat__list">
                 {c.destinations.map((d) => (
-                  <span>{d === "[CONTENT REQUIRED]" ? "In curation" : d}</span>
+                  <span>{d}</span>
                 ))}
               </p>
             </article>
@@ -136,9 +139,6 @@ const description =
       }
     }
 
-    .cat--pending {
-      opacity: 0.65;
-    }
 
     .cat__name {
       font-size: clamp(1.35rem, 2vw, 1.75rem);

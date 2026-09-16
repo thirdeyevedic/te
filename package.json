@@ -7,9 +7,15 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "check": "astro check",
     "preview": "astro preview",
     "preview:full": "npm run build && npx wrangler pages dev dist --d1 DB=third-eye-db",
+    "deploy": "npm run build && wrangler pages deploy dist --project-name=third-eye-events --branch main",
     "astro": "astro"
+  },
+  "engines": {
+    "node": ">=22.12.0",
+    "npm": ">=9.6.5"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

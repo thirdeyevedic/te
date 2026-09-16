@@ -114,7 +114,9 @@ const related = destinations.filter((x) => x.slug !== d.slug).slice(0, 3);
     <div class="container rel-grid">
       {
         related.map((r) => (
-          <a class="rel ph reveal" href={`/destinations/${r.slug}/`}>
+          <a class="rel ph ph--imaged reveal" href={`/destinations/${r.slug}/`}>
+            <img src={r.cardImage} alt="" class="xi__media xi--fill" loading="lazy" decoding="async" />
+            <span class="ph__scrim" aria-hidden="true" />
             <span class="microcopy">{r.country}</span>
             <span class="display rel__name">{r.name} →</span>
             <span class="statement rel__tag">{r.tagline}</span>

@@ -40,6 +40,7 @@ const structuredData = [
 
 <BaseLayout title={venue.seoTitle} description={venue.metaDescription} path={`/destinations/${venue.countrySlug}/${venue.slug}/`} structuredData={structuredData}>
   <PageHero
+    image={country.heroImage}
     eyebrow={`${venue.countryName} · ${country.region}`}
     title={venue.name}
     statement={venue.tagline}
@@ -88,7 +89,6 @@ const structuredData = [
             <li class="moments__item reveal" style={`--reveal-delay: ${i * 100}ms`}>
               <span class="microcopy">{String(i + 1).padStart(2, "0")}</span>
               <span class="display moments__label">{m}</span>
-              <!-- [CONTENT REQUIRED] moment imagery -->
             </li>
           ))
         }
@@ -101,14 +101,18 @@ const structuredData = [
     <div class="container rel-grid">
       {
         related.map((r) => (
-          <a class="rel ph reveal" href={`/destinations/${r.countrySlug}/${r.slug}/`}>
+          <a class="rel ph ph--imaged reveal" href={`/destinations/${r.countrySlug}/${r.slug}/`}>
+            <img src={country.cardImage} alt="" class="xi__media xi--fill" loading="lazy" decoding="async" />
+            <span class="ph__scrim" aria-hidden="true" />
             <span class="microcopy">{r.concept}</span>
             <span class="display rel__name">{r.name} →</span>
             <span class="statement rel__tag">{r.tagline}</span>
           </a>
         ))
       }
-      <a class="rel ph reveal" href={`/weddings/experiences/`} style="--reveal-delay: 300ms">
+      <a class="rel ph ph--imaged reveal" href={`/weddings/experiences/`} style="--reveal-delay: 300ms">
+        <img src="/images/weddings/experiences-hero.jpg" alt="" class="xi__media xi--fill" loading="lazy" decoding="async" />
+        <span class="ph__scrim" aria-hidden="true" />
         <span class="microcopy">Before it begins</span>
         <span class="display rel__name">Signature Entries →</span>
         <span class="statement rel__tag">Open the wedding with intention.</span>

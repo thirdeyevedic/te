@@ -1,80 +1,95 @@
-# Images Asset Checklist — Third Eye Events
+# Imagery — Third Eye Events
 
-This checklist tracks all [CONTENT REQUIRED] imagery referenced in the Google Docs briefs and codebase.
+**All imagery on this site is AI-generated.** Nothing here is a placeholder, and
+nothing here is a photograph of a real event, venue, couple or person.
 
-## Homepage
-- [ ] `/images/hero-cinematic.jpg` — Hero background. High-quality cinematic premium visual, spiritual + luxury wedding aesthetic. Replaces current placeholder. `src/pages/index.astro` heroImage.
+## How the assets are organised
 
-## Opening Sequence
-- [ ] No image asset required. Uses ॐ typography.
+```
+public/images/
+  hero-cinematic.jpg          homepage hero (1920×1080)
+  og.jpg                      social share card (1200×630)
+  founder-portrait.svg        hand-drawn "third eye" portrait plate (not AI)
+  destinations/<slug>/
+    hero.jpg                  wide crop, used by the destination page hero
+    card.jpg                  portrait crop, used by listing cards
+  signature/<entry>-hero.jpg  wide crop for the signature entry page hero
+  signature/<entry>-card.jpg  portrait crop for the homepage card
+  weddings/                   section heroes (vaidik, destination, concepts…)
+  vaidik/                     Vaidik hero + satvik dining
+  about/                      about, story, philosophy, vision, founder
+  ip/                         one hero per owned event IP
+  production/                 one hero per production service
+  contact-hero.jpg
+  CREDITS.md                  provenance for every asset
+```
 
-## Vaidik Wedding
-- [ ] `/images/vaidik/pure-hero.jpg` — PURE hero background / atmospheric visual for Vaidik section
-- [ ] `/images/vaidik/satvik-dining-copper.jpg` — Satvik dining photography: copper serveware
-- [ ] `/images/vaidik/satvik-dining-banana-leaf.jpg` — Satvik dining photography: banana leaf dining
-- [ ] `/images/vaidik/satvik-dining-seasonal.jpg` — Satvik dining photography: seasonal produce
-- [ ] `/images/vaidik/mandap-natural.jpg` — Mandap natural elements for PURE section
+Venue pages reuse their destination's hero, so 37 venue pages inherit imagery
+without 37 more files.
 
-## Signature Entries
-- [ ] `/images/signature/shiva-entry-hero.jpg` — Shiva Entry hero visual
-- [ ] `/images/signature/royal-entry-hero.jpg` — Royal Entry hero visual
-- [ ] `/images/signature/floral-entry-hero.jpg` — Floral Entry hero visual
-- [ ] `/images/signature/celestial-entry-hero.jpg` — Celestial Entry hero visual
-- [ ] `/images/signature/shiva-entry-sequence/*.jpg` — Step-by-step cinematic frames for Shiva Entry detail page
-- [ ] `/images/signature/royal-entry-sequence/*.jpg`
-- [ ] `/images/signature/floral-entry-sequence/*.jpg`
-- [ ] `/images/signature/celestial-entry-sequence/*.jpg`
+## Why generated, not sourced
 
-## About
-- [ ] `/images/about/founder-portrait-gautam-gs.jpg` — Founder portrait, high-res, cinematic
-- [ ] `/images/about/archival-dance.jpg` — Archival performance imagery
-- [ ] `/images/about/archival-mumbai.jpg` — Mumbai years imagery
-- [ ] `/images/about/team-vision.jpg` — Brand evolution visual
+The previous set came from Wikimedia Commons — licence-clean and free, but
+Commons is a keyword index rather than a visual search. The picks were routinely
+off-brand: a Giovanni Boldini oil painting as the founder hero, a 1925 Charlie
+Chaplin still for Feature Films, an anti-Putin rally in Moscow for Political &
+Public, a Canon lens product shot for Branded Content. See
+`scripts/IMAGE_RULESET.md` for the full post-mortem.
 
-## Destinations
-General pattern: `/images/destinations/{slug}/hero.jpg` and `/images/destinations/{slug}/venues/{venue}.jpg`
+Generation replaces that with art direction we control.
 
-- [ ] Maldives: Soneva Fushi, One&Only Reethi Rah, Taj Exotica, Conrad Rangali, Joali
-- [ ] Rajasthan: Udaipur, Jaisalmer, Jaipur, Ranthambore, Jodhpur
-- [ ] Switzerland: Zermatt, Interlaken, St. Moritz, Lauterbrunnen, Glacier Express
-- [ ] Kyoto: Fushimi Inari, Arashiyama, Kinkaku-ji, Gion, Philosopher's Path
-- [ ] Italy: Lake Como, Tuscany, Amalfi Coast, Rome, Venice
-- [ ] Bali: Uluwatu, Ubud, Besakih, Nusa Dua, Seminyak
-- [ ] Cruise: Anchor, Royal Caribbean, Norwegian, Celebrity, Silversea
+## How the set is made
 
-India master list:
-- Royal Heritage: Udaipur, Jaipur, Jodhpur, Jaisalmer, Pushkar, Bikaner, Neemrana, Alwar, Orchha, Gwalior, Khajuraho, Mandu
-- Beach & Coastal: Goa, Kerala, Andaman
-- Hills & Mountains: Shimla, Manali, Dharamshala, Kasauli, Mussoorie, Rishikesh, Nainital, Auli, Srinagar, Gulmarg, Pahalgam
-- Nature & Forest: Shillong, Cherrapunji, Gangtok, Kaziranga, Tawang, Coorg, Chikmagalur, Hampi, Mysore
-- Spiritual/Vaidik: Varanasi, Haridwar, Vrindavan, Ayodhya, Ujjain, Tirupati
-- Metro Luxury: Delhi, Mumbai, Bangalore, Hyderabad, Chennai, Pune
-- Desert & Offbeat: Rann of Kutch, Osian, Thar Desert
+Two scripts, run in order:
 
-## Event IP
-- [ ] `/images/ip/exhibitions-hero.jpg`
-- [ ] `/images/ip/automotive-hero.jpg`
-- [ ] `/images/ip/awards-hero.jpg`
-- [ ] `/images/ip/best-products-hero.jpg`
-- [ ] `/images/ip/sports-hero.jpg`
-- [ ] `/images/ip/fashion-hero.jpg`
-- [ ] `/images/ip/political-hero.jpg`
-- [ ] `/images/ip/devotional-hero.jpg`
-- [ ] `/images/ip/concerts-hero.jpg`
+```bash
+python scripts/cf_generate.py     # 56 prompts -> /tmp/imgwork/gen/
+python scripts/apply_generated.py # crop, resize, compress -> public/, credits
+```
 
-## Production
-- [ ] `/images/production/feature-films.jpg`
-- [ ] `/images/production/short-films.jpg`
-- [ ] `/images/production/documentaries.jpg`
-- [ ] `/images/production/youtube-digital.jpg`
-- [ ] `/images/production/branded-content.jpg`
-- [ ] `/images/production/ad-shoots.jpg`
+`cf_generate.py` calls Cloudflare Workers AI directly (`flux-2-klein-4b`) using
+the OAuth token `wrangler login` already stored. No API key, no per-image cost —
+Workers AI includes 10,000 Neurons/day free, which is roughly 60–75 images.
 
-## General
-- [ ] `/images/og.jpg` — Open Graph default. Exists.
-- [ ] `/favicon.svg` — Exists.
+Each prompt is written from the page copy it sits beside, not from a category
+label — read the docstring in `cf_generate.py` for why that distinction is the
+whole point. Every prompt shares one house style so 56 separate generations read
+as a single commissioned shoot.
 
-### Notes
-- All images should be high-resolution, consistent color grading: warm gold/ivory palette with spiritual luxury tone.
-- Use `src=undefined` fallback via ExperienceImage component for graceful degradation.
-- Add alt text for accessibility.
+Generation is resumable, and `--only <slot> [<slot>…]` regenerates specific
+frames:
+
+```bash
+python scripts/cf_generate.py --only dest-kyoto            # one hero
+python scripts/cf_generate.py --only card-dest-kyoto       # one card
+python scripts/cf_generate.py --force --only sig-shiva-entry
+```
+
+Contact sheets for visual review land in `/tmp/imgwork/gen-sheets/`.
+
+## Replacing an image
+
+Every page references these paths directly, so a commissioned photograph can be
+dropped over any file without touching code — keep the filename and the aspect
+ratio and the layout holds.
+
+Wide heroes are 16:9; listing cards are 3:4. Cards are composed for portrait
+rather than cropped from the hero, so replacing a destination means replacing
+two files.
+
+**If you commission real photography, remove the corresponding row from
+`CREDITS.md`.** That file is the disclosure record.
+
+## Disclosure
+
+The images are illustrative of the kind of work Third Eye Events does. They must
+not be presented as a record of past events. Prompts deliberately avoid
+recognisable faces: where people appear they are silhouetted, seen from behind,
+or out of focus. There is no AI-generated portrait of the founder — if a real
+founder photograph is needed, it has to be supplied.
+
+## Licensing
+
+Generated output from Workers AI is not subject to the source licences that
+governed the Commons set, so no attribution obligations attach. Provenance is
+still recorded in `CREDITS.md`.

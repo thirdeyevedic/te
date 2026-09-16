@@ -33,6 +33,7 @@ const ritualEntities = [
 
 <BaseLayout title={title} description={description} path="/weddings/vaidik/" structuredData={structuredData}>
   <PageHero
+    image="/images/weddings/vaidik-hero.jpg"
     eyebrow="Weddings · The Core"
     title="Vaidik Weddings"
     statement="Where Marriage is not an Event… but a Sacred Sanskar."
@@ -40,6 +41,15 @@ const ritualEntities = [
 
   <!-- PURE -->
   <section class="section pure atmosphere-radial" aria-labelledby="pure-title">
+    <div class="pure__bg" aria-hidden="true">
+      <img
+        src="/images/vaidik/pure-hero.jpg"
+        alt=""
+        class="xi__media xi--fill"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
     <div class="container pure__wrap">
       <div class="pure__mandala" aria-hidden="true"></div>
       <div class="pure__smoke" aria-hidden="true">
@@ -83,9 +93,29 @@ const ritualEntities = [
   <!-- SATVIK DINING -->
   <section class="section-lg dining atmosphere-radial" aria-labelledby="dining-title">
     <div class="container dining__grid">
-      <figure class="ph dining__visual reveal-mask" aria-hidden="true">
-        <!-- [CONTENT REQUIRED] Satvik dining photography: copper serveware, banana leaf, seasonal produce -->
-      </figure>
+      <div class="dining__visuals">
+        {
+          [
+            {
+              src: "/images/vaidik/satvik-dining-copper.jpg",
+              alt: "Tamra Patra — satvik fare served in hand-hammered copper vessels",
+            },
+            {
+              src: "/images/vaidik/satvik-dining-banana-leaf.jpg",
+              alt: "Banana Leaf — satvik meal served on a fresh banana leaf",
+            },
+            {
+              src: "/images/vaidik/satvik-dining-seasonal.jpg",
+              alt: "Modern Satvik — seasonal produce plated with the same discipline",
+            },
+          ].map((v) => (
+            <figure class="ph ph--imaged ph--framed dining__visual reveal-mask">
+              <img src={v.src} alt={v.alt} class="xi__media xi--fill" loading="lazy" decoding="async" />
+              <span class="ph__scrim" aria-hidden="true" />
+            </figure>
+          ))
+        }
+      </div>
       <div class="dining__copy">
         <p class="eyebrow reveal">Dining as Ritual</p>
         <h2 class="display section-title reveal" style="--reveal-delay: 120ms" id="dining-title">Satvik Dining</h2>
@@ -150,6 +180,33 @@ const ritualEntities = [
     .pure {
       text-align: center;
       overflow: hidden;
+    }
+
+    /* Photographic atmosphere behind the PURE statement. Kept low-opacity and
+       scrimmed top and bottom so the typography stays the subject — the section
+       is a statement, not a photo. */
+    .pure {
+      position: relative;
+      overflow: clip;
+    }
+
+    .pure__bg {
+      position: absolute;
+      inset: 0;
+      opacity: 0.22;
+    }
+
+    .pure__bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        var(--color-ink),
+        rgba(10, 10, 10, 0.45) 38%,
+        rgba(10, 10, 10, 0.45) 62%,
+        var(--color-ink)
+      );
     }
 
     .pure__wrap {
@@ -351,8 +408,15 @@ const ritualEntities = [
       }
     }
 
+    .dining__visuals {
+      display: grid;
+      gap: clamp(0.75rem, 1.5vw, 1.25rem);
+    }
+
+    /* Landscape, matching how the supplied dining frames are composed — a 4:5
+       crop of a 16:9 source would discard over half the frame. */
     .dining__visual {
-      aspect-ratio: 4 / 5;
+      aspect-ratio: 16 / 9;
     }
 
     .dining__copy {

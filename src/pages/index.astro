@@ -14,7 +14,7 @@ const title = "Third Eye Events — Vaidik Luxury Weddings, Experiences & Execut
 const description =
   "Third Eye Events is a multi-domain experience and execution powerhouse — Vaidik luxury weddings, destination weddings across seven worlds, owned event IP and production facilitation. You dream it. We bring it to life—with trust.";
 
-const heroImage = "/images/hero-cinematic.jpg"; // [CONTENT REQUIRED] Replace with cinematic premium visual — spiritual + luxury wedding aesthetic
+const heroImage = "/images/hero-cinematic.jpg";
 ---
 
 <BaseLayout title={title} description={description} path="/">
@@ -23,8 +23,13 @@ const heroImage = "/images/hero-cinematic.jpg"; // [CONTENT REQUIRED] Replace wi
   <!-- 02 · HERO -->
   <section class="hero" aria-label="Third Eye">
     <div class="hero__visual" aria-hidden="true">
-      <!-- [CONTENT REQUIRED] Hero background: high-quality cinematic premium visual — spiritual + luxury wedding aesthetic per doc -->
-      <ExperienceImage src={heroImage} alt="Third Eye Events spiritual luxury wedding hero" fill eager />
+      <ExperienceImage
+        src={heroImage}
+        alt="Third Eye Events spiritual luxury wedding hero"
+        fill
+        eager
+        position="50% 74%"
+      />
     </div>
     <div class="hero__veil" aria-hidden="true"></div>
     <div class="hero__content container">
@@ -66,19 +71,28 @@ const heroImage = "/images/hero-cinematic.jpg"; // [CONTENT REQUIRED] Replace wi
             href: "/weddings/vaidik/",
             name: "Vaidik",
             line: "Sacred. Pure. Conscious.",
+            image: "/images/weddings/vaidik-hero.jpg",
           },
           {
             href: "/weddings/destination/",
             name: "Destination",
             line: "Different locations. Different worlds.",
+            image: "/images/weddings/destination-hero.jpg",
           },
           {
             href: "/weddings/concepts/",
             name: "Concepts",
             line: "Experiences designed around meaning.",
+            image: "/images/weddings/concepts-hero.jpg",
           },
         ].map((p, i) => (
-          <a class={`pathway ph reveal`} style={`--reveal-delay: ${i * 120}ms`} href={p.href}>
+          <a
+            class="pathway ph ph--imaged reveal"
+            style={`--reveal-delay: ${i * 120}ms`}
+            href={p.href}
+          >
+            <ExperienceImage src={p.image} alt="" fill />
+            <span class="ph__scrim" aria-hidden="true" />
             <span class="pathway__num microcopy">0{i + 1}</span>
             <span class="pathway__name display">{p.name}</span>
             <span class="pathway__line">{p.line}</span>
@@ -131,10 +145,12 @@ const heroImage = "/images/hero-cinematic.jpg"; // [CONTENT REQUIRED] Replace wi
         destinations.map((d, i) => (
           <li class="dcard">
             <a
-              class="dcard__inner ph"
+              class="dcard__inner ph ph--imaged"
               href={`/destinations/${d.slug}/`}
               style={`--reveal-delay: ${i * 60}ms; view-transition-name: dest-${d.slug}`}
             >
+              <ExperienceImage src={d.cardImage} alt="" fill />
+              <span class="ph__scrim" aria-hidden="true" />
               <span class="dcard__region microcopy">{d.region} · {d.country}</span>
               <span class="dcard__name display">{d.name}</span>
               <span class="dcard__concept">
@@ -162,10 +178,12 @@ const heroImage = "/images/hero-cinematic.jpg"; // [CONTENT REQUIRED] Replace wi
       {
         signatureEntries.map((e, i) => (
           <a
-            class={`sig-card ph reveal`}
+            class="sig-card ph ph--imaged reveal"
             href={`/weddings/experiences/${e.slug}/`}
             style={`--reveal-delay: ${i * 110}ms; view-transition-name: entry-${e.slug}`}
           >
+            <ExperienceImage src={e.cardImage} alt="" fill />
+            <span class="ph__scrim" aria-hidden="true" />
             <span class="microcopy">{e.category}</span>
             <span class="sig-card__title display">{e.title}</span>
             <span class="statement sig-card__line">{e.line}</span>
@@ -239,8 +257,16 @@ const heroImage = "/images/hero-cinematic.jpg"; // [CONTENT REQUIRED] Replace wi
   <!-- 10 · FOUNDER -->
   <section class="section founder atmosphere-radial" aria-labelledby="founder-title">
     <div class="container founder__grid">
-      <figure class="founder__portrait ph reveal" aria-hidden="true">
-        <!-- [CONTENT REQUIRED] Founder portrait: Gautam GS -->
+      <figure class="founder__portrait ph ph--imaged reveal">
+        <img
+          src="/images/founder-portrait.jpg"
+          alt="Third Eye — Gautam GS, Director, Choreographer, Designer and Visionary"
+          class="xi__media xi--fill"
+          loading="lazy"
+          decoding="async"
+          width="800"
+          height="1000"
+        />
       </figure>
       <div>
         <p class="eyebrow reveal">Founder</p>

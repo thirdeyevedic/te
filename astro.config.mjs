@@ -1,6 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import sitemap from '@astrojs/sitemap';
+import sitemap, { ChangeFreqEnum } from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://thirdeyeevents.com',
@@ -8,26 +8,29 @@ export default defineConfig({
   integrations: [
     sitemap({
       filter: (page) => !/\/(privacy|terms|sitemap)\/?$/.test(page),
+      /* `SitemapItem['changefreq']` is the `EnumChangefreq` enum, not a string
+         union — `'monthly'` and friends are rejected by the checker even though
+         they are exactly what gets emitted. Use the members the integration
+         re-exports instead of casting. */
       serialize(item) {
         const url = item.url;
         let priority = 0.7;
-        /** @type {'daily'|'weekly'|'monthly'|'yearly'} */
-        let changefreq = 'monthly';
+        let changefreq = ChangeFreqEnum.MONTHLY;
 
         if (url === 'https://thirdeyeevents.com/') {
           priority = 1.0;
-          changefreq = 'weekly';
+          changefreq = ChangeFreqEnum.WEEKLY;
         } else if (
           /^https:\/\/thirdeyeevents\.com\/(weddings|destinations|event-ip|production|about)\/?$/.test(url)
         ) {
           priority = 0.9;
-          changefreq = 'monthly';
+          changefreq = ChangeFreqEnum.MONTHLY;
         } else if (/^https:\/\/thirdeyeevents\.com\/contact\/?$/.test(url)) {
           priority = 0.8;
-          changefreq = 'monthly';
+          changefreq = ChangeFreqEnum.MONTHLY;
         } else if (url.includes('/weddings/experiences/')) {
           priority = 0.6;
-          changefreq = 'yearly';
+          changefreq = ChangeFreqEnum.YEARLY;
         }
 
         return { ...item, changefreq, priority, lastmod: new Date().toISOString().slice(0, 10) };

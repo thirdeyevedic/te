@@ -1,6 +1,12 @@
 ---
 import "@fontsource-variable/fraunces";
 import "@fontsource-variable/manrope";
+// Resolved by the bundler so the preload href matches the hashed asset the
+// stylesheet actually loads. Both families are *variable*, so a single file
+// per family covers every weight — preloading 400 and 600 separately was
+// redundant as well as pointing at filenames that never existed.
+import frauncesLatin from "@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2";
+import manropeLatin from "@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2";
 import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 import Navbar from "../components/Navbar.astro";
@@ -95,98 +101,25 @@ const webPage = {
     <meta name="twitter:card" content="summary_large_image" />
 
     <!-- Font preloads for performance -->
-    <link rel="preload" href="/@fontsource-variable/fraunces/files/fraunces-latin-wght-400.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/@fontsource-variable/fraunces/files/fraunces-latin-wght-600.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/@fontsource-variable/manrope/files/manrope-latin-wght-400.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/@fontsource-variable/manrope/files/manrope-latin-wght-600.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href={frauncesLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={manropeLatin} as="font" type="font/woff2" crossorigin />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <ClientRouter />
 
-    <script type="application/ld+json" set:html={JSON.stringify(organization)} />
-    <script type="application/ld+json" set:html={JSON.stringify(website)} />
-    <script type="application/ld+json" set:html={JSON.stringify(webPage)} />
-    {structuredData.map((block) => <script type="application/ld+json" set:html={JSON.stringify(block)} />)}
+    {/* JSON-LD is data, not a script to bundle or process — `is:inline` says so
+        explicitly instead of leaving Astro to infer it from the attributes. */}
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(organization)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(website)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(webPage)} />
+    {structuredData.map((block) => <script is:inline type="application/ld+json" set:html={JSON.stringify(block)} />)}
 
 <script is:inline>
        document.documentElement.dataset.nav = "overlay";
        if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
          document.documentElement.classList.add("reduced-motion");
        }
-     </script>
-     
-     <!-- Analytics Foundation -->
-     <script is:inline>
-       // Analytics placeholder - replace with actual implementation (Google Analytics, Plausible, etc.)
-       window.trackEvent = function(eventName, properties = {}) {
-         console.log('[Analytics]', eventName, properties);
-         // In production, send to analytics service
-         // Example: gtag('event', eventName, properties);
-       };
-       
-       // Track page views
-       window.trackEvent('page_view', {
-         page: location.pathname,
-         title: document.title
-       });
-     </script>
-     
-     <!-- Error Tracking Foundation -->
-     <script is:inline>
-       // Error tracking placeholder - replace with actual implementation (Sentry, etc.)
-       window.trackError = function(error, context = {}) {
-         console.error('[Error Tracking]', error, context);
-         // In production, send to error tracking service
-         // Example: Sentry.captureException(error, { context });
-       };
-       
-       // Global error handler
-       window.addEventListener('error', function(e) {
-         window.trackError(e.error, {
-           filename: e.filename,
-           lineno: e.lineno,
-           colno: e.colno
-         });
-       });
-       
-       // Unhandled promise rejection handler
-       window.addEventListener('unhandledrejection', function(e) {
-         window.trackError(e.reason, {
-           promise: e.promise
-         });
-       });
-     </script>
-     
-     <!-- i18n Foundation -->
-     <script is:inline>
-       // Internationalization foundation - replace with actual implementation (i18next, etc.)
-       window.i18n = {
-         locale: 'en', // default locale
-         translations: {
-           en: {
-             // English translations would go here
-             'navigation.weddings': 'Weddings',
-             'navigation.event-ip': 'Event IP',
-             'navigation.production': 'Production',
-             'navigation.about': 'About',
-             'navigation.contact': 'Contact'
-           }
-           // Other locales would be added here
-         },
-         get: function(key, locale = this.locale) {
-           const keys = key.split('.');
-           let value = this.translations[locale];
-           for (const k of keys) {
-             if (value && typeof value === 'object') {
-               value = value[k];
-             } else {
-               return key; // fallback to key if not found
-             }
-           }
-           return value !== undefined && value !== null ? value : key;
-         }
-       };
      </script>
    </head>
 

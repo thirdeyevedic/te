@@ -72,6 +72,17 @@
   box-sizing: border-box;
 }
 
+/* The `hidden` attribute must always win.
+   The user-agent rule is `[hidden] { display: none }`, which any explicit
+   `display` declaration outranks — `.btn { display: inline-flex }` alone is
+   enough to leave a `hidden` element fully painted, laid out and clickable.
+   `!important` is deliberate here: it makes the attribute authoritative
+   instead of one suggestion among many, so "hidden" can be trusted as the
+   single source of truth for closed/absent UI. */
+[hidden] {
+  display: none !important;
+}
+
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
@@ -343,6 +354,18 @@ button {
   clip-path: inset(0 0 0% 0);
 }
 
+/* ---------- Scroll lock (mobile menu) ----------
+   The page behind the full-screen menu must not scroll. `--scrollbar-comp` is
+   the scrollbar width measured in JS, applied so removing the scrollbar does
+   not shift the layout sideways. */
+html.is-menu-open {
+  padding-right: var(--scrollbar-comp, 0px);
+}
+
+html.is-menu-open body {
+  overflow: hidden;
+}
+
 /* ---------- Skip link ---------- */
 .skip-link {
   position: fixed;
@@ -379,6 +402,36 @@ button {
 a:hover > .xi--fill,
 a:hover .xi--fill {
   scale: 1.045;
+}
+
+/* ---------- Photographic cards ----------
+   A `.ph` surface that carries a photograph: the image sits behind a scrim so
+   card copy keeps its contrast, exactly as it did over the gradient. */
+.ph--imaged > .xi--fill {
+  z-index: 0;
+}
+
+.ph__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 10, 0.3) 0%,
+    rgba(10, 10, 10, 0.52) 48%,
+    rgba(10, 10, 10, 0.88) 100%
+  );
+}
+
+.ph--imaged > :not(.xi--fill):not(.ph__scrim) {
+  position: relative;
+  z-index: 2;
+}
+
+/* Edge-to-edge photographic band used by section figures */
+.ph--framed {
+  border: 1px solid var(--line);
 }
 
 .sr-only {

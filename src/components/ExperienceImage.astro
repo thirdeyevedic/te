@@ -4,8 +4,8 @@
  *
  * • Real asset supplied  → optimised responsive image (astro:assets for
  *   imported metadata, native img for /public paths), lazy by default.
- * • Nothing supplied yet → atmospheric placeholder that preserves layout,
- *   carrying its [CONTENT REQUIRED] status honestly.
+ * • Nothing supplied → atmospheric gradient that preserves layout, so a
+ *   missing asset degrades quietly instead of breaking the page.
  *
  * `fill` mode absolutely-fills a positioned (.ph) parent — used inside
  * cards and heroes.
@@ -20,15 +20,31 @@ interface Props {
   eager?: boolean;
   tone?: "default" | "agni";
   class?: string;
+  /**
+   * Where the crop should centre when filling, e.g. "50% 72%".
+   * `fill` uses object-fit: cover, which centres by default — fine when the
+   * subject is mid-frame, but a photograph whose subject sits low (a skyline,
+   * a table setting) loses it to the top edge of a wide, short container.
+   */
+  position?: string;
 }
 
-const { src, alt = "", fill = false, eager = false, tone = "default", class: className } = Astro.props;
+const {
+  src,
+  alt = "",
+  fill = false,
+  eager = false,
+  tone = "default",
+  class: className,
+  position,
+} = Astro.props;
 
 const metaSrc = typeof src === "object" ? src : undefined;
 const pathSrc = typeof src === "string" ? src : undefined;
 
 const fillClass = fill ? "xi--fill" : "";
 const cls = ["xi__media", fillClass, className].filter(Boolean).join(" ");
+const style = position ? `object-position: ${position}` : undefined;
 ---
 
 {
@@ -41,12 +57,20 @@ const cls = ["xi__media", fillClass, className].filter(Boolean).join(" ");
       loading={eager ? "eager" : "lazy"}
       decoding="async"
       class={cls}
+      style={style}
     />
   ) : pathSrc ? (
-    <img src={pathSrc} alt={alt} loading={eager ? "eager" : "lazy"} decoding="async" class={cls} />
+    <img
+      src={pathSrc}
+      alt={alt}
+      loading={eager ? "eager" : "lazy"}
+      decoding="async"
+      class={cls}
+      style={style}
+    />
   ) : (
     <div class:list={["ph", "xi", `xi--${tone}`, fillClass]} role="presentation">
-      {/* [CONTENT REQUIRED] Imagery pending — atmospheric fallback */}
+      {/* Atmospheric fallback — used only when no asset is supplied */}
       {alt && <span class="sr-only">{alt}</span>}
     </div>
   )

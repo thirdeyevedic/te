@@ -1,9 +1,44 @@
 name = "third-eye-events"
 compatibility_date = "2026-08-01"
+
+# ── This is a CLOUDFLARE PAGES project ───────────────────────────────────────
+#
+# Deploy with `npm run deploy` (wrangler pages deploy dist), NOT `wrangler
+# deploy`. `wrangler deploy` is the Workers command: it ignores
+# `pages_build_output_dir` and fails with "Missing entry-point to Worker script
+# or to assets directory" because there is no `main` and no `[assets]` block.
+#
+# Do NOT add `[assets] directory = "./dist"` to make `wrangler deploy` work.
+# Workers static assets does not consume a `functions/` directory, so
+# functions/api/enquiry.ts (the contact form) would stop being routed and
+# /api/enquiry would 404. This project is built on the Pages Functions
+# file-routing convention — `npm run deploy` is the correct path.
+#
+# Dashboard settings (Pages):
+#   Build command          npm run build
+#   Build output directory dist
+#   Deploy command         BLANK — Pages has no deploy command; it uploads
+#                          `dist` itself. (A "deploy command" field belongs to
+#                          Workers Builds. Setting it here makes the build run
+#                          `npm run deploy` inside the container, where there is
+#                          no auth, and the build fails.)
+#   Node version           set env var NODE_VERSION = 22.22.2 (or rely on the
+#                          committed .node-version / .nvmrc — Astro 7 needs
+#                          >= 22.12.0 and the v3 image defaults to 22.16.0)
+# ─────────────────────────────────────────────────────────────────────────────
 pages_build_output_dir = "dist"
 
-# D1 binding — replace database_id after `wrangler d1 create third-eye-db`
+# D1 binding — `third-eye-db`, region APAC (location hint is immutable).
+# Migrations: npx wrangler d1 migrations apply third-eye-db --remote
+#
+# Keep this at the TOP LEVEL. `d1_databases` is a *non-inheritable* key: adding
+# an [env.production] block that overrides any non-inheritable key forces ALL of
+# them to be redefined there, or the deploy fails validation. Top-level applies
+# to production and preview alike.
+#
+# This file is the source of truth for bindings — the dashboard shows them
+# read-only once a deployment has used it.
 [[d1_databases]]
 binding = "DB"
 database_name = "third-eye-db"
-database_id = "SET_AT_DEPLOY"
+database_id = "6a78c555-0800-4a4f-ac5f-c14f510ab84c"

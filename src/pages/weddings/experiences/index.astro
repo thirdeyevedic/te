@@ -3,7 +3,6 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 import PageHero from "../../../components/PageHero.astro";
 import CTA from "../../../components/CTA.astro";
 import { signatureEntries } from "../../../data/signatureEntries";
-import { getImage } from 'astro:assets';
 
 const title = "Signature Entries — Moments That Define the Wedding | Third Eye Events";
 const description =
@@ -23,6 +22,7 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
 
 <BaseLayout title={title} description={description} path="/weddings/experiences/">
     <PageHero
+      image="/images/weddings/experiences-hero.jpg"
       eyebrow="Weddings · Signature Experiences"
       title="Moments that define the wedding before it begins."
       statement="An entry is not a walk. It is the first sentence of the story your guests will retell."
@@ -41,7 +41,6 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
         <div class="signature-entries__track">
           {signatureEntries.map((entry, index) => (
             <button
-              key={entry.slug}
               class="signature-entries__card sig ph reveal"
               data-entry={entry.slug}
               style={`--reveal-delay: ${index * 110}ms; view-transition-name: entry-${entry.slug}`}
@@ -103,9 +102,17 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
               <div class="entry-dialog__sound">
                 <p class="eyebrow">Sound Identity</p>
                 <p class="text-muted" id="dialog-sound"></p>
-                {/* Optional sound controls */}
-                <button class="btn btn--ghost btn--small" id="dialog-sound-toggle" aria-label="Play sound">
-                  <span id="dialog-sound-icon">▶️</span>
+                {/* Revealed by the script only when the entry actually ships an
+                    audio asset. `entriesJSON` carries no `audioUrl` until the
+                    file exists, so today this stays hidden rather than sitting
+                    there as a control that does nothing when pressed. */}
+                <button
+                  class="btn btn--ghost btn--small"
+                  id="dialog-sound-toggle"
+                  aria-label="Play sound identity"
+                  hidden
+                >
+                  <span id="dialog-sound-icon" aria-hidden="true">▶️</span>
                 </button>
               </div>
               <div class="entry-dialog__audience">
@@ -134,10 +141,111 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
     let videoElements: HTMLVideoElement[] = [];
     let audioElements: HTMLAudioElement[] = [];
 
+    /* ── Auto-advance ──────────────────────────────────────────────────────
+       The entries drift slowly sideways once the visitor has been idle for
+       AUTO_SCROLL_DELAY. WCAG 2.2.2 requires moving content to be stoppable,
+       so the drift halts while the pointer is over the track, while keyboard
+       focus is inside it, and while the tab is hidden — and never starts at
+       all under `prefers-reduced-motion`.
+
+       This state lives at module scope rather than inside initExperiences()
+       so that a drift left running by a previous page instance can always be
+       cancelled: reading a function-local `let` from the top of
+       initExperiences() would hit the temporal dead zone. */
+    let signatureTrack: HTMLElement | null = null;
+    let autoScrollTimer: number | null = null;
+    let autoScrollFrame: number | null = null;
+    let autoScrollPaused = false;
+
+    const AUTO_SCROLL_DELAY = 5000; // idle ms before the drift begins
+    const AUTO_SCROLL_SPEED = 0.5; // px per frame — deliberately slow
+
+    const prefersReducedMotion = () =>
+      matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function cancelAutoScroll() {
+      if (autoScrollTimer !== null) {
+        clearTimeout(autoScrollTimer);
+        autoScrollTimer = null;
+      }
+      if (autoScrollFrame !== null) {
+        cancelAnimationFrame(autoScrollFrame);
+        autoScrollFrame = null;
+      }
+    }
+
+    /** Suspend the stylesheet's scroll snapping and smooth behaviour while the
+        drift is actually moving.
+        `.signature-entries__track` sets `scroll-snap-type: x mandatory`, which
+        re-aligns the track to a card after *every* scroll — so a 0.5px nudge is
+        undone on the very next frame and the drift can never move at all. The
+        track also sets `scroll-behavior: smooth`, which would animate each
+        sub-pixel step instead of applying it.
+        Snapping is handed back the moment the visitor takes over (see the
+        user-input binding), so their own flicks still land card-aligned. */
+    function setDriftMode(active: boolean) {
+      if (!signatureTrack?.isConnected) return;
+      signatureTrack.style.scrollSnapType = active ? "none" : "";
+      signatureTrack.style.scrollBehavior = active ? "auto" : "";
+    }
+
+    /** Cancel the drift and hand scroll behaviour back to the stylesheet. */
+    function stopAutoScroll() {
+      cancelAutoScroll();
+      setDriftMode(false);
+    }
+
+    function autoScrollStep() {
+      autoScrollFrame = null;
+      if (autoScrollPaused || !signatureTrack) return;
+      /* Stop at the last entry instead of looping — a hard jump back to the
+         start reads as a glitch rather than as a gesture. */
+      const atEnd =
+        signatureTrack.scrollLeft + signatureTrack.clientWidth >=
+        signatureTrack.scrollWidth - 1;
+      if (atEnd) return;
+      setDriftMode(true);
+      signatureTrack.scrollLeft += AUTO_SCROLL_SPEED;
+      autoScrollFrame = requestAnimationFrame(autoScrollStep);
+    }
+
+    function startAutoScroll() {
+      cancelAutoScroll();
+      if (autoScrollPaused || !signatureTrack) return;
+      if (prefersReducedMotion()) return;
+      autoScrollTimer = window.setTimeout(autoScrollStep, AUTO_SCROLL_DELAY);
+    }
+
+    /* Pausing deliberately leaves snapping suspended: re-enabling
+       `scroll-snap-type` mid-track would yank the visitor's view sideways to
+       the nearest card the instant they hovered. Snapping comes back only on
+       real input, or when the page tears the drift down. */
+    function pauseAutoScroll() {
+      autoScrollPaused = true;
+      cancelAutoScroll();
+    }
+
+    function resumeAutoScroll() {
+      autoScrollPaused = false;
+      startAutoScroll();
+    }
+
+    /** The visitor has taken over: restore card snapping, then re-arm the idle
+        countdown so the drift can pick up again once they stop. */
+    function handBackToUser() {
+      setDriftMode(false);
+      startAutoScroll();
+    }
+
     function initExperiences() {
       cleanupFns.forEach((fn) => fn());
       cleanupFns = [];
-      
+
+      /* Drop the previous page instance's track and drift before resolving
+         the new DOM. */
+      signatureTrack = null;
+      stopAutoScroll();
+
       // Stop any playing videos and audio
       videoElements.forEach(video => {
         video.pause();
@@ -150,9 +258,6 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
         audio.currentTime = 0;
       });
       audioElements = [];
-      
-      // Pause auto-scroll when dialog opens
-      stopAutoScroll();
 
       const dialog = document.getElementById("entry-dialog") as HTMLDialogElement;
       const backdrop = document.getElementById("entry-dialog-backdrop");
@@ -160,8 +265,8 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
       const videoContainer = document.getElementById("dialog-video-container");
       const soundToggleBtn = document.getElementById("dialog-sound-toggle");
       const soundIcon = document.getElementById("dialog-sound-icon");
-      const signatureTrack = document.querySelector('.signature-entries__track');
-      
+      signatureTrack = document.querySelector<HTMLElement>(".signature-entries__track");
+
       if (!dialog || !backdrop || !closeBtn) return;
 
       function openEntry(slug: string) {
@@ -178,7 +283,15 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
 
         // Populate customization options
         const customList = document.getElementById("dialog-custom")!;
-        customList.innerHTML = entry.customizationOptions.map((opt: string) => `<li>${opt}</li>`).join("");
+        /* Built as nodes with textContent rather than innerHTML: no HTML
+           parsing, so no injection surface even if the data source changes. */
+        customList.replaceChildren(
+          ...entry.customizationOptions.map((opt: string) => {
+            const li = document.createElement("li");
+            li.textContent = opt;
+            return li;
+          }),
+        );
 
         // Set up video if available
         if (videoContainer && entry.videoUrl) {
@@ -194,69 +307,66 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
           video.playsInline = true;
           video.preload = 'auto';
           
-          video.addEventListener('loadedmetadata', () => {
+          video.addEventListener("loadedmetadata", () => {
             // Video is ready to play
-            video.play().catch(e => {
-              console.log("Autoplay prevented:", e);
-              // If autoplay fails, user can click to play
+            video.play().catch(() => {
+              // Autoplay refused — leave the element paused and unmuted so the
+              // visitor can start it themselves.
               video.muted = false;
             });
           });
           
+          videoContainer.hidden = false;
           videoContainer.appendChild(video);
           videoElements.push(video);
         } else if (videoContainer) {
-          // Show placeholder if no video
-          videoContainer.innerHTML = `
-            <div class="video-placeholder">
-              <div class="video-placeholder__icon">▶️</div>
-              <p class="video-placeholder__text">Cinematic video preview</p>
-              <p class="video-placeholder__subtitle">(Video asset would be loaded here)</p>
-            </div>
-          `;
+          /* No cinematic asset for this entry yet. Hide the slot entirely
+             rather than showing developer placeholder copy — "(Video asset
+             would be loaded here)" was rendering to visitors. The wiring above
+             still activates the moment an entry ships a `videoUrl`. */
+          videoContainer.innerHTML = "";
+          videoContainer.hidden = true;
         }
 
         // Set up audio if available
         if (soundToggleBtn && soundIcon && entry.audioUrl) {
-          // Create audio element
           const audio = new Audio(entry.audioUrl);
           audio.loop = true;
-          audio.preload = 'auto';
-          
+          audio.preload = "auto";
           audioElements.push(audio);
-          
-          // Update sound toggle functionality
+
+          soundToggleBtn.hidden = false;
           let isSoundPlaying = false;
-          function toggleSound() {
+
+          const toggleSound = () => {
             isSoundPlaying = !isSoundPlaying;
-            if (soundIcon) {
-              soundIcon.textContent = isSoundPlaying ? '⏸️' : '▶️';
+            soundIcon.textContent = isSoundPlaying ? "⏸️" : "▶️";
+            soundToggleBtn.setAttribute(
+              "aria-label",
+              isSoundPlaying ? "Pause sound identity" : "Play sound identity",
+            );
+
+            if (!isSoundPlaying) {
+              audio.pause();
+              return;
             }
-            
-            if (isSoundPlaying && audioElements.length > 0) {
-              // Play the audio
-              audioElements[audioElements.length - 1].play().catch(e => {
-                console.log("Audio play failed:", e);
-              });
-            } else if (audioElements.length > 0) {
-              // Pause the audio
-              audioElements[audioElements.length - 1].pause();
-            }
-          }
-          
-          // Replace the event listener
-          const existingListenerIndex = cleanupFns.findIndex(fn => 
-            fn.toString().includes('toggleSound') && fn.toString().includes(soundToggleBtn.outerHTML)
-          );
-          
-          if (existingListenerIndex >= 0) {
-            // Remove old listener
-            cleanupFns.splice(existingListenerIndex, 1);
-          }
-          
-          soundToggleBtn.removeEventListener('click', (() => {}) as EventListener); // Remove any existing
-          soundToggleBtn.addEventListener('click', toggleSound);
-          cleanupFns.push(() => soundToggleBtn.removeEventListener('click', toggleSound));
+
+            audio.play().catch(() => {
+              /* Autoplay policy refused the play — put the control back to
+                 "play" so the visitor's next click retries honestly instead of
+                 leaving a pause icon on silence. */
+              isSoundPlaying = false;
+              soundIcon.textContent = "▶️";
+              soundToggleBtn.setAttribute("aria-label", "Play sound identity");
+            });
+          };
+
+          /* One stable reference, bound once per dialog population. The old
+             code tried to de-duplicate by string-matching the cleanup
+             function's source, which never matched, so every re-open stacked
+             another listener on the same button. */
+          soundToggleBtn.addEventListener("click", toggleSound);
+          cleanupFns.push(() => soundToggleBtn.removeEventListener("click", toggleSound));
         }
 
         // Update CTA links
@@ -265,26 +375,28 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
 
         dialog.showModal();
         document.body.style.overflow = 'hidden';
+        // The modal covers the track; hold the drift until it closes.
+        pauseAutoScroll();
       }
 
       function closeDialog() {
         dialog.close();
         document.body.style.overflow = '';
-        
-// Stop videos when closing
-      videoElements.forEach(video => {
-        video.pause();
-        video.currentTime = 0;
-      });
-      
-      // Stop audio when closing
-      audioElements.forEach(audio => {
-        audio.pause();
-        audio.currentTime = 0;
-      });
-      
-      // Resume auto-scroll when dialog closes
-      startAutoScroll();
+
+        // Stop videos when closing
+        videoElements.forEach(video => {
+          video.pause();
+          video.currentTime = 0;
+        });
+
+        // Stop audio when closing
+        audioElements.forEach(audio => {
+          audio.pause();
+          audio.currentTime = 0;
+        });
+
+        // Resume auto-scroll when dialog closes
+        resumeAutoScroll();
       }
 
       const entryBtns = document.querySelectorAll("[data-entry]");
@@ -313,74 +425,54 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
       document.addEventListener("keydown", keydownHandler);
       cleanupFns.push(() => document.removeEventListener("keydown", keydownHandler));
       
-      // Auto-scroll functionality for signature entries
-      let autoScrollTimeout: ReturnType<typeof setTimeout> | null = null;
-      let isUserInteracting = false;
-      const AUTO_SCROLL_DELAY = 5000; // 5 seconds of inactivity before auto-scroll
-      const AUTO_SCROLL_SPEED = 0.5; // pixels per second (very slow, premium feel)
-      
-      function startAutoScroll() {
-        // Respect reduced motion preferences
-        if (reducedMotion) return;
-        
-        if (!signatureTrack || isUserInteracting) return;
-        
-        // Clear any existing timeout
-        if (autoScrollTimeout) {
-          clearTimeout(autoScrollTimeout);
-        }
-        
-        // Set new timeout
-        autoScrollTimeout = window.setTimeout(() => {
-          if (signatureTrack && !isUserInteracting) {
-            // Start slow auto-scroll
-            signatureTrack.style.scrollBehavior = 'auto'; // Disable smooth scrolling during auto-scroll
-            signatureTrack.scrollLeft += AUTO_SCROLL_SPEED;
-            
-            // Continue auto-scrolling
-            autoScrollTimeout = window.setTimeout(startAutoScroll, 16); // ~60fps
-          }
-        }, AUTO_SCROLL_DELAY);
+      /* Auto-advance wiring. The state and the drift itself live at module
+         scope; this only binds the events that govern it.
+
+         Note `scroll` is deliberately NOT an interaction event: the drift
+         moves scrollLeft itself, so treating its own scroll events as user
+         input would cancel the drift on its very first frame. Every way a
+         visitor can actually scroll the track (pointer, wheel, touch, key)
+         is covered below. */
+      if (signatureTrack) {
+        const track = signatureTrack;
+        const bind = <K extends keyof HTMLElementEventMap>(
+          type: K,
+          handler: (event: HTMLElementEventMap[K]) => void,
+        ) => {
+          const listener = handler as EventListener;
+          track.addEventListener(type, listener, { passive: true });
+          cleanupFns.push(() => track.removeEventListener(type, listener));
+        };
+
+        // WCAG 2.2.2 — moving content stops while the pointer is over it or
+        // keyboard focus is inside it.
+        bind("pointerenter", pauseAutoScroll);
+        bind("pointerleave", resumeAutoScroll);
+        bind("focusin", pauseAutoScroll);
+        bind("focusout", resumeAutoScroll);
+
+        // Any deliberate input hands snapping back and restarts the idle
+        // countdown.
+        (["pointerdown", "wheel", "touchstart", "keydown"] as const).forEach((type) => {
+          bind(type, handBackToUser);
+        });
       }
 
-      function stopAutoScroll() {
-        if (autoScrollTimeout) {
-          clearTimeout(autoScrollTimeout);
-          autoScrollTimeout = null;
-        }
-        // Restate smooth scrolling
-        if (signatureTrack) {
-          signatureTrack.style.scrollBehavior = 'smooth';
-        }
-      }
+      const visibilityHandler = () => {
+        if (document.hidden) pauseAutoScroll();
+        else resumeAutoScroll();
+      };
+      document.addEventListener("visibilitychange", visibilityHandler);
+      cleanupFns.push(() => document.removeEventListener("visibilitychange", visibilityHandler));
 
-      function resetAutoScrollTimer() {
-        stopAutoScroll();
-        isUserInteracting = true;
-        startAutoScroll(); // Restart the timer
-        
-        // Reset user interaction flag after a short delay
-        setTimeout(() => {
-          isUserInteracting = false;
-        }, 500); // 500ms after last interaction, consider user not interacting anymore
-      }
-
-      // Initialize auto-scroll
       startAutoScroll();
-
-      // Add event listeners to detect user interaction
-      const interactionEvents = ['mousedown', 'mouseup', 'click', 'touchstart', 'touchend', 'scroll', 'wheel'];
-      interactionEvents.forEach(event => {
-        signatureTrack?.addEventListener(event, resetAutoScrollTimer, { passive: true });
-        cleanupFns.push(() => signatureTrack?.removeEventListener(event, resetAutoScrollTimer));
-      });
-
     }
 
     document.addEventListener("astro:page-load", initExperiences);
   </script>
 
-  <script type="application/json" id="entries-data" set:html={entriesJSON} />
+  {/* Serialised entry data read by the script above — data, not code. */}
+  <script is:inline type="application/json" id="entries-data" set:html={entriesJSON} />
 
   <style>
     .sigs {
@@ -537,11 +629,16 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
       max-width: 48ch;
     }
 
+    /* Two equal columns from 48em up, stacked below it. This was previously
+       dead: a later duplicate of this rule set `display: flex`, which silently
+       made `grid-template-columns` inert and squeezed both columns side by
+       side on phones. */
     .entry-dialog__meta {
       display: grid;
       gap: 2rem;
       width: 100%;
-      padding-block: 1.5rem;
+      margin-block: 1.5rem;
+      padding-block: 1rem;
       border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
     }
@@ -558,18 +655,26 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
 
     .entry-dialog__custom {
       width: 100%;
+      margin-block: 1.5rem;
     }
 
     .entry-dialog__custom .eyebrow {
       margin-bottom: 1rem;
     }
 
-    #dialog-custom {
+    /* These <li>s are built by the script, so the selectors must be global.
+       Astro's scoped styles compile `#dialog-custom li` into
+       `#dialog-custom[data-astro-cid-…] li[data-astro-cid-…]`, and a node
+       created with innerHTML never receives that attribute — so every rule
+       here silently stopped matching. The list rendered as default
+       `list-item`s: no padding, no rules, no gold dash, and black text on a
+       near-black background, i.e. invisible. */
+    :global(#dialog-custom) {
       display: grid;
       gap: 0;
     }
 
-    #dialog-custom li {
+    :global(#dialog-custom li) {
       display: flex;
       align-items: baseline;
       gap: 1.5rem;
@@ -579,185 +684,18 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
       font-size: 0.95rem;
     }
 
-    #dialog-custom li:first-child {
+    :global(#dialog-custom li:first-child) {
       border-top: 1px solid var(--line);
     }
 
-    #dialog-custom li::before {
+    :global(#dialog-custom li::before) {
       content: "—";
       color: var(--color-gold);
       flex-shrink: 0;
     }
 
-.entry-dialog__actions {
-       display: flex;
-       flex-wrap: wrap;
-       gap: 1rem;
-       margin-top: 0.5rem;
-     }
-
-     .video-placeholder {
-       text-align: center;
-       padding: 3rem;
-       color: var(--ink-muted);
-       background: var(--bg-raised);
-       border-radius: 0.5rem;
-     }
-
-     .video-placeholder__icon {
-       font-size: 4rem;
-       margin-bottom: 1.5rem;
-     }
-
-     .video-placeholder__text {
-       font-size: 1.5rem;
-       font-weight: 600;
-       margin-bottom: 0.75rem;
-     }
-
-     .video-placeholder__subtitle {
-       font-size: 1rem;
-       opacity: 0.7;
-     }
-
-     @media (prefers-reduced-motion: reduce) {
-       .entry-dialog__backdrop {
-         transition: none;
-       }
-     }
-   </style>
-
-  <style>
-    /* Signature Entries Layout */
-    .signature-entries {
-      position: relative;
-      overflow: hidden;
-      padding-block: calc(var(--space-section) * 1.5);
-      background: var(--bg); /* Black background */
-    }
-
-    .signature-entries::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: 
-        radial-gradient(circle at 50% 50%, rgba(184, 155, 94, 0.03) 0%, transparent 70%),
-        repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(184, 155, 94, 0.01) 2px, rgba(184, 155, 94, 0.01) 4px);
-      pointer-events: none;
-    }
-
-    .signature-entries__track {
-      display: flex;
-      gap: clamp(2rem, 5vw, 3rem);
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-behavior: smooth;
-      padding-block-end: clamp(3rem, 8vh, 6rem);
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .signature-entries__track::-webkit-scrollbar {
-      display: none;
-    }
-
-    .signature-entries__card {
-      flex: 0 0 auto;
-      width: clamp(26rem, 32vw, 30rem);
-      height: clamp(32rem, 45vh, 40rem);
-      scroll-snap-align: start;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      background: transparent;
-      border: 1px solid transparent;
-      border-radius: 0.5rem;
-      overflow: hidden;
-      transition: 
-        border-color var(--dur-standard) ease,
-        transform var(--dur-standard) var(--ease-out-expo),
-        box-shadow var(--dur-standard) var(--ease-out-expo);
-    }
-
-    .signature-entries__card:hover {
-      border-color: var(--color-gold);
-      transform: translateY(-4px) scale(1.01);
-      box-shadow: 0 20px 40px rgba(184, 155, 94, 0.15);
-    }
-
-    .signature-entries__visual {
-      position: relative;
-      height: 45%;
-      overflow: hidden;
-      background: var(--bg-raised);
-    }
-
-    .signature-entries__image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform var(--dur-standard) var(--ease-out-expo);
-    }
-
-    .signature-entries__card:hover .signature-entries__image {
-      transform: scale(1.05);
-    }
-
-    .signature-entries__content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: clamp(1.5rem, 4vw, 2rem);
-      gap: 0.5rem;
-    }
-
-    .signature-entries__category {
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
-      background: rgba(184, 155, 94, 0.1);
-      border: 1px solid rgba(184, 155, 94, 0.2);
-      border-radius: 9999px;
-      font-size: var(--text-micro);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--color-gold);
-    }
-
-    .signature-entries__title {
-      margin: 0;
-      line-height: 1.2;
-    }
-
-    .signature-entries__line {
-      margin: 0;
-      flex-grow: 1;
-      display: flex;
-      align-items: center;
-    }
-
-    /* Touch indicators for mobile */
-    @media (pointer: coarse) {
-      .signature-entries__track {
-        padding-bottom: clamp(4rem, 10vh, 8rem);
-      }
-      
-      .signature-entries__card {
-        border-width: 2px;
-      }
-      
-      .signature-entries__card:active {
-        transform: scale(0.98);
-      }
-    }
-
-    /* Hide scrollbar but allow scrolling */
-    .signature-entries__track {
-      -ms-overflow-style: none;  /* IE and Edge */
-      scrollbar-width: none;  /* Firefox */
-    }
-
-    /* Enhanced Dialog Styles */
+    /* Only rendered when an entry actually ships a cinematic asset; the
+       script hides it (and its placeholder styles are gone) otherwise. */
     .entry-dialog__video-container {
       position: relative;
       width: 100%;
@@ -770,46 +708,10 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
       overflow: hidden;
     }
 
-    .video-placeholder {
-      text-align: center;
-      padding: 2rem;
-      color: var(--ink-muted);
-    }
-
-    .video-placeholder__icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
-
-    .video-placeholder__text {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    .video-placeholder__subtitle {
-      font-size: 0.875rem;
-      opacity: 0.7;
-    }
-
     .entry-dialog__info {
       flex: 1;
       display: flex;
       flex-direction: column;
-    }
-
-    .entry-dialog__meta {
-      display: flex;
-      gap: 2rem;
-      margin: 1.5rem 0;
-      padding: 1rem 0;
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .entry-dialog__sound,
-    .entry-dialog__audience {
-      flex: 1;
     }
 
     .btn--small {
@@ -817,14 +719,19 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
       font-size: var(--text-micro);
     }
 
-    .entry-dialog__custom {
-      margin: 1.5rem 0;
-    }
-
     .entry-dialog__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
       margin-top: 2rem;
       padding-top: 1.5rem;
       border-top: 1px solid var(--line);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .entry-dialog__backdrop {
+        transition: none;
+      }
     }
   </style>
 
@@ -957,5 +864,7 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
       -ms-overflow-style: none;  /* IE and Edge */
       scrollbar-width: none;  /* Firefox */
     }
+
   </style>
+
 </BaseLayout>
