@@ -9,3 +9,8 @@ __pycache__/
 npm-debug.log*
 .env
 .env.production
+
+# Project-local assistant state — memory and caches that must never enter the
+# deployed repo. Persistent project memory lives at .workbuddy-ai/memory and is
+# committed separately when relevant; the rest is local-only.
+.workbuddy-ai/

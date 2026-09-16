@@ -32,7 +32,7 @@ const menu: MenuItem[] = [
     overview: "All weddings",
     intro: "Where celebration becomes experience.",
     links: [
-      { label: "Vaidik Weddings", href: "/weddings/vaidik/", note: "Sacred. Pure. Conscious." },
+      { label: "Vedic Weddings", href: "/weddings/vedic/", note: "Sacred. Pure. Conscious." },
       {
         label: "Destination Weddings",
         href: "/weddings/destination/",
@@ -67,21 +67,21 @@ const menu: MenuItem[] = [
     ],
   },
   {
-    id: "event-ip",
-    label: "Event IP",
-    href: "/event-ip/",
-    overview: "All event IP",
+    id: "ip-events",
+    label: "IP Events",
+    href: "/ip-events/",
+    overview: "All IP Events",
     intro: "An ecosystem of signature experiences — owned, designed and delivered by Third Eye.",
     links: [
-      { label: "Exhibitions & Expos", href: "/event-ip/exhibitions/" },
-      { label: "Automotive & Mobility", href: "/event-ip/automotive/" },
-      { label: "Awards & Gala", href: "/event-ip/awards/" },
-      { label: "Best Products of India", href: "/event-ip/products/" },
-      { label: "Sports Leagues", href: "/event-ip/sports/" },
-      { label: "Fashion & Modeling", href: "/event-ip/fashion/" },
-      { label: "Political & Public", href: "/event-ip/political/" },
-      { label: "Devotional & Spiritual", href: "/event-ip/devotional/" },
-      { label: "Concerts & Live", href: "/event-ip/concerts/" },
+      { label: "Exhibitions & Expos", href: "/ip-events/exhibitions/" },
+      { label: "Automotive & Mobility", href: "/ip-events/automotive/" },
+      { label: "Awards & Gala", href: "/ip-events/awards/" },
+      { label: "Best Products of India", href: "/ip-events/products/" },
+      { label: "Sports Leagues", href: "/ip-events/sports/" },
+      { label: "Fashion & Modeling", href: "/ip-events/fashion/" },
+      { label: "Political & Public", href: "/ip-events/political/" },
+      { label: "Devotional & Spiritual", href: "/ip-events/devotional/" },
+      { label: "Concerts & Live", href: "/ip-events/concerts/" },
     ],
   },
   {
@@ -136,16 +136,21 @@ function columnsFor(count: number): number {
         {
           menu.map((item) => (
             <li class="nav__item">
-              <button
+              {/* A link, not a button: activating a top-level ribbon has to take
+                  you to that section's own page. The mega panel is an
+                  enhancement on top — it opens on hover, on Tab focus and on
+                  ArrowDown, never on activation. `data-open` carries the
+                  panel's state for styling because `aria-expanded` is not a
+                  valid attribute on a link. */}
+              <a
                 class="nav__link"
                 id={`nav-btn-${item.id}`}
-                type="button"
-                aria-expanded="false"
+                href={item.href}
                 aria-controls={`nav-panel-${item.id}`}
-                aria-current={isCurrent(item.href) ? "true" : undefined}
+                aria-current={isCurrent(item.href) ? "page" : undefined}
               >
                 {item.label}
-              </button>
+              </a>
             </li>
           ))
         }
@@ -341,15 +346,17 @@ function columnsFor(count: number): number {
     transition: scale var(--dur-standard) var(--ease-out-expo);
   }
 
+  /* `data-open` replaces `aria-expanded` now that the ribbon is a link —
+     aria-expanded is not a supported state on role=link. */
   .nav__link:hover,
-  .nav__link[aria-expanded="true"],
-  .nav__link[aria-current="true"] {
+  .nav__link[data-open],
+  .nav__link[aria-current="page"] {
     color: var(--ink);
   }
 
   .nav__link:hover::after,
-  .nav__link[aria-expanded="true"]::after,
-  .nav__link[aria-current="true"]::after {
+  .nav__link[data-open]::after,
+  .nav__link[aria-current="page"]::after {
     scale: 1 1;
   }
 
@@ -664,7 +671,7 @@ function columnsFor(count: number): number {
 
   /* ── Window-level state — attached once, survives view transitions ── */
   let headerEl: HTMLElement | null = null;
-  let openBtn: HTMLButtonElement | null = null;
+  let openBtn: HTMLAnchorElement | null = null;
   let openedByHover = false;
   let hoverCloseTimer: Timer | undefined;
   let panelHideTimer: Timer | undefined;
@@ -704,13 +711,16 @@ function columnsFor(count: number): number {
     document.querySelector(".nav__scrim")?.classList.toggle("is-open", on);
   }
 
-  function syncExpanded() {
-    document
-      .querySelectorAll<HTMLElement>(".nav__link")
-      .forEach((b) => b.setAttribute("aria-expanded", String(b === openBtn)));
+  /* `data-open` is presentation only — the link is the control, and activating
+     it navigates, so there is no disclosure state to expose to AT. */
+  function syncOpen() {
+    document.querySelectorAll<HTMLElement>(".nav__link").forEach((b) => {
+      if (b === openBtn) b.setAttribute("data-open", "");
+      else b.removeAttribute("data-open");
+    });
   }
 
-  function openPanel(btn: HTMLButtonElement, focusEdge?: "first" | "last") {
+  function openPanel(btn: HTMLAnchorElement, focusEdge?: "first" | "last") {
     if (openBtn === btn) return;
     const panel = panelOf(btn);
     if (!panel) return;
@@ -726,7 +736,7 @@ function columnsFor(count: number): number {
     }
 
     openBtn = btn;
-    syncExpanded();
+    syncOpen();
     panel.removeAttribute("inert");
     panel.removeAttribute("hidden");
     requestAnimationFrame(() => {
@@ -750,7 +760,7 @@ function columnsFor(count: number): number {
 
     openBtn = null;
     openedByHover = false;
-    syncExpanded();
+    syncOpen();
     setScrim(false);
     clearTimeout(panelHideTimer);
 
@@ -914,7 +924,7 @@ function columnsFor(count: number): number {
       panel.setAttribute("inert", "");
       panel.setAttribute("hidden", "");
     });
-    document.querySelectorAll(".nav__link").forEach((b) => b.setAttribute("aria-expanded", "false"));
+    document.querySelectorAll<HTMLElement>(".nav__link").forEach((b) => b.removeAttribute("data-open"));
 
     const menu = document.getElementById("mobile-menu");
     menu?.classList.remove("is-open");
@@ -940,19 +950,22 @@ function columnsFor(count: number): number {
       closePanel();
     });
 
-    document.querySelectorAll<HTMLButtonElement>(".nav__link").forEach((btn) => {
+    document.querySelectorAll<HTMLAnchorElement>(".nav__link").forEach((btn) => {
       const item = btn.closest(".nav__item");
       const panel = panelOf(btn);
 
-      btn.addEventListener("click", () => {
-        const isOpen = openBtn === btn;
-        // A hover-open followed by a click means "keep it open", not "close it".
-        if (isOpen && openedByHover) {
-          openedByHover = false;
-          return;
-        }
-        if (isOpen) closePanel();
-        else openPanel(btn);
+      /* No click handler on purpose: the ribbon is a link and activating it
+         must navigate to the section page. The panel is reached by hover, by
+         Tab focus, or by ArrowDown — never by activation. */
+
+      btn.addEventListener("focus", () => {
+        // Keyboard users get the panel as soon as they tab onto the ribbon, so
+        // the next Tab lands inside it instead of skipping past the section.
+        if (openBtn === btn) return;
+        // Focus — not hover — now owns the panel, so a later pointer leave must
+        // not dismiss it out from under the keyboard.
+        openedByHover = false;
+        openPanel(btn);
       });
 
       btn.addEventListener("keydown", (e) => {

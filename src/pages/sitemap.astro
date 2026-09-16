@@ -3,12 +3,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { conceptFamilies } from "../data/concepts";
 import { destinations } from "../data/destinations";
 import { signatureEntries } from "../data/signatureEntries";
-import { eventIPs } from "../data/eventIPs";
+import { ipEvents } from "../data/ipEvents";
 import { productionServices } from "../data/production";
 
 const title = "Sitemap | Third Eye Events";
 const description =
-  "Complete site map of Third Eye Events — weddings, destination worlds, wedding concepts, signature entries, event IP, production facilitation and about.";
+  "Complete site map of Third Eye Events — weddings, destination worlds, wedding concepts, signature entries, IP Events, production facilitation and about.";
 
 const sections: {
   title: string;
@@ -21,7 +21,7 @@ const sections: {
     href: "/weddings/",
     note: "Where celebration becomes experience.",
     links: [
-      { label: "Vaidik Weddings", href: "/weddings/vaidik/" },
+      { label: "Vedic Weddings", href: "/weddings/vedic/" },
       { label: "Destination Weddings", href: "/weddings/destination/" },
       { label: "Wedding Concepts — Wedding Worlds", href: "/weddings/concepts/" },
       { label: "Signature Entries", href: "/weddings/experiences/" },
@@ -50,12 +50,12 @@ const sections: {
     })),
   },
   {
-    title: "Event IP",
-    href: "/event-ip/",
+    title: "IP Events",
+    href: "/ip-events/",
     note: "Owned, designed and delivered by Third Eye.",
-    links: eventIPs.map((ip) => ({
+    links: ipEvents.map((ip) => ({
       label: ip.name,
-      href: `/event-ip/${ip.id}/`,
+      href: `/ip-events/${ip.id}/`,
     })),
   },
   {

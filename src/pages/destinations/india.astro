@@ -12,12 +12,13 @@ const description =
 /* Only worlds with a real destination page behind them get a link. The four
    omitted keys previously pointed at /destinations/india/ — this page — so they
    rendered as self-referencing no-ops. Omitting them makes the template below
-   fall back to a plain <span>, which is honest: there is no page to visit. */
-const categoryHref: Record<string, string> = {
-  "royal-heritage": "/destinations/rajasthan/",
-  "desert-offbeat": "/destinations/rajasthan/",
-  "nature-forest": "/destinations/rajasthan/",
-};
+   fall back to a plain <span>, which is honest: there is no page to visit.
+
+   Rajasthan is no longer a standalone destination world, so the three keys that
+   used to point at /destinations/rajasthan/ are gone too — they would have been
+   links to a 404. India keeps its own seven master categories; they are
+   described on this page rather than each having a dedicated page. */
+const categoryHref: Record<string, string> = {};
 
 const structuredData = [
   {
@@ -27,7 +28,7 @@ const structuredData = [
     provider: { "@id": ORG_ID },
     areaServed: { "@type": "Country", name: "India" },
     description:
-      "Destination wedding design and execution across India — seven master categories from royal heritage to spiritual Vaidik settings.",
+      "Destination wedding design and execution across India — seven master categories from royal heritage to spiritual Vedic settings.",
   },
 ];
 ---

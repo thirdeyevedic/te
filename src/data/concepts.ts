@@ -64,10 +64,10 @@ export const conceptFamilies: ConceptFamily[] = [
   {
     id: "spiritual",
     family: "Spiritual",
-    essence: "The Vaidik core — mantra, silence and inner stillness.",
+    essence: "The Vedic core — mantra, silence and inner stillness.",
     concepts: [
       { name: "Kashi Vivaah", meaning: "Union in the eternal city." },
-      { name: "Ved Vivaah", meaning: "Marriage conducted wholly in Vaidik tradition." },
+      { name: "Ved Vivaah", meaning: "Marriage conducted wholly in Vedic tradition." },
       { name: "Ashram Vivaah", meaning: "A wedding in the discipline of the hermitage." },
       { name: "Shuddh Sanskar Vivaah", meaning: "The pure rite — satvik in every detail." },
       { name: "Shanti Vivaah", meaning: "Peace as the foundation of union." },

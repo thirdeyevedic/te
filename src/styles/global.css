@@ -10,6 +10,10 @@
   --color-ivory: #f5f1e8;
   --color-charcoal: #171717;
   --color-gold: #b89b5e;
+  /* Saffron — the third brand colour named in the brief. Deeper and warmer
+     than --color-agni, which is a terracotta used for ember glows; saffron is
+     used for accent light and gradient washes only. */
+  --color-saffron: #c76a2a;
   --color-agni: #a9552b;
   --color-smoke: #8a8580;
   --color-bronze: #6e5a3e;

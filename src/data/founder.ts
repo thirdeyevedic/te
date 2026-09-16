@@ -55,6 +55,6 @@ export const founderTimeline: Milestone[] = [
   {
     period: "Today",
     title: "Multi-Domain Vision",
-    detail: "India’s first Vaidik Luxury Wedding Company and multi-domain experience powerhouse. Weddings, IP events, production ecosystems, cultural platforms. From personal rituals to national impact.",
+    detail: "India’s first Vedic Luxury Wedding Company and multi-domain experience powerhouse. Weddings, IP events, production ecosystems, cultural platforms. From personal rituals to national impact.",
   },
 ];

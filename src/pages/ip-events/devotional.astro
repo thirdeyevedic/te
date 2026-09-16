@@ -2,17 +2,17 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/PageHero.astro";
 import CTA from "../../components/CTA.astro";
-import { eventIPs } from "../../data/eventIPs";
+import { ipEvents } from "../../data/ipEvents";
 
-const ip = eventIPs.find((e) => e.id === "political")!;
+const ip = ipEvents.find((e) => e.id === "devotional")!;
 
-const title = `${ip.name} — Owned Event IP by Third Eye Events | Third Eye Events`;
+const title = `${ip.name} — Owned IP Events by Third Eye Events | Third Eye Events`;
 const description =
-  "Large-scale public gatherings executed with protocol discipline — crowd architecture, security coordination, zero-error stages. Third Eye Events.";
+  "Sacred gatherings produced with reverence — sound, seating and sightlines designed around devotion rather than spectacle. Third Eye Events.";
 ---
 
-<BaseLayout title={title} description={description} path="/event-ip/political/">
-  <PageHero image={ip.heroImage} eyebrow="Event IP" title={ip.name} statement="Scale management meets protocol discipline." />
+<BaseLayout title={title} description={description} path="/ip-events/devotional/">
+  <PageHero image={ip.heroImage} eyebrow="IP Events" title={ip.name} statement="Devotion over spectacle." />
 
   <section class="section">
     <div class="container">
@@ -28,16 +28,16 @@ const description =
 
   <section class="section related" aria-label="Related">
     <div class="container rel-grid">
-      <a class="rel reveal" href="/event-ip/exhibitions/">
-        <span class="microcopy">Event IP</span>
+      <a class="rel reveal" href="/ip-events/exhibitions/">
+        <span class="microcopy">IP Events</span>
         <span class="display rel__label">Exhibitions & Expos →</span>
       </a>
-      <a class="rel reveal" href="/event-ip/devotional/" style="--reveal-delay: 110ms">
-        <span class="microcopy">Event IP</span>
-        <span class="display rel__label">Devotional & Spiritual →</span>
+      <a class="rel reveal" href="/ip-events/fashion/" style="--reveal-delay: 110ms">
+        <span class="microcopy">IP Events</span>
+        <span class="display rel__label">Fashion & Modeling →</span>
       </a>
-      <a class="rel reveal" href="/event-ip/concerts/" style="--reveal-delay: 220ms">
-        <span class="microcopy">Event IP</span>
+      <a class="rel reveal" href="/ip-events/concerts/" style="--reveal-delay: 220ms">
+        <span class="microcopy">IP Events</span>
         <span class="display rel__label">Concerts & Live →</span>
       </a>
     </div>

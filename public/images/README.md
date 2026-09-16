@@ -15,10 +15,10 @@ public/images/
     card.jpg                  portrait crop, used by listing cards
   signature/<entry>-hero.jpg  wide crop for the signature entry page hero
   signature/<entry>-card.jpg  portrait crop for the homepage card
-  weddings/                   section heroes (vaidik, destination, concepts…)
-  vaidik/                     Vaidik hero + satvik dining
+  weddings/                   section heroes (vedic, destination, concepts…)
+  vedic/                      Vedic hero + satvik dining
   about/                      about, story, philosophy, vision, founder
-  ip/                         one hero per owned event IP
+  ip/                         one hero per owned IP Events
   production/                 one hero per production service
   contact-hero.jpg
   CREDITS.md                  provenance for every asset

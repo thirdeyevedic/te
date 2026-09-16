@@ -4,20 +4,20 @@ import PageHero from "../../components/PageHero.astro";
 import CTA from "../../components/CTA.astro";
 import { ORG_ID } from "../../data/site";
 
-const title = "Vaidik Luxury Weddings — Marriage as a Sacred Sanskar | Third Eye Events";
+const title = "Vedic Luxury Weddings — Marriage as a Sacred Sanskar | Third Eye Events";
 const description =
-  "Vaidik weddings by Third Eye Events: pure satvik celebrations where marriage is a sacred sanskar — mantra, Agni, muhurat and sankalp conducted with discipline, refinement and complete devotion.";
+  "Vedic weddings by Third Eye Events: pure satvik celebrations where marriage is a sacred sanskar — mantra, Agni, muhurat and sankalp conducted with discipline, refinement and complete devotion.";
 
 const structuredData = [
   {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: "Vaidik Luxury Weddings",
-    serviceType: "Vaidik Wedding Planning & Experience Design",
+    name: "Vedic Luxury Weddings",
+    serviceType: "Vedic Wedding Planning & Experience Design",
     provider: { "@id": ORG_ID },
     areaServed: "India and international destinations",
     description:
-      "Pure satvik Vaidik wedding experiences — vivaah sanskar conducted with mantra, Agni, muhurat and purohit-led ritual, designed as conscious luxury.",
+      "Pure satvik Vedic wedding experiences — vivaah sanskar conducted with mantra, Agni, muhurat and purohit-led ritual, designed as conscious luxury.",
   },
 ];
 
@@ -31,11 +31,11 @@ const ritualEntities = [
 ];
 ---
 
-<BaseLayout title={title} description={description} path="/weddings/vaidik/" structuredData={structuredData}>
+<BaseLayout title={title} description={description} path="/weddings/vedic/" structuredData={structuredData}>
   <PageHero
-    image="/images/weddings/vaidik-hero.jpg"
+    image="/images/weddings/vedic-hero.jpg"
     eyebrow="Weddings · The Core"
-    title="Vaidik Weddings"
+    title="Vedic Weddings"
     statement="Where Marriage is not an Event… but a Sacred Sanskar."
   />
 
@@ -43,7 +43,7 @@ const ritualEntities = [
   <section class="section pure atmosphere-radial" aria-labelledby="pure-title">
     <div class="pure__bg" aria-hidden="true">
       <img
-        src="/images/vaidik/pure-hero.jpg"
+        src="/images/vedic/pure-hero.jpg"
         alt=""
         class="xi__media xi--fill"
         loading="lazy"
@@ -60,7 +60,7 @@ const ritualEntities = [
       <p class="pure__word display reveal-mask" id="pure-title">PURE</p>
       <p class="microcopy reveal">No Alcohol · No Non-Veg · Pure Satvik</p>
       <p class="text-muted measure reveal" style="--reveal-delay: 200ms">
-        This is not a restriction. It is a conscious choice. A Vaidik wedding maintains energetic purity —
+        This is not a restriction. It is a conscious choice. A Vedic wedding maintains energetic purity —
         where every element supports clarity, calmness and sacredness. Food is not just served… it is offered.
       </p>
     </div>
@@ -74,7 +74,7 @@ const ritualEntities = [
       </h2>
       <p class="text-muted measure reveal" style="--reveal-delay: 160ms">
         At Third Eye we don’t design weddings around trends — we align them with Dharma, Energy and Meaning.
-        A Vaidik wedding is not about noise, show or excess. It is about purity, intention and sacred union.
+        A Vedic wedding is not about noise, show or excess. It is about purity, intention and sacred union.
         We honour its architecture and translate it flawlessly for your family, your guests and this generation.
       </p>
     </div>
@@ -97,15 +97,15 @@ const ritualEntities = [
         {
           [
             {
-              src: "/images/vaidik/satvik-dining-copper.jpg",
+              src: "/images/vedic/satvik-dining-copper.jpg",
               alt: "Tamra Patra — satvik fare served in hand-hammered copper vessels",
             },
             {
-              src: "/images/vaidik/satvik-dining-banana-leaf.jpg",
+              src: "/images/vedic/satvik-dining-banana-leaf.jpg",
               alt: "Banana Leaf — satvik meal served on a fresh banana leaf",
             },
             {
-              src: "/images/vaidik/satvik-dining-seasonal.jpg",
+              src: "/images/vedic/satvik-dining-seasonal.jpg",
               alt: "Modern Satvik — seasonal produce plated with the same discipline",
             },
           ].map((v) => (
@@ -125,11 +125,11 @@ const ritualEntities = [
         <div class="dining__styles reveal" style="--reveal-delay: 340ms">
           <article class="dining__style">
             <h3>Tamra Patra</h3>
-            <p>Traditional copper vessel dining — food served in hand-hammered copper ware that has been used in Vaidik households for centuries. Each vessel is selected for its purifying properties and ceremonial significance.</p>
+            <p>Traditional copper vessel dining — food served in hand-hammered copper ware that has been used in Vedic households for centuries. Each vessel is selected for its purifying properties and ceremonial significance.</p>
           </article>
           <article class="dining__style">
             <h3>Banana Leaf</h3>
-            <p>The South Indian purity format — meals served on fresh banana leaves, each placement following Vaidik order. A dining tradition where the plate itself is an offering from nature.</p>
+            <p>The South Indian purity format — meals served on fresh banana leaves, each placement following Vedic order. A dining tradition where the plate itself is an offering from nature.</p>
           </article>
           <article class="dining__style">
             <h3>Modern Satvik</h3>
@@ -167,7 +167,7 @@ const ritualEntities = [
     </div>
   </section>
 
-  <section class="section vaidik-sig">
+  <section class="section vedic-sig">
     <div class="container">
       <p class="statement reveal">In a world full of celebrations, choose a wedding that is pure, powerful, and eternal.</p>
     </div>
@@ -480,11 +480,11 @@ const ritualEntities = [
     }
 
     /* Signature line */
-    .vaidik-sig {
+    .vedic-sig {
       text-align: center;
     }
 
-    .vaidik-sig .statement {
+    .vedic-sig .statement {
       max-width: 32ch;
       margin-inline: auto;
       font-size: clamp(1.05rem, 1.8vw, 1.4rem);

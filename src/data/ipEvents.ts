@@ -1,9 +1,9 @@
 /**
- * EVENT IP — An ecosystem of signature experiences.
+ * IP EVENTS — An ecosystem of signature experiences.
  * Owned, designed and delivered by Third Eye. Repeatable, brandable, scalable.
  */
 
-export interface EventIPCategory {
+export interface IPEventCategory {
   id: string;
   name: string;
   description: string;
@@ -15,7 +15,7 @@ export interface EventIPCategory {
   heroImage?: string;
 }
 
-export const eventIPs: EventIPCategory[] = [
+export const ipEvents: IPEventCategory[] = [
   {
     id: "exhibitions",
     heroImage: "/images/ip/exhibitions-hero.jpg",

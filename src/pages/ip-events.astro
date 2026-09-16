@@ -2,17 +2,17 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
 import CTA from "../components/CTA.astro";
-import { eventIPs } from "../data/eventIPs";
+import { ipEvents } from "../data/ipEvents";
 
-const title = "Event IP — Owned, Designed & Delivered by Third Eye | Third Eye Events";
+const title = "IP Events — Owned, Designed & Delivered by Third Eye | Third Eye Events";
 const description =
-  "Third Eye doesn't only execute events — it develops owned event IP: exhibitions, automotive launches, awards, sports leagues, fashion platforms, spiritual gatherings and concerts. Repeatable. Brandable. Scalable.";
+  "Third Eye doesn't only execute events — it develops owned IP Events: exhibitions, automotive launches, awards, sports leagues, fashion platforms, spiritual gatherings and concerts. Repeatable. Brandable. Scalable.";
 ---
 
-<BaseLayout title={title} description={description} path="/event-ip/">
+<BaseLayout title={title} description={description} path="/ip-events/">
   <PageHero
     image="/images/ip/index-hero.jpg"
-    eyebrow="Event IP"
+    eyebrow="IP Events"
     title="An ecosystem of signature experiences."
     statement="Owned. Designed. Delivered by Third Eye."
   />
@@ -40,7 +40,7 @@ const description =
   <section class="section portfolio" aria-label="IP portfolio">
     <div class="container">
       {
-        eventIPs.map((ip, i) => (
+        ipEvents.map((ip, i) => (
           <article class="ip reveal" id={ip.id} style={`--reveal-delay: ${(i % 3) * 60}ms`}>
             <figure class="ip__visual">
               <img src={ip.heroImage} alt="" class="xi__media xi--fill" loading="lazy" decoding="async" />

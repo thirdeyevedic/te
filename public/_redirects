@@ -1,1 +1,5 @@
 https://www.thirdeyeevents.com/*  https://thirdeyeevents.com/:splat  301
+
+/weddings/vaidik/  /weddings/vedic/  301
+/event-ip/         /ip-events/       301
+/event-ip/*        /ip-events/:splat 301

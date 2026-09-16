@@ -1,22 +1,50 @@
 ---
 /**
- * Opening Sequence — blackness → ॐ → mantra → reveal.
- * Plays once per browser session. Skippable. Disabled under reduced motion.
- * Content beneath is never blocked from assistive tech.
+ * Opening Sequence — ॐ → gate → "Welcome to the Satyug" → mantra → reveal.
+ *
+ * Click-driven: nothing advances until the visitor touches the Om. Plays once
+ * per browser session. Skippable (button or Escape). Disabled under reduced
+ * motion. Content beneath is never blocked from assistive tech.
  */
 ---
 
 <div class="opening" id="opening">
-  {/* `aria-hidden` sits on the decorative glyph and mantra, not on the overlay.
-      Putting it on the overlay made the Skip button a focusable element inside
-      an aria-hidden subtree — an axe `aria-hidden-focus` violation, and it left
-      screen-reader users with no way to dismiss the intro at all. The verse is
-      atmospheric here rather than content, so it stays hidden from AT. */}
-  <div class="opening__om display" aria-hidden="true">ॐ</div>
-  <div class="opening__mantra" lang="sa" aria-hidden="true">
-    <p>यदा यदा हि धर्मस्य ग्लानिर्भवति भारत।</p>
-    <p>अभ्युत्थानमधर्मस्य तदात्मानं सृजाम्यहम् ॥</p>
+  {/* `aria-hidden` sits on the decorative layers only, never on the overlay:
+      the overlay holds the Skip button, and a focusable element inside an
+      aria-hidden subtree is an axe `aria-hidden-focus` violation that also
+      leaves screen-reader users with no way to dismiss the intro at all. */}
+
+  {/* Content seen through the open gate */}
+  <div class="opening__reveal" aria-hidden="true">
+    <p class="opening__welcome display">Welcome to the Satyug</p>
+    <div class="opening__mantra" lang="sa">
+      <p>यदा यदा हि धर्मस्य ग्लानिर्भवति भारत।</p>
+      <p>अभ्युत्थानमधर्मस्य तदात्मानं सृजाम्यहम् ॥</p>
+    </div>
   </div>
+
+  {/* The gate — two leaves that part on activation */}
+  <div class="opening__gate" aria-hidden="true">
+    <span class="opening__leaf opening__leaf--l"></span>
+    <span class="opening__leaf opening__leaf--r"></span>
+  </div>
+
+  {/* The Om is the only control the visitor is asked to use */}
+  <button class="opening__om" id="opening-om" type="button" aria-label="Begin — enter Third Eye">
+    <span class="opening__aura" aria-hidden="true">
+      <span class="opening__ring"></span>
+      <span class="opening__ring"></span>
+    </span>
+    <span class="opening__waves" aria-hidden="true">
+      <span class="opening__wave"></span>
+      <span class="opening__wave"></span>
+      <span class="opening__wave"></span>
+    </span>
+    <span class="opening__glyph display" aria-hidden="true">ॐ</span>
+  </button>
+
+  <p class="opening__hint microcopy" aria-hidden="true">Touch the Om to enter</p>
+
   <button class="opening__skip microcopy" id="opening-skip" tabindex="-1">Skip Intro</button>
 </div>
 
@@ -31,9 +59,132 @@
     opacity: 1;
   }
 
-  .opening__om {
+  /* ── The gate ───────────────────────────────────────────────────────────
+     Leaves sit above the revealed copy and below the Om, so the Om appears to
+     push the doors apart as it grows. Width is 50.5% so the two halves overlap
+     by a hair — a true 50/50 split shows a sub-pixel seam of background. */
+  .opening__gate {
     position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .opening__leaf {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50.5%;
+    background:
+      radial-gradient(120% 80% at 50% 50%, rgba(184, 155, 94, 0.05), transparent 70%),
+      var(--color-ink);
+    transition:
+      translate 1900ms var(--ease-out-expo),
+      opacity 1900ms ease;
+  }
+
+  .opening__leaf--l {
+    left: 0;
+    border-right: 1px solid rgba(184, 155, 94, 0.28);
+  }
+
+  .opening__leaf--r {
+    right: 0;
+    border-left: 1px solid rgba(184, 155, 94, 0.28);
+  }
+
+  .opening.is-awakening .opening__leaf--l {
+    translate: -101% 0;
+  }
+
+  .opening.is-awakening .opening__leaf--r {
+    translate: 101% 0;
+  }
+
+  /* ── Revealed copy ─────────────────────────────────────────────────────── */
+  .opening__reveal {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    padding-inline: var(--space-gutter);
+    text-align: center;
+  }
+
+  .opening__welcome {
+    position: absolute;
+    font-size: clamp(1.9rem, 5.2vw, 4rem);
+    letter-spacing: 0.02em;
+    color: var(--color-ivory);
+    opacity: 0;
+    translate: 0 0.5rem;
+    transition:
+      opacity 1400ms ease,
+      translate 1400ms var(--ease-out-expo);
+  }
+
+  .opening.is-welcome .opening__welcome {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  .opening__mantra {
+    position: absolute;
+    font-size: clamp(1.05rem, 2.4vw, 1.6rem);
+    line-height: 2.1;
+    color: var(--ink-muted);
+  }
+
+  .opening__mantra p {
+    opacity: 0;
+    translate: 0 0.6rem;
+    transition:
+      opacity 1200ms ease,
+      translate 1200ms var(--ease-out-expo);
+  }
+
+  .opening.is-mantra .opening__mantra p {
+    opacity: 1;
+    translate: 0 0;
+    /* Delay so the mantra only starts arriving after the welcome line has
+       mostly cleared — otherwise the two stack on top of each other. */
+    transition-delay: 500ms;
+  }
+
+  .opening.is-mantra .opening__mantra p:nth-child(2) {
+    transition-delay: 1400ms;
+  }
+
+  /* The welcome line leaves before the mantra arrives, so the two never
+     overlap and read as one continuous sentence of the film. */
+  .opening.is-mantra .opening__welcome {
+    opacity: 0;
+    translate: 0 -0.4rem;
+    transition:
+      opacity 700ms ease,
+      translate 700ms ease;
+  }
+
+  /* ── The Om ────────────────────────────────────────────────────────────── */
+  .opening__om {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    width: min(46vmin, 20rem);
+    aspect-ratio: 1;
+    /* No UA button chrome — it must read as a glyph, not a control. */
+    appearance: none;
+    background: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+  }
+
+  .opening__glyph {
+    position: relative;
     font-size: clamp(5rem, 14vw, 11rem);
+    line-height: 1;
     color: var(--color-ivory);
     text-shadow:
       0 0 60px rgba(184, 155, 94, 0.35),
@@ -41,8 +192,8 @@
     opacity: 0;
     scale: 0.96;
     animation:
-      om-in 2600ms var(--ease-out-expo) forwards,
-      om-breath 4200ms ease-in-out 2600ms infinite;
+      om-in 2200ms var(--ease-out-expo) forwards,
+      om-breath 4600ms ease-in-out 2200ms infinite;
   }
 
   @keyframes om-in {
@@ -60,62 +211,121 @@
     }
   }
 
-  .opening__mantra {
-    position: absolute;
-    text-align: center;
-    padding-inline: var(--space-gutter);
-    font-size: clamp(1.05rem, 2.4vw, 1.6rem);
-    line-height: 2.3;
-    color: var(--ink-muted);
-  }
-
-  .opening__mantra p {
-    opacity: 0;
-    translate: 0 0.6rem;
-    transition:
-      opacity 1100ms ease,
-      translate 1100ms var(--ease-out-expo);
-  }
-
-  .opening.is-mantra .opening__om {
-    opacity: 0;
-    scale: 1.03;
-    transition:
-      opacity 1600ms ease,
-      scale 2200ms ease;
-  }
-
-  .opening.is-mantra .opening__mantra p:nth-child(1) {
-    transition-delay: 500ms;
-  }
-
-  .opening.is-mantra .opening__mantra p:nth-child(2) {
-    transition-delay: 1500ms;
-  }
-
-  .opening__mantra p {
-    /* enabled when parent gets .is-mantra */
-  }
-
-  .opening.is-mantra .opening__mantra p {
+  .opening.is-awakening .opening__glyph {
+    animation: none;
+    scale: 2.2;
     opacity: 1;
-    translate: 0 0;
+    transition: scale 1500ms var(--ease-out-expo);
   }
 
-  .opening.is-exiting {
+  /* Once the gate is open and the welcome line is on its way in, the Om
+     releases — it has carried the eye through the awakening, it does not
+     need to compete with the copy that follows. The is-mantra rule repeats
+     the opacity:0 because removing is-welcome would otherwise drop this
+     rule and the glyph would snap back to opacity:1. */
+  .opening.is-welcome .opening__glyph,
+  .opening.is-mantra .opening__glyph {
     opacity: 0;
-    pointer-events: none;
-    transition: opacity 1300ms ease;
+    transition: opacity 900ms ease;
   }
 
-  .opening.is-done {
-    display: none;
+  /* ── Aura: a still, barely-there ring while waiting ────────────────────── */
+  .opening__aura,
+  .opening__waves {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+  }
+
+  .opening__ring {
+    position: absolute;
+    width: 62%;
+    aspect-ratio: 1;
+    border: 1px solid rgba(184, 155, 94, 0.16);
+    border-radius: 50%;
+  }
+
+  .opening__ring:nth-child(2) {
+    width: 86%;
+    border-color: rgba(184, 155, 94, 0.08);
+  }
+
+  .opening.is-awakening .opening__ring {
+    opacity: 0;
+    transition: opacity 700ms ease;
+  }
+
+  /* ── Waves: soft ripples released outward on activation ────────────────── */
+  .opening__wave {
+    position: absolute;
+    width: 40%;
+    aspect-ratio: 1;
+    border: 1px solid rgba(184, 155, 94, 0.42);
+    border-radius: 50%;
+    opacity: 0;
+  }
+
+  .opening.is-awakening .opening__wave {
+    animation: wave-out 2600ms var(--ease-out-expo) forwards;
+  }
+
+  .opening.is-awakening .opening__wave:nth-child(2) {
+    animation-delay: 260ms;
+  }
+
+  .opening.is-awakening .opening__wave:nth-child(3) {
+    animation-delay: 520ms;
+  }
+
+  @keyframes wave-out {
+    from {
+      opacity: 0.9;
+      scale: 1;
+    }
+    to {
+      opacity: 0;
+      scale: 4.2;
+    }
+  }
+
+  /* ── Hint + skip ───────────────────────────────────────────────────────── */
+  .opening__hint {
+    position: absolute;
+    bottom: clamp(3.5rem, 9vh, 6rem);
+    z-index: 3;
+    color: var(--ink-faint);
+    letter-spacing: 0.24em;
+    opacity: 0;
+    animation: hint-in 1400ms ease 2400ms forwards;
+  }
+
+  @keyframes hint-in {
+    to {
+      opacity: 1;
+    }
+  }
+
+  .opening.is-awakening .opening__hint {
+    /* Cancel the entrance animation — otherwise it keeps nudging opacity to
+       1 every frame and wins over the static rule that should fade it out. */
+    animation: none;
+    opacity: 0;
+    transition: opacity 400ms ease;
+  }
+
+  .opening__om:focus-visible {
+    outline: 1px solid var(--color-gold);
+    outline-offset: 1.5rem;
+    border-radius: 50%;
   }
 
   .opening__skip {
     position: absolute;
     right: var(--space-gutter);
     bottom: 2rem;
+    z-index: 4;
     /* --ink-faint (0.38 alpha) is ~3.3:1 on the near-black overlay and fails
        WCAG AA for the button's text; --ink-muted (~7:1) keeps it subtle but
        legible — axe `color-contrast`. */
@@ -129,6 +339,28 @@
     color: var(--color-gold);
   }
 
+  /* Once the visitor commits to entering, the Skip button withdraws — it was
+     a safety valve for an overlay that never went anywhere, not a second
+     action competing with the Om. */
+  .opening.is-awakening .opening__skip {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 600ms ease;
+  }
+
+  /* ── Exit ──────────────────────────────────────────────────────────────── */
+  .opening.is-exiting {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1300ms ease;
+  }
+
+  .opening.is-done {
+    display: none;
+  }
+
+  /* Reduced motion: the whole thing is a film, so there is no reduced-motion
+     variant of it — it simply does not play. */
   @media (prefers-reduced-motion: reduce) {
     .opening {
       display: none;
@@ -137,30 +369,31 @@
 </style>
 
 <script>
-const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/* window.setTimeout returns a number in the DOM lib, but the ambient workers
-   types redefine the global setTimeout, so pin the type explicitly. */
-type Timer = number;
-let timers: Timer[] = [];
+  /* window.setTimeout returns a number in the DOM lib, but the ambient workers
+     types redefine the global setTimeout, so pin the type explicitly. */
+  type Timer = number;
+  let timers: Timer[] = [];
 
-function finish(el: HTMLElement) {
-  el.classList.add("is-exiting");
-  document.body.style.overflow = "";
-  timers.forEach(clearTimeout);
-  timers = [];
-  removeEventListener("keydown", onKeydown);
-  setTimeout(() => el.remove(), reducedMotion ? 0 : 1350);
-}
+  function finish(el: HTMLElement) {
+    el.classList.add("is-exiting");
+    document.body.style.overflow = "";
+    timers.forEach(clearTimeout);
+    timers = [];
+    removeEventListener("keydown", onKeydown);
+    setTimeout(() => el.remove(), reducedMotion ? 0 : 1350);
+  }
 
-function onKeydown(e: KeyboardEvent) {
-  if (e.key !== "Escape") return;
-  const el = document.getElementById("opening");
-  if (el) finish(el);
-}
+  function onKeydown(e: KeyboardEvent) {
+    if (e.key !== "Escape") return;
+    const el = document.getElementById("opening");
+    if (el) finish(el);
+  }
 
   function initOpening() {
     const el = document.getElementById("opening");
+    const om = document.getElementById("opening-om");
     const skipBtn = document.getElementById("opening-skip");
     if (!el) return;
 
@@ -175,11 +408,35 @@ function onKeydown(e: KeyboardEvent) {
     sessionStorage.setItem("te-opened", "1");
     document.body.style.overflow = "hidden";
     skipBtn?.removeAttribute("tabindex");
+    om?.removeAttribute("tabindex");
+    om?.focus({ preventScroll: true });
 
-    timers = [
-      window.setTimeout(() => el.classList.add("is-mantra"), 3400),
-      window.setTimeout(() => finish(el), 7400),
-    ];
+    /* The sequence only starts once the Om is touched — that is the whole
+       point of the piece — so the timers are scheduled from the click rather
+       than from load. */
+    let started = false;
+
+    function begin() {
+      if (started) return;
+      started = true;
+      el!.classList.add("is-awakening");
+
+      timers = [
+        window.setTimeout(() => el!.classList.add("is-welcome"), 1200),
+        window.setTimeout(() => {
+          el!.classList.remove("is-welcome");
+          el!.classList.add("is-mantra");
+        }, 3000),
+        window.setTimeout(() => finish(el!), 6200),
+      ];
+    }
+
+    om?.addEventListener("click", begin);
+    om?.addEventListener("keydown", (e) => {
+      // Enter and Space already fire click on a button; this only stops the
+      // page from scrolling when Space is used to begin.
+      if (e.key === " ") e.preventDefault();
+    });
 
     skipBtn?.addEventListener("click", () => finish(el));
 

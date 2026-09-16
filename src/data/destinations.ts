@@ -58,34 +58,7 @@ export const destinations: Destination[] = [
     bestFor: ["Intimate guest lists", "Sunrise rituals", "Private-island takeovers"],
     seoTitle: "Maldives Destination Weddings | Third Eye Events",
     metaDescription:
-      "Vaidik destination weddings across Maldives private islands — Soneva Fushi, One&Only Reethi Rah, Taj Exotica, Conrad Rangali and Joali, each designed around a distinct Sanskrit wedding concept.",
-  },
-  {
-    slug: "rajasthan",
-    name: "Rajasthan",
-    region: "North India",
-    country: "India",
-    tagline: "Where royal memory is still alive.",
-    heroImage: "/images/destinations/rajasthan/hero.jpg",
-    cardImage: "/images/destinations/rajasthan/card.jpg",
-    landscape:
-      "Lake palaces, golden dunes, blue-washed hills and fortress cities rising from arid earth.",
-    culturalContext:
-      "The living court culture of Rajputana — shehnai in sandstone corridors, processions that once belonged to kingdoms.",
-    luxuryContext:
-      "Palace hotels that were seats of power, offering heritage as accommodation rather than decoration.",
-    thirdEyeInterpretation:
-      "We don't decorate Rajasthan with royalty — it already is royal. We stage your wedding inside its continuity.",
-    ritualDirection:
-      "Vaidik rites unfold in durbar halls and courtyard mandapas where generations have gathered before.",
-    experienceDescription:
-      "Elephant and vintage-car baraats, nagada on ramparts, lakeside pheras at dusk — scale with discipline.",
-    idealAudience:
-      "Couples who want grandeur with lineage — a wedding their family will narrate for decades.",
-    bestFor: ["Large celebrations", "Royal processions", "Heritage venues"],
-    seoTitle: "Rajasthan Destination Weddings — Udaipur, Jaisalmer, Jodhpur | Third Eye Events",
-    metaDescription:
-      "Royal destination weddings across Rajasthan — Udaipur's Rajsi Prem Vivaah, Jaisalmer's Agni Tatva, Ranthambore's Vanprastha and Jodhpur's Veer Vivaah, executed by Third Eye Events.",
+      "Vedic destination weddings across Maldives private islands — Soneva Fushi, One&Only Reethi Rah, Taj Exotica, Conrad Rangali and Joali, each designed around a distinct Sanskrit wedding concept.",
   },
   {
     slug: "switzerland",
@@ -129,9 +102,9 @@ export const destinations: Destination[] = [
     luxuryContext:
       "Ryokan hospitality, kaiseki dining and gardens maintained for centuries by hand.",
     thirdEyeInterpretation:
-      "Kyoto understands what Vaidik tradition understands: meaning lives in restraint. Two disciplines, one language.",
+      "Kyoto understands what Vedic tradition understands: meaning lives in restraint. Two disciplines, one language.",
     ritualDirection:
-      "Dawn ceremonies before the crowds; purification gestures echoing between Japanese and Vaidik practice.",
+      "Dawn ceremonies before the crowds; purification gestures echoing between Japanese and Vedic practice.",
     experienceDescription:
       "Tea ceremony to tilak, cedar scent to sandalwood — a dialogue of two ancient civilisations around one union.",
     idealAudience:
@@ -139,7 +112,7 @@ export const destinations: Destination[] = [
     bestFor: ["Cultural depth", "Garden ceremonies", "Seasonal beauty"],
     seoTitle: "Kyoto Destination Weddings | Third Eye Events",
     metaDescription:
-      "Destination weddings in Kyoto — Fushimi Inari, Arashiyama, Kinkaku-ji, Gion — where Japanese precision meets Vaidik ceremony, designed by Third Eye Events.",
+      "Destination weddings in Kyoto — Fushimi Inari, Arashiyama, Kinkaku-ji, Gion — where Japanese precision meets Vedic ceremony, designed by Third Eye Events.",
   },
   {
     slug: "italy",
@@ -156,7 +129,7 @@ export const destinations: Destination[] = [
     luxuryContext:
       "Historic villas, Michelin kitchens and centuries-old estates opened for private celebration.",
     thirdEyeInterpretation:
-      "We bring the Vaidik heart to Italian beauty — pheras at golden hour, satvik tables under pergolas.",
+      "We bring the Vedic heart to Italian beauty — pheras at golden hour, satvik tables under pergolas.",
     ritualDirection:
       "Outdoor mandapas framed by cypress and stone; muhurat timed to Tuscan light.",
     experienceDescription:
@@ -166,7 +139,7 @@ export const destinations: Destination[] = [
     bestFor: ["Villa weddings", "Lakeside pheras", "Multi-day celebrations"],
     seoTitle: "Italy Destination Weddings — Lake Como, Tuscany, Amalfi | Third Eye Events",
     metaDescription:
-      "Vaidik weddings across Italy — Lake Como villas, Tuscany estates and Amalfi cliffs — where Indian tradition meets Mediterranean beauty. By Third Eye Events.",
+      "Vedic weddings across Italy — Lake Como villas, Tuscany estates and Amalfi cliffs — where Indian tradition meets Mediterranean beauty. By Third Eye Events.",
   },
   {
     slug: "bali",
@@ -183,9 +156,9 @@ export const destinations: Destination[] = [
     luxuryContext:
       "Cliff-top villas, jungle resorts and beach estates with deeply trained hospitality.",
     thirdEyeInterpretation:
-      "Bali already prays. We build your Vaidik ceremony inside an island that understands ritual natively.",
+      "Bali already prays. We build your Vedic ceremony inside an island that understands ritual natively.",
     ritualDirection:
-      "Temple-adjacent settings where Balinese blessings can precede Vaidik sankalp.",
+      "Temple-adjacent settings where Balinese blessings can precede Vedic sankalp.",
     experienceDescription:
       "Sunset cliff ceremonies, gamelan meeting shehnai, flower baths after pheras.",
     idealAudience:
@@ -193,7 +166,7 @@ export const destinations: Destination[] = [
     bestFor: ["Cliff ceremonies", "Spiritual resonance", "Tropical luxury"],
     seoTitle: "Bali Destination Weddings — Uluwatu, Ubud | Third Eye Events",
     metaDescription:
-      "Destination weddings in Bali — Uluwatu cliffs, Ubud jungle and Besakih temple surroundings — Vaidik ceremony within the island of the gods. By Third Eye Events.",
+      "Destination weddings in Bali — Uluwatu cliffs, Ubud jungle and Besakih temple surroundings — Vedic ceremony within the island of the gods. By Third Eye Events.",
   },
   {
     slug: "cruises",
@@ -264,8 +237,8 @@ export const indiaCategories: IndiaCategory[] = [
     destinations: ["Shimla", "Manali", "Dharamshala", "Mussoorie"],
   },
   {
-    id: "spiritual-vaidik",
-    name: "Spiritual / Vaidik",
+    id: "spiritual-vedic",
+    name: "Spiritual / Vedic",
     essence: "Cities and ghats where ritual is daily life.",
     destinations: ["Varanasi", "Haridwar", "Rishikesh"],
   },

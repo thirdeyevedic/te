@@ -14,13 +14,17 @@ interface Props {
   /** Shared-element transition name pairing this hero with its listing card */
   transitionName?: string;
   breadcrumbs?: Crumb[];
+  /** Mirror the hero image horizontally. Only needed when a supplied portrait
+      faces out of the composition — corrects orientation, never the asset. */
+  flip?: boolean;
 }
-const { eyebrow, title, statement, image, transitionName, breadcrumbs = [] } = Astro.props;
+const { eyebrow, title, statement, image, transitionName, breadcrumbs = [], flip = false } =
+  Astro.props;
 ---
 
 <section class="phero">
   <div
-    class="phero__bg"
+    class:list={["phero__bg", flip && "is-flipped"]}
     aria-hidden="true"
     style={transitionName ? `view-transition-name: ${transitionName}` : undefined}
   >
@@ -46,6 +50,13 @@ const { eyebrow, title, statement, image, transitionName, breadcrumbs = [] } = A
     inset: 0;
     opacity: 0.85;
     overflow: clip;
+  }
+
+  /* The <img> is rendered by ExperienceImage, so it carries that component's
+     scope attribute and never this one — the descendant selector has to be
+     :global or the rule silently never matches. */
+  .phero__bg.is-flipped :global(img) {
+    transform: scaleX(-1);
   }
 
   .phero__bg::before {

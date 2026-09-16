@@ -1,6 +1,6 @@
 /**
  * VENUE EXPERIENCES — the named-concept venues.
- * One page per venue that carries its own Vaidik concept (§63 information gain).
+ * One page per venue that carries its own Vedic concept (§63 information gain).
  * Content derives from supplied concept meanings and country contexts.
  */
 
@@ -90,7 +90,7 @@ export const venueExperiences: VenueExperience[] = [
     interpretation:
       "Parampara means continuity. Every rite is conducted exactly as it would be at home — only the frame changes.",
     ritualDirection:
-      "The complete Vaidik sequence is preserved in full, framed by calm lagoon water and open sky.",
+      "The complete Vedic sequence is preserved in full, framed by calm lagoon water and open sky.",
     experienceDesign:
       "Familiar rhythms — haldi mornings, seated rituals, elders honoured first — held gently by the sea.",
     signatureMoments: [
@@ -157,114 +157,6 @@ export const venueExperiences: VenueExperience[] = [
     seoTitle: "Adhyatmik Aesthetics Vivaah at Joali Maldives | Third Eye Events",
     metaDescription:
       "An Adhyatmik Aesthetics Vivaah at Joali — spirituality expressed through artful form, by Third Eye Events.",
-  },
-  {
-    slug: "udaipur",
-    countrySlug: "rajasthan",
-    countryName: "Rajasthan",
-    name: "Udaipur",
-    concept: "Rajsi Prem Vivaah",
-    meaning: "Royal love — romance staged among lakes and palaces.",
-    tagline: "Love, staged by history itself.",
-    whyVenue:
-      "Lake Pichola's island palaces and Aravalli ridgelines — Udaipur has staged romance for centuries; nothing here is a replica.",
-    interpretation:
-      "Your love story set inside living heritage. The city does not decorate the wedding — it hosts it.",
-    ritualDirection:
-      "Lakeshore and palace-court mandapas; shehnai carries across still water at the moments that matter.",
-    experienceDesign:
-      "Boat arrivals, courtyard feasts and rampart celebrations — grandeur executed with discipline.",
-    signatureMoments: [
-      "Boat baraat arriving at a floodlit ghat",
-      "Lakefront mehndi morning",
-      "Durbar-hall sangeet under painted ceilings",
-      "Sunset lakeside pheras",
-    ],
-    bestFor: ["Palace weddings", "Lake settings", "Large families"],
-    seoTitle: "Rajsi Prem Vivaah in Udaipur — Palace Destination Wedding | Third Eye Events",
-    metaDescription:
-      "A Rajsi Prem Vivaah in Udaipur — royal love among lakes and living palaces, designed by Third Eye Events.",
-  },
-  {
-    slug: "jaisalmer",
-    countrySlug: "rajasthan",
-    countryName: "Rajasthan",
-    name: "Jaisalmer",
-    concept: "Agni Tatva Vivaah",
-    meaning: "Marriage witnessed by fire and desert.",
-    tagline: "Vows tempered like metal.",
-    whyVenue:
-      "A golden fortress rising from the dunes — Jaisalmer glows like embers at dusk, the element of fire made landscape.",
-    interpretation:
-      "Desert heat and homa fire read as one continuous element. Vows here are not soft — they are tempered.",
-    ritualDirection:
-      "A dune-edge mandapa at golden hour, Agni at centre against an amber horizon.",
-    experienceDesign:
-      "Caravan processions, dune camps and folk performance — raw, elemental, unforgettable in its simplicity.",
-    signatureMoments: [
-      "Dune-top sankalp at golden hour",
-      "Torch-lit caravan baraat",
-      "Fire-circle folk sangeet",
-      "Cold-desert stargazing to close",
-    ],
-    bestFor: ["Elemental drama", "Desire for the rare", "Photographic scale"],
-    seoTitle: "Agni Tatva Vivaah in Jaisalmer — Desert Wedding | Third Eye Events",
-    metaDescription:
-      "An Agni Tatva Vivaah in Jaisalmer — marriage witnessed by fire and desert, delivered by Third Eye Events.",
-  },
-  {
-    slug: "ranthambore",
-    countrySlug: "rajasthan",
-    countryName: "Rajasthan",
-    name: "Ranthambore",
-    concept: "Vanprastha Vivaah",
-    meaning: "The forest-stage wedding — retreat into stillness.",
-    tagline: "Leave the noise. Enter the union.",
-    whyVenue:
-      "Former royal hunting grounds returned to wilderness — forest, ruins and silence outside every tented door.",
-    interpretation:
-      "A wedding as vanaprastha: the deliberate step away from noise before stepping into a shared life.",
-    ritualDirection:
-      "Clearing ceremonies built from natural materials only — wood, flower, leaf and firelight.",
-    experienceDesign:
-      "Safari mornings, lantern evenings, minimal footprint — luxury expressed as absence of excess.",
-    signatureMoments: [
-      "Dawn safari blessing drive",
-      "Banyan-shaded clearing mandapa",
-      "Lantern-lit forest dinner",
-      "Silent vidai beneath the trees",
-    ],
-    bestFor: ["Quiet luxury", "Wilderness lovers", "Small gatherings"],
-    seoTitle: "Vanprastha Vivaah in Ranthambore — Forest Wedding | Third Eye Events",
-    metaDescription:
-      "A Vanprastha Vivaah in Ranthambore — a wedding in retreat into forest stillness, by Third Eye Events.",
-  },
-  {
-    slug: "jodhpur",
-    countrySlug: "rajasthan",
-    countryName: "Rajasthan",
-    name: "Jodhpur",
-    concept: "Veer Vivaah",
-    meaning: "The warrior's union — courage honoured.",
-    tagline: "Entered boldly. Held with honour.",
-    whyVenue:
-      "The blue city beneath Mehrangarh's mass — Jodhpur is martial heritage carved in stone.",
-    interpretation:
-      "A union as alliance of strength. Veer Vivaah honours courage — entered openly, held firmly.",
-    ritualDirection:
-      "Fort-shadow ceremonies with martial honours accorded respectfully — tradition observed, never costumed.",
-    experienceDesign:
-      "Horse processions, brass and nagada, rampart dinners above blue lanes.",
-    signatureMoments: [
-      "Mehrangarh-shadow baraat on horseback",
-      "Sword-arch welcome for the couple",
-      "Rampart dinner above the blue city",
-      "Dhol-tasha crescendo entry",
-    ],
-    bestFor: ["Regal-martial themes", "Fort venues", "Bold celebrations"],
-    seoTitle: "Veer Vivaah in Jodhpur — Warrior Heritage Wedding | Third Eye Events",
-    metaDescription:
-      "A Veer Vivaah in Jodhpur — the warrior's union beneath Mehrangarh fort, executed by Third Eye Events.",
   },
   {
     slug: "zermatt",
@@ -373,33 +265,6 @@ bestFor: ["Journey narratives", "Rail romantics", "Compact guest lists"],
     seoTitle: "Jeevan Yatra Vivaah aboard the Glacier Express | Third Eye Events",
     metaDescription:
       "A Jeevan Yatra Vivaah aboard the Glacier Express — marriage as the beginning of the journey, by Third Eye Events.",
-  },
-  {
-    slug: "jaipur",
-    countrySlug: "rajasthan",
-    countryName: "Rajasthan",
-    name: "Jaipur",
-    concept: "Rajwada Utsav Vivaah",
-    meaning: "Grand Celebration Wedding",
-    tagline: "Heritage, scale and celebration — perfectly orchestrated.",
-    whyVenue:
-      "Palaces like City Palace and Rambagh offer heritage and scale, making Jaipur ideal for big fat Indian weddings where culture, color and celebration energy come together.",
-    interpretation:
-      "We orchestrate disciplined, structured celebrations — elephant and horse baraats with nagada and shankh, but never chaotic. Rituals are conducted with precision, balancing celebration with sanskar.",
-    ritualDirection:
-      "Structured processes — from baraat to pheras — ensure every moment is meaningful. Elephant processions move with dignity, and ceremonies follow Vedic timing without rush.",
-    experienceDesign:
-      "Grand yet disciplined baraats, courtyard ceremonies, and evening celebrations that maintain energy without losing sacredness. Every element serves both celebration and sanskar.",
-    signatureMoments: [
-      "Elephant baraat through heritage gates",
-      "Structured nagada and shankh procession",
-      "Vedic pheras at auspicious muhurat",
-      "Royal feast with disciplined celebration",
-    ],
-    bestFor: ["Grand celebrations", "Heritage venues", "Cultural festivals"],
-    seoTitle: "Rajwada Utsav Vivaah in Jaipur | Third Eye Events",
-    metaDescription:
-      "A Rajwada Utsav Vivaah in Jaipur — grand heritage celebrations with disciplined execution, by Third Eye Events.",
   },
   {
     slug: "st-moritz",
@@ -520,21 +385,21 @@ bestFor: ["Journey narratives", "Rail romantics", "Compact guest lists"],
     whyVenue:
       "Traditional streets, lanterns, preserved heritage — heart of old Japan culture.",
     interpretation:
-      "Fusion of Japanese rituals + Vaidik Sanskar. Cultural respect — not mixing, but alignment. Every ritual explained → deeply understood.",
+      "Fusion of Japanese rituals + Vedic Sanskar. Cultural respect — not mixing, but alignment. Every ritual explained → deeply understood.",
     ritualDirection:
-      "Sequential presentation: Japanese ritual element followed by corresponding Vaidik element, each explained in depth. Focus on understanding rather than performance.",
+      "Sequential presentation: Japanese ritual element followed by corresponding Vedic element, each explained in depth. Focus on understanding rather than performance.",
     experienceDesign:
-      "Sequential cultural presentation with explanations, traditional Japanese setting respected, Vaidik rituals performed with clarity, fusion achieved through understanding not blending.",
+      "Sequential cultural presentation with explanations, traditional Japanese setting respected, Vedic rituals performed with clarity, fusion achieved through understanding not blending.",
     signatureMoments: [
       "Japanese ritual element explained",
-      "Corresponding Vaidik element explained",
+      "Corresponding Vedic element explained",
       "Sequential cultural presentation",
       "Deep understanding achieved by couple and guests",
     ],
     bestFor: ["Cultural enthusiasts", "Educational ceremonies", "Tradition-respecting couples"],
     seoTitle: "Parampara Sangam Vivaah in Gion District | Third Eye Events",
     metaDescription:
-      "A Parampara Sangam Vivaah in Gion District — cultural fusion where Japanese and Vaidik traditions align in deep understanding, by Third Eye Events.",
+      "A Parampara Sangam Vivaah in Gion District — cultural fusion where Japanese and Vedic traditions align in deep understanding, by Third Eye Events.",
   },
   {
     slug: "philosopher-s-path",
@@ -655,7 +520,7 @@ bestFor: ["Journey narratives", "Rail romantics", "Compact guest lists"],
     whyVenue:
       "City of ancient empire & civilization. Architecture that has stood for centuries. Symbol of timeless human legacy.",
     interpretation:
-      "Vaidik rituals performed within ancient Roman structures. Marriage framed as timeless dharmic bond. Sanskar aligned with idea of eternity, not trend.",
+      "Vedic rituals performed within ancient Roman structures. Marriage framed as timeless dharmic bond. Sanskar aligned with idea of eternity, not trend.",
     ritualDirection:
       "Ancient Roman structure integration, timeless ritual elements, eternity-focused symbolism, connection to historical continuity rather than contemporary trends.",
     experienceDesign:
@@ -763,15 +628,15 @@ bestFor: ["Journey narratives", "Rail romantics", "Compact guest lists"],
     whyVenue:
       "Known as Mother Temple of Bali. Deepest connection to Hindu traditions outside India. Located near Mount Agung (sacred energy center).",
     interpretation:
-      "Vaidik rituals aligned with Balinese Hindu practices. No over-design — only ritual purity. Ceremony guided by both Indian & Balinese priests.",
+      "Vedic rituals aligned with Balinese Hindu practices. No over-design — only ritual purity. Ceremony guided by both Indian & Balinese priests.",
     ritualDirection:
-      "Balinese Hindu vaidik ritual alignment, zero ornamentation or over-design, dual-priest guidance (Indian and Balinese), ritual purity as sole focus.",
+      "Balinese Hindu vedic ritual alignment, zero ornamentation or over-design, dual-priest guidance (Indian and Balinese), ritual purity as sole focus.",
     experienceDesign:
       "Dual-priest coordination, pure ritual execution, zero decoration or over-design, alignment with both traditions, purity as the sole metric of success.",
     signatureMoments: [
       "Dual-priest ceremony execution",
       "Zero-over-design ritual purity",
-      "Balinese-Hindu vaidik alignment",
+      "Balinese-Hindu vedic alignment",
       "Pure ritual completion without ornament",
     ],
     bestFor: ["Purity-focused couples", "Traditional ritual seekers", "Dual-tradition ceremonies"],
@@ -871,7 +736,7 @@ bestFor: ["Journey narratives", "Rail romantics", "Compact guest lists"],
     whyVenue:
       "World's largest and most luxurious cruise line. International standard facilities. Perfect for global guest list.",
     interpretation:
-      "Blend of global luxury + Vaidik rituals. Grand scale but spiritually controlled. Sanskar explained for international guests.",
+      "Blend of global luxury + Vedic rituals. Grand scale but spiritually controlled. Sanskar explained for international guests.",
     ritualDirection:
       "Global-local balance in rituals, explanation and translation for international guests, scale maintained with spiritual control, cultural bridging through understanding.",
     experienceDesign:

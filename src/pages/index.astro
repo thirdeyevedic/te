@@ -7,12 +7,12 @@ import ExperienceImage from "../components/ExperienceImage.astro";
 import { destinations } from "../data/destinations";
 import { getVenuesByCountry } from "../data/venues";
 import { signatureEntries } from "../data/signatureEntries";
-import { eventIPs } from "../data/eventIPs";
+import { ipEvents } from "../data/ipEvents";
 import { productionNetwork } from "../data/production";
 
-const title = "Third Eye Events — Vaidik Luxury Weddings, Experiences & Execution";
+const title = "Third Eye Events — Vedic Luxury Weddings, Experiences & Execution";
 const description =
-  "Third Eye Events is a multi-domain experience and execution powerhouse — Vaidik luxury weddings, destination weddings across seven worlds, owned event IP and production facilitation. You dream it. We bring it to life—with trust.";
+  "Third Eye Events is a multi-domain experience and execution powerhouse — Vedic luxury weddings, destination weddings across six worlds, owned IP Events and production facilitation. You dream it. We bring it to life—with trust.";
 
 const heroImage = "/images/hero-cinematic.jpg";
 ---
@@ -48,11 +48,15 @@ const heroImage = "/images/hero-cinematic.jpg";
 
   <!-- 03 · FIRST TRANSITION -->
   <section class="section-lg transition">
-    <div class="container">
-      <p class="display transition__line reveal">
+    {/* Texture only — two hairline rings and a saffron wash, both decorative. */}
+    <span class="transition__aura" aria-hidden="true"></span>
+    <div class="container transition__inner">
+      <p class="microcopy transition__eyebrow reveal">The Third Eye Difference</p>
+      <p class="display transition__line reveal" style="--reveal-delay: 140ms">
         We don't simply organize moments.<br />
-        We create experiences that carry meaning.
+        <span class="transition__accent">We create experiences that carry meaning.</span>
       </p>
+      <span class="transition__rule reveal" style="--reveal-delay: 300ms" aria-hidden="true"></span>
     </div>
   </section>
 
@@ -68,10 +72,10 @@ const heroImage = "/images/hero-cinematic.jpg";
       {
         [
           {
-            href: "/weddings/vaidik/",
-            name: "Vaidik",
+            href: "/weddings/vedic/",
+            name: "Vedic",
             line: "Sacred. Pure. Conscious.",
-            image: "/images/weddings/vaidik-hero.jpg",
+            image: "/images/weddings/vedic-hero.jpg",
           },
           {
             href: "/weddings/destination/",
@@ -103,22 +107,22 @@ const heroImage = "/images/hero-cinematic.jpg";
     </div>
   </section>
 
-  <!-- 05 · VAIDIK -->
-  <section class="section-lg vaidik atmosphere-radial" aria-labelledby="vaidik-title">
-    <div class="container vaidik__grid">
+  <!-- 05 · VEDIC -->
+  <section class="section-lg vedic atmosphere-radial" aria-labelledby="vedic-title">
+    <div class="container vedic__grid">
       <div>
         <p class="eyebrow reveal">The Core</p>
-        <h2 class="display vaidik__title reveal" style="--reveal-delay: 120ms" id="vaidik-title">
-          Vaidik Weddings
+        <h2 class="display vedic__title reveal" style="--reveal-delay: 120ms" id="vedic-title">
+          Vedic Weddings
         </h2>
         <p class="statement reveal" style="--reveal-delay: 240ms">
           Where Marriage is not an Event… but a Sacred Sanskar.
         </p>
-        <a class="link-line reveal" style="--reveal-delay: 360ms" href="/weddings/vaidik/">Enter the Sacred</a>
+        <a class="link-line reveal" style="--reveal-delay: 360ms" href="/weddings/vedic/">Enter the Sacred</a>
       </div>
-      <div class="vaidik__pure">
-        <div class="vaidik__pure-mandala" aria-hidden="true"></div>
-        <p class="vaidik__pure-word display reveal-mask">PURE</p>
+      <div class="vedic__pure">
+        <div class="vedic__pure-mandala" aria-hidden="true"></div>
+        <p class="vedic__pure-word display reveal-mask">PURE</p>
         <p class="microcopy reveal" style="--reveal-delay: 300ms">
           No Alcohol · No Non-Veg · Pure Satvik
         </p>
@@ -197,7 +201,7 @@ const heroImage = "/images/hero-cinematic.jpg";
     </div>
   </section>
 
-  <!-- 08 · EVENT IP -->
+  <!-- 08 · IP EVENTS -->
   <section class="section ip atmosphere-radial" aria-labelledby="ip-title">
     <div class="container ip-head">
       <div>
@@ -210,13 +214,13 @@ const heroImage = "/images/hero-cinematic.jpg";
           brandable experiences and scalable platforms with audiences of their own.
         </p>
       </div>
-      <a class="link-line reveal" href="/event-ip/">Enter IP Portfolio</a>
+      <a class="link-line reveal" href="/ip-events/">Enter IP Portfolio</a>
     </div>
-    <HorizontalScroller label="Event IP portfolio">
+    <HorizontalScroller label="IP Events portfolio">
       {
-        eventIPs.map((ip, i) => (
+        ipEvents.map((ip, i) => (
           <li class="ip-card reveal" style={`--reveal-delay: ${i * 50}ms`}>
-            <a href={`/event-ip/${ip.id}/`}>
+            <a href={`/ip-events/${ip.id}/`}>
               <span class="microcopy">{String(i + 1).padStart(2, "0")}</span>
               <span class="ip-card__name display">{ip.name}</span>
               <span class="ip-card__focus microcopy">{ip.focus}</span>
@@ -370,11 +374,76 @@ const heroImage = "/images/hero-cinematic.jpg";
     }
 
     /* ---------- Transition statement ---------- */
+    /* ---------- First transition ----------
+       Was one line of text on flat black, which read as a gap rather than a
+       beat. Now it carries a low-alpha texture and a three-step hierarchy
+       (eyebrow → statement → rule) so the scroll has something to land on. */
+    .transition {
+      position: relative;
+      overflow: clip;
+    }
+
+    .transition__aura {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 46%, rgba(184, 155, 94, 0.1), transparent 58%),
+        radial-gradient(ellipse 62% 40% at 50% 112%, rgba(199, 106, 42, 0.13), transparent 70%);
+    }
+
+    /* A mandala reduced to two hairlines: texture at a glance, ornament only
+       if you look for it. Keeps the section light rather than decorated. */
+    .transition__aura::before,
+    .transition__aura::after {
+      content: "";
+      position: absolute;
+      top: 46%;
+      left: 50%;
+      translate: -50% -50%;
+      aspect-ratio: 1;
+      border: 1px solid rgba(184, 155, 94, 0.09);
+      border-radius: 50%;
+    }
+
+    .transition__aura::before {
+      width: min(60vmin, 34rem);
+    }
+
+    .transition__aura::after {
+      width: min(92vmin, 52rem);
+      border-color: rgba(184, 155, 94, 0.05);
+    }
+
+    .transition__inner {
+      position: relative;
+      display: grid;
+      gap: clamp(1.4rem, 3vw, 2.4rem);
+      justify-items: start;
+    }
+
+    .transition__eyebrow {
+      color: var(--color-gold);
+      letter-spacing: 0.28em;
+    }
+
     .transition__line {
       font-size: clamp(2rem, 5vw, 4.2rem);
       font-style: italic;
+      line-height: 1.14;
       color: var(--ink);
-      max-width: 22ch;
+      max-width: 24ch;
+    }
+
+    /* The second clause is the point of the sentence, so it carries the accent. */
+    .transition__accent {
+      color: var(--color-gold);
+    }
+
+    .transition__rule {
+      width: min(18rem, 40vw);
+      height: 1px;
+      background: linear-gradient(90deg, var(--color-gold), transparent);
     }
 
     .section__title {
@@ -429,25 +498,25 @@ const heroImage = "/images/hero-cinematic.jpg";
       font-size: 0.95rem;
     }
 
-    /* ---------- Vaidik ---------- */
-    .vaidik__grid {
+    /* ---------- Vedic ---------- */
+    .vedic__grid {
       display: grid;
       gap: 4rem;
     }
 
     @media (min-width: 64em) {
-      .vaidik__grid {
+      .vedic__grid {
         grid-template-columns: 1.2fr 1fr;
         align-items: center;
       }
     }
 
-    .vaidik__title {
+    .vedic__title {
       font-size: clamp(2.6rem, 6vw, 5.2rem);
       margin-block: 1.2rem;
     }
 
-    .vaidik__pure {
+    .vedic__pure {
       text-align: center;
       display: grid;
       gap: 1.1rem;
@@ -455,7 +524,7 @@ const heroImage = "/images/hero-cinematic.jpg";
       position: relative;
     }
 
-    .vaidik__pure-mandala {
+    .vedic__pure-mandala {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -496,12 +565,12 @@ const heroImage = "/images/hero-cinematic.jpg";
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .vaidik__pure-mandala {
+      .vedic__pure-mandala {
         display: none;
       }
     }
 
-    .vaidik__pure-word {
+    .vedic__pure-word {
       font-size: clamp(5rem, 16vw, 15rem);
       color: transparent;
       -webkit-text-stroke: 1px rgba(184, 155, 94, 0.55);
@@ -623,7 +692,7 @@ const heroImage = "/images/hero-cinematic.jpg";
       font-size: clamp(1.05rem, 1.8vw, 1.4rem);
     }
 
-    /* ---------- Event IP ---------- */
+    /* ---------- IP Events ---------- */
     .ip-card {
       flex: 0 0 auto;
       width: min(72vw, 21rem);
@@ -697,6 +766,13 @@ const heroImage = "/images/hero-cinematic.jpg";
 
     .founder__portrait {
       aspect-ratio: 4 / 5;
+    }
+
+    /* The supplied portrait faces the wrong way for this composition — it reads
+       as looking out of the frame. Mirrored in CSS so the asset itself is never
+       modified and the client can revert by deleting this rule alone. */
+    .founder__portrait img {
+      transform: scaleX(-1);
     }
 
     /* ---------- Manifesto ---------- */

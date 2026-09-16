@@ -28,8 +28,6 @@ Generated 2026-09-16.
 | `images/destinations/kyoto/hero.jpg` | 1365×768 | client-supplied photograph |
 | `images/destinations/maldives/card.jpg` | 900×1200 | `scripts/cf_generate.py` |
 | `images/destinations/maldives/hero.jpg` | 1365×768 | client-supplied photograph |
-| `images/destinations/rajasthan/card.jpg` | 900×1200 | `scripts/cf_generate.py` |
-| `images/destinations/rajasthan/hero.jpg` | 1365×768 | client-supplied photograph |
 | `images/destinations/switzerland/card.jpg` | 900×1200 | `scripts/cf_generate.py` |
 | `images/destinations/switzerland/hero.jpg` | 1365×768 | client-supplied photograph |
 | `images/founder-portrait.jpg` | 800×1000 | client-supplied photograph |
@@ -60,17 +58,17 @@ Generated 2026-09-16.
 | `images/signature/royal-entry-hero.jpg` | 1365×768 | client-supplied photograph |
 | `images/signature/shiva-entry-card.jpg` | 900×1200 | client-supplied photograph |
 | `images/signature/shiva-entry-hero.jpg` | 1365×768 | client-supplied photograph |
-| `images/vaidik/dining-banana-leaf.jpg` | 819×1024 | client-supplied photograph |
-| `images/vaidik/dining.jpg` | 819×1024 | client-supplied photograph |
-| `images/vaidik/pure-hero.jpg` | 1365×768 | client-supplied photograph |
-| `images/vaidik/satvik-dining-banana-leaf.jpg` | 1365×768 | client-supplied photograph |
-| `images/vaidik/satvik-dining-copper.jpg` | 1365×768 | client-supplied photograph |
-| `images/vaidik/satvik-dining-seasonal.jpg` | 1365×768 | client-supplied photograph |
+| `images/vedic/dining-banana-leaf.jpg` | 819×1024 | client-supplied photograph |
+| `images/vedic/dining.jpg` | 819×1024 | client-supplied photograph |
+| `images/vedic/pure-hero.jpg` | 1365×768 | client-supplied photograph |
+| `images/vedic/satvik-dining-banana-leaf.jpg` | 1365×768 | client-supplied photograph |
+| `images/vedic/satvik-dining-copper.jpg` | 1365×768 | client-supplied photograph |
+| `images/vedic/satvik-dining-seasonal.jpg` | 1365×768 | client-supplied photograph |
 | `images/weddings/concepts-hero.jpg` | 1593×896 | `scripts/cf_generate.py` |
 | `images/weddings/destination-hero.jpg` | 1593×896 | `scripts/cf_generate.py` |
 | `images/weddings/experiences-hero.jpg` | 1593×896 | client-supplied photograph (cropped from `signature/shiva-entry-hero.jpg`) |
 | `images/weddings/index-hero.jpg` | 1593×896 | `scripts/cf_generate.py` |
-| `images/weddings/vaidik-hero.jpg` | 1593×896 | `scripts/cf_generate.py` |
+| `images/weddings/vedic-hero.jpg` | 1593×896 | `scripts/cf_generate.py` |
 
 > Replacing a generated asset with commissioned photography: drop the file in place at the same path and aspect ratio — every page references these paths directly — then mark the row `client-supplied photograph` so a later generation run does not re-claim it.
 
@@ -86,7 +84,6 @@ The images remain illustrative of the *kind* of work Third Eye Events does; if a
 - `images/destinations/italy/hero.jpg`
 - `images/destinations/kyoto/hero.jpg`
 - `images/destinations/maldives/hero.jpg`
-- `images/destinations/rajasthan/hero.jpg`
 - `images/destinations/switzerland/hero.jpg`
 - `images/founder-portrait.jpg`
 - `images/hero-cinematic.jpg`
@@ -114,10 +111,10 @@ The images remain illustrative of the *kind* of work Third Eye Events does; if a
 - `images/signature/royal-entry-hero.jpg`
 - `images/signature/shiva-entry-card.jpg`
 - `images/signature/shiva-entry-hero.jpg`
-- `images/vaidik/dining-banana-leaf.jpg`
-- `images/vaidik/dining.jpg`
-- `images/vaidik/pure-hero.jpg`
-- `images/vaidik/satvik-dining-banana-leaf.jpg`
-- `images/vaidik/satvik-dining-copper.jpg`
-- `images/vaidik/satvik-dining-seasonal.jpg`
+- `images/vedic/dining-banana-leaf.jpg`
+- `images/vedic/dining.jpg`
+- `images/vedic/pure-hero.jpg`
+- `images/vedic/satvik-dining-banana-leaf.jpg`
+- `images/vedic/satvik-dining-copper.jpg`
+- `images/vedic/satvik-dining-seasonal.jpg`
 - `images/weddings/experiences-hero.jpg`
