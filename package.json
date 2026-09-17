@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "prebuild": "python3 scripts/make-responsive.py || true",
     "check": "astro check",
     "preview": "astro preview",
     "preview:full": "npm run build && npx wrangler pages dev dist --d1 DB=third-eye-db",

@@ -1,0 +1,534 @@
+{
+  "/images/about/archival-dance.jpg": {
+    "h": 1125,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 900
+  },
+  "/images/about/founder-hero.jpg": {
+    "h": 900,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1600
+  },
+  "/images/about/hero.jpg": {
+    "h": 896,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1593
+  },
+  "/images/about/philosophy-hero.jpg": {
+    "h": 896,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1593
+  },
+  "/images/about/story-hero.jpg": {
+    "h": 896,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1593
+  },
+  "/images/about/team-vision.jpg": {
+    "h": 896,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1593
+  },
+  "/images/about/vision-hero.jpg": {
+    "h": 896,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1593
+  },
+  "/images/contact-hero.jpg": {
+    "h": 896,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1593
+  },
+  "/images/destinations/bali/card.jpg": {
+    "h": 1200,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 900
+  },
+  "/images/destinations/bali/hero.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/destinations/cruises/card.jpg": {
+    "h": 1200,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 900
+  },
+  "/images/destinations/cruises/hero.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/destinations/index-hero.jpg": {
+    "h": 896,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1593
+  },
+  "/images/destinations/india-hero.jpg": {
+    "h": 896,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1593
+  },
+  "/images/destinations/italy/card.jpg": {
+    "h": 1200,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 900
+  },
+  "/images/destinations/italy/hero.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/destinations/kyoto/card.jpg": {
+    "h": 1200,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 900
+  },
+  "/images/destinations/kyoto/hero.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/destinations/maldives/card.jpg": {
+    "h": 1200,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 900
+  },
+  "/images/destinations/maldives/hero.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/destinations/switzerland/card.jpg": {
+    "h": 1200,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 900
+  },
+  "/images/destinations/switzerland/hero.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/founder-portrait.jpg": {
+    "h": 1000,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 800
+  },
+  "/images/hero-cinematic.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/ip/automotive-hero.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/ip/awards-hero.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/ip/best-products-hero.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/ip/concerts-hero.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/ip/devotional-hero.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/ip/exhibitions-hero.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/ip/fashion-hero.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/ip/index-hero.jpg": {
+    "h": 896,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1593
+  },
+  "/images/ip/political-hero.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/ip/sports-hero.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/og.jpg": {
+    "h": 630,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/production/ad-shoots.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/production/branded-content.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/production/documentaries.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/production/feature-films.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/production/index-hero.jpg": {
+    "h": 896,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1593
+  },
+  "/images/production/short-films.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/production/youtube-digital.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/signature/celestial-entry-card.jpg": {
+    "h": 768,
+    "variants": [
+      480
+    ],
+    "w": 576
+  },
+  "/images/signature/celestial-entry-hero.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/signature/floral-entry-card.jpg": {
+    "h": 768,
+    "variants": [
+      480
+    ],
+    "w": 576
+  },
+  "/images/signature/floral-entry-hero.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/signature/royal-entry-card.jpg": {
+    "h": 1200,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 900
+  },
+  "/images/signature/royal-entry-hero.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/signature/shiva-entry-card.jpg": {
+    "h": 1200,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 900
+  },
+  "/images/signature/shiva-entry-hero.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/vedic/dining-banana-leaf.jpg": {
+    "h": 1024,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 819
+  },
+  "/images/vedic/dining.jpg": {
+    "h": 1024,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 819
+  },
+  "/images/vedic/pure-hero.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/vedic/satvik-dining-banana-leaf.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/vedic/satvik-dining-copper.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/vedic/satvik-dining-seasonal.jpg": {
+    "h": 768,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1365
+  },
+  "/images/weddings/concepts-hero.jpg": {
+    "h": 896,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1593
+  },
+  "/images/weddings/destination-hero.jpg": {
+    "h": 896,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1593
+  },
+  "/images/weddings/experiences-hero.jpg": {
+    "h": 896,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1593
+  },
+  "/images/weddings/index-hero.jpg": {
+    "h": 896,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1593
+  },
+  "/images/weddings/vedic-hero.jpg": {
+    "h": 896,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1593
+  }
+}

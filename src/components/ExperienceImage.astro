@@ -12,6 +12,12 @@
  */
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
+// Responsive width-variants for /public imagery (see scripts/make-responsive.py).
+// Keyed by public path; value carries the source width + available variant widths.
+import srcsetManifest from "../data/srcset-manifest.json";
+
+type SrcSetEntry = { w: number; h: number; variants: number[] };
+const RESPONSIVE = srcsetManifest as Record<string, SrcSetEntry>;
 
 interface Props {
   src?: string | ImageMetadata;
@@ -42,6 +48,21 @@ const {
 const metaSrc = typeof src === "object" ? src : undefined;
 const pathSrc = typeof src === "string" ? src : undefined;
 
+// Build a srcset for /public images from the pre-generated variant manifest.
+// Falls back to undefined (plain <img>) when no manifest entry exists, so a
+// missing variant can never produce a 404 — the original always remains valid.
+const srcset = (() => {
+  if (!pathSrc) return undefined;
+  const entry = RESPONSIVE[pathSrc];
+  if (!entry || entry.variants.length === 0) return undefined;
+  const dot = pathSrc.lastIndexOf(".");
+  const parts = entry.variants.map(
+    (w) => `${pathSrc.slice(0, dot)}@${w}${pathSrc.slice(dot)} ${w}w`
+  );
+  parts.push(`${pathSrc} ${entry.w}w`);
+  return parts.join(", ");
+})();
+
 const fillClass = fill ? "xi--fill" : "";
 const cls = ["xi__media", fillClass, className].filter(Boolean).join(" ");
 const style = position ? `object-position: ${position}` : undefined;
@@ -63,6 +84,8 @@ const style = position ? `object-position: ${position}` : undefined;
     <img
       src={pathSrc}
       alt={alt}
+      srcset={srcset}
+      sizes="(max-width: 48em) 100vw, (max-width: 72em) 80vw, 60vw"
       loading={eager ? "eager" : "lazy"}
       decoding="async"
       class={cls}
