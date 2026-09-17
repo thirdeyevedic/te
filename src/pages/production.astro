@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ExperienceImage from "../components/ExperienceImage.astro";
 import PageHero from "../components/PageHero.astro";
 import CTA from "../components/CTA.astro";
 import { productionServices, productionNetwork } from "../data/production";
@@ -45,7 +46,7 @@ const structuredData = [
         productionServices.map((s, i) => (
           <article class="svc reveal" id={s.id} style={`--reveal-delay: ${(i % 3) * 90}ms`}>
             <figure class="svc__visual">
-              <img src={s.heroImage} alt="" class="xi__media xi--fill" loading="lazy" decoding="async" />
+              <ExperienceImage src={s.heroImage} fill />
             </figure>
             <h2 class="display svc__name">{s.name}</h2>
             <ul role="list">

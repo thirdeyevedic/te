@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ExperienceImage from "../../components/ExperienceImage.astro";
 import PageHero from "../../components/PageHero.astro";
 import CTA from "../../components/CTA.astro";
 import { ORG_ID } from "../../data/site";
@@ -42,13 +43,11 @@ const ritualEntities = [
   <!-- PURE -->
   <section class="section pure atmosphere-radial" aria-labelledby="pure-title">
     <div class="pure__bg" aria-hidden="true">
-      <img
-        src="/images/vedic/pure-hero.jpg"
-        alt=""
-        class="xi__media xi--fill"
-        loading="lazy"
-        decoding="async"
-      />
+        <ExperienceImage
+          src="/images/vedic/pure-hero.jpg"
+          alt=""
+          fill
+        />
     </div>
     <div class="container pure__wrap">
       <div class="pure__mandala" aria-hidden="true"></div>
@@ -110,7 +109,7 @@ const ritualEntities = [
             },
           ].map((v) => (
             <figure class="ph ph--imaged ph--framed dining__visual reveal-mask">
-              <img src={v.src} alt={v.alt} class="xi__media xi--fill" loading="lazy" decoding="async" />
+              <ExperienceImage src={v.src} alt={v.alt} fill />
               <span class="ph__scrim" aria-hidden="true" />
             </figure>
           ))

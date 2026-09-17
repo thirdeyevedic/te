@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import ExperienceImage from "../../../components/ExperienceImage.astro";
 import PageHero from "../../../components/PageHero.astro";
 import CTA from "../../../components/CTA.astro";
 import { destinations } from "../../../data/destinations";
@@ -102,7 +103,7 @@ const structuredData = [
       {
         related.map((r) => (
           <a class="rel ph ph--imaged reveal" href={`/destinations/${r.countrySlug}/${r.slug}/`}>
-            <img src={country.cardImage} alt="" class="xi__media xi--fill" loading="lazy" decoding="async" />
+            <ExperienceImage src={country.cardImage} fill />
             <span class="ph__scrim" aria-hidden="true" />
             <span class="microcopy">{r.concept}</span>
             <span class="display rel__name">{r.name} →</span>
@@ -111,7 +112,7 @@ const structuredData = [
         ))
       }
       <a class="rel ph ph--imaged reveal" href={`/weddings/experiences/`} style="--reveal-delay: 300ms">
-        <img src="/images/weddings/experiences-hero.jpg" alt="" class="xi__media xi--fill" loading="lazy" decoding="async" />
+        <ExperienceImage src="/images/weddings/experiences-hero.jpg" fill />
         <span class="ph__scrim" aria-hidden="true" />
         <span class="microcopy">Before it begins</span>
         <span class="display rel__name">Signature Entries →</span>

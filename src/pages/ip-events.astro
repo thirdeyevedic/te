@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ExperienceImage from "../components/ExperienceImage.astro";
 import PageHero from "../components/PageHero.astro";
 import CTA from "../components/CTA.astro";
 import { ipEvents } from "../data/ipEvents";
@@ -43,7 +44,7 @@ const description =
         ipEvents.map((ip, i) => (
           <article class="ip reveal" id={ip.id} style={`--reveal-delay: ${(i % 3) * 60}ms`}>
             <figure class="ip__visual">
-              <img src={ip.heroImage} alt="" class="xi__media xi--fill" loading="lazy" decoding="async" />
+              <ExperienceImage src={ip.heroImage} fill />
             </figure>
             <span class="microcopy ip__num">{String(i + 1).padStart(2, "0")}</span>
             <div>

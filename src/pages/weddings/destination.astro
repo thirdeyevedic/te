@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ExperienceImage from "../../components/ExperienceImage.astro";
 import PageHero from "../../components/PageHero.astro";
 import HorizontalScroller from "../../components/HorizontalScroller.astro";
 import CTA from "../../components/CTA.astro";
@@ -29,7 +30,7 @@ const description =
               href={`/destinations/${d.slug}/`}
               style={`view-transition-name: dest-${d.slug}`}
             >
-              <img src={d.cardImage} alt="" class="xi__media xi--fill" loading="lazy" decoding="async" />
+              <ExperienceImage src={d.cardImage} fill />
               <span class="ph__scrim" aria-hidden="true" />
               <span class="microcopy">{d.region} · {d.country}</span>
               <span class="display world__name">{d.name}</span>

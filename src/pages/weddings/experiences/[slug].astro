@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import ExperienceImage from "../../../components/ExperienceImage.astro";
 import PageHero from "../../../components/PageHero.astro";
 import CTA from "../../../components/CTA.astro";
 import { signatureEntries } from "../../../data/signatureEntries";
@@ -30,7 +31,7 @@ const related = signatureEntries.filter((e) => e.slug !== entry.slug).slice(0, 3
       {
         entry.cardImage && (
           <figure class="seq-head__visual ph ph--imaged">
-            <img src={entry.cardImage} alt="" class="xi__media xi--fill" loading="lazy" decoding="async" />
+            <ExperienceImage src={entry.cardImage} fill />
             <span class="ph__scrim" aria-hidden="true" />
           </figure>
         )

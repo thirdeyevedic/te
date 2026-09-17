@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ExperienceImage from "../../components/ExperienceImage.astro";
 import PageHero from "../../components/PageHero.astro";
 import CTA from "../../components/CTA.astro";
 import { destinations } from "../../data/destinations";
@@ -115,7 +116,7 @@ const related = destinations.filter((x) => x.slug !== d.slug).slice(0, 3);
       {
         related.map((r) => (
           <a class="rel ph ph--imaged reveal" href={`/destinations/${r.slug}/`}>
-            <img src={r.cardImage} alt="" class="xi__media xi--fill" loading="lazy" decoding="async" />
+            <ExperienceImage src={r.cardImage} fill />
             <span class="ph__scrim" aria-hidden="true" />
             <span class="microcopy">{r.country}</span>
             <span class="display rel__name">{r.name} →</span>

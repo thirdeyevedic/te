@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ExperienceImage from "../../components/ExperienceImage.astro";
 import PageHero from "../../components/PageHero.astro";
 import CTA from "../../components/CTA.astro";
 
@@ -54,7 +55,7 @@ const description =
             href={p.href}
             style={`--reveal-delay: ${i * 110}ms`}
           >
-            <img src={p.image} alt="" class="xi__media xi--fill" loading="lazy" decoding="async" />
+            <ExperienceImage src={p.image} fill />
             <span class="ph__scrim" aria-hidden="true" />
             <span class="microcopy">{p.num}</span>
             <h2 class="display path__name">{p.name}</h2>

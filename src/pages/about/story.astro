@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ExperienceImage from "../../components/ExperienceImage.astro";
 import PageHero from "../../components/PageHero.astro";
 import CTA from "../../components/CTA.astro";
 
@@ -19,12 +20,10 @@ const description =
   <section class="section">
     <div class="container story__grid">
       <figure class="ph ph--imaged ph--framed story__portrait reveal-mask">
-        <img
+        <ExperienceImage
           src="/images/about/archival-dance.jpg"
           alt="Archival performance imagery from the years on stage"
-          class="xi__media xi--fill"
-          loading="lazy"
-          decoding="async"
+          fill
         />
         <span class="ph__scrim" aria-hidden="true"></span>
       </figure>
