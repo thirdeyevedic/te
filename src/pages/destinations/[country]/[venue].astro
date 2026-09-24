@@ -21,8 +21,8 @@ const related = getVenuesByCountry(venue.countrySlug).filter((v) => v.slug !== v
 
 const crumbs = [
   { label: "Home", href: "/" },
-  { label: "Destinations", href: "/destinations/" },
-  { label: country.name, href: `/destinations/${country.slug}/` },
+  { label: "Destinations", href: "/destinations" },
+  { label: country.name, href: `/destinations/${country.slug}` },
   { label: venue.name },
 ];
 
@@ -39,7 +39,7 @@ const structuredData = [
 ];
 ---
 
-<BaseLayout title={venue.seoTitle} description={venue.metaDescription} path={`/destinations/${venue.countrySlug}/${venue.slug}/`} structuredData={structuredData}>
+<BaseLayout title={venue.seoTitle} description={venue.metaDescription} path={`/destinations/${venue.countrySlug}/${venue.slug}`} structuredData={structuredData}>
   <PageHero
     image={country.heroImage}
     eyebrow={`${venue.countryName} · ${country.region}`}
@@ -102,7 +102,7 @@ const structuredData = [
     <div class="container rel-grid">
       {
         related.map((r) => (
-          <a class="rel ph ph--imaged reveal" href={`/destinations/${r.countrySlug}/${r.slug}/`}>
+          <a class="rel ph ph--imaged reveal" href={`/destinations/${r.countrySlug}/${r.slug}`}>
             <ExperienceImage src={country.cardImage} fill />
             <span class="ph__scrim" aria-hidden="true" />
             <span class="microcopy">{r.concept}</span>
@@ -111,7 +111,7 @@ const structuredData = [
           </a>
         ))
       }
-      <a class="rel ph ph--imaged reveal" href={`/weddings/experiences/`} style="--reveal-delay: 300ms">
+      <a class="rel ph ph--imaged reveal" href={`/weddings/experiences`} style="--reveal-delay: 300ms">
         <ExperienceImage src="/images/weddings/experiences-hero.jpg" fill />
         <span class="ph__scrim" aria-hidden="true" />
         <span class="microcopy">Before it begins</span>
@@ -190,8 +190,7 @@ const structuredData = [
   .rel {
     display: flex;
     flex-direction: column;
-    gap: 0.65rem;
-    min-height: 13rem;
+    gap: 0.6rem;
     padding: 1.6rem;
     border: 1px solid transparent;
     transition: border-color var(--dur-standard) ease;
