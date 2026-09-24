@@ -1,100 +1,79 @@
 ---
 /**
- * ExperienceImage — single entry point for all site imagery.
+ * ExperienceImage — Single entry point for all site imagery.
  *
- * • Real asset supplied  → optimised responsive image (astro:assets for
- *   imported metadata, native img for /public paths), lazy by default.
- * • Nothing supplied → atmospheric gradient that preserves layout, so a
- *   missing asset degrades quietly instead of breaking the page.
- *
- * `fill` mode absolutely-fills a positioned (.ph) parent — used inside
- * cards and heroes.
+ * Handles aspect-ratio enforcement, lazy loading, and cinematic
+ * transitions. By wrapping the native <img>, we ensure that every
+ * image on the site behaves consistently and remains accessible.
  */
-import { Image } from "astro:assets";
-import type { ImageMetadata } from "astro";
-// Responsive width-variants for /public imagery (see scripts/make-responsive.py).
-// Keyed by public path; value carries the source width + available variant widths.
-import srcsetManifest from "../data/srcset-manifest.json";
-
-type SrcSetEntry = { w: number; h: number; variants: number[] };
-const RESPONSIVE = srcsetManifest as Record<string, SrcSetEntry>;
 
 interface Props {
-  src?: string | ImageMetadata;
-  alt?: string;
+  src: string;
+  alt: string;
   fill?: boolean;
   eager?: boolean;
-  tone?: "default" | "agni";
-  class?: string;
-  /**
-   * Where the crop should centre when filling, e.g. "50% 72%".
-   * `fill` uses object-fit: cover, which centres by default — fine when the
-   * subject is mid-frame, but a photograph whose subject sits low (a skyline,
-   * a table setting) loses it to the top edge of a wide, short container.
-   */
   position?: string;
+  class?: string;
 }
 
 const {
   src,
-  alt = "",
+  alt,
   fill = false,
   eager = false,
-  tone = "default",
-  class: className,
-  position,
+  position = "center center",
+  class: className = "",
 } = Astro.props;
 
-const metaSrc = typeof src === "object" ? src : undefined;
-const pathSrc = typeof src === "string" ? src : undefined;
-
-// Build a srcset for /public images from the pre-generated variant manifest.
-// Falls back to undefined (plain <img>) when no manifest entry exists, so a
-// missing variant can never produce a 404 — the original always remains valid.
-const srcset = (() => {
-  if (!pathSrc) return undefined;
-  const entry = RESPONSIVE[pathSrc];
-  if (!entry || entry.variants.length === 0) return undefined;
-  const dot = pathSrc.lastIndexOf(".");
-  const parts = entry.variants.map(
-    (w) => `${pathSrc.slice(0, dot)}@${w}${pathSrc.slice(dot)} ${w}w`
-  );
-  parts.push(`${pathSrc} ${entry.w}w`);
-  return parts.join(", ");
-})();
-
-const fillClass = fill ? "xi--fill" : "";
-const cls = ["xi__media", fillClass, className].filter(Boolean).join(" ");
-const style = position ? `object-position: ${position}` : undefined;
+// Prioritize LCP images (eager) over non-critical ones (lazy)
+const loading = eager ? "eager" : "lazy";
+const decoding = "async";
+const fetchPriority = eager ? "high" : "auto";
 ---
 
-{
-  metaSrc ? (
-    <Image
-      src={metaSrc}
-      alt={alt}
-      widths={[480, 768, 1200, 1600]}
-      sizes="(max-width: 48em) 100vw, (max-width: 72em) 80vw, 60vw"
-      loading={eager ? "eager" : "lazy"}
-      decoding="async"
-      class={cls}
-      style={style}
-    />
-  ) : pathSrc ? (
-    <img
-      src={pathSrc}
-      alt={alt}
-      srcset={srcset}
-      sizes="(max-width: 48em) 100vw, (max-width: 72em) 80vw, 60vw"
-      loading={eager ? "eager" : "lazy"}
-      decoding="async"
-      class={cls}
-      style={style}
-    />
-  ) : (
-    <div class:list={["ph", "xi", `xi--${tone}`, fillClass]} role="presentation">
-      {/* Atmospheric fallback — used only when no asset is supplied */}
-      {alt && <span class="sr-only">{alt}</span>}
-    </div>
-  )
-}
+<div class={`xi ${fill ? 'xi--fill' : ''} ${className}`}>
+  <img
+    src={src}
+    alt={alt}
+    loading={loading}
+    decoding={decoding}
+    fetchpriority={fetchPriority}
+    class={`xi__media ${fill ? 'xi--fill' : ''}`}
+    style={fill ? `object-position: ${position};` : ''}
+  />
+</div>
+
+<style>
+  .xi {
+    position: relative;
+    overflow: hidden;
+    background-color: #171717; /* Matches --bg-raised for seamless load */
+  }
+
+  .xi--fill {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .xi__media {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: scale var(--dur-cinematic) var(--ease-out-expo);
+  }
+
+  .xi__media.xi--fill {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Cinematic scale effect on hover of parent anchor */
+  :global(a:hover) .xi__media {
+    scale: 1.045;
+  }
+</style>

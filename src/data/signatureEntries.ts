@@ -11,8 +11,12 @@ export interface SignatureEntry {
   descriptor: string;
   /** Wide hero imagery — public/ URL or imported asset */
   heroImage?: string;
+  /** Wide hero alt text */
+  heroAlt?: string;
   /** Portrait crop of the same photograph, used by listing cards */
   cardImage?: string;
+  /** Portrait card alt text */
+  cardAlt?: string;
   /** Video URL for cinematic playback */
   videoUrl?: string;
   /** Audio URL for sound identity */
@@ -33,7 +37,9 @@ export const signatureEntries: SignatureEntry[] = [
     line: "A powerful beginning, where energy takes form.",
     descriptor: "The groom doesn’t just arrive — he emerges like Shiva, surrounded by smoke, beats, and raw spiritual intensity.",
     heroImage: "/images/signature/shiva-entry-hero.jpg",
+    heroAlt: "A dramatic low-angle shot of a groom emerging from thick white smoke, backlit by cobalt blue and gold light, holding a trishul.",
     cardImage: "/images/signature/shiva-entry-card.jpg",
+    cardAlt: "A vertical shot of a golden trishul standing upright in blue-lit mist and reflective stone.",
     videoUrl: "/videos/shiva-entry-cinematic.mp4",
     audioUrl: "/audio/shiva-entry-sound-identity.mp3",
     sequence: [
@@ -63,7 +69,9 @@ export const signatureEntries: SignatureEntry[] = [
     line: "Walk the path of kings before you take your vows.",
     descriptor: "A golden pathway unfolds lined with florals, lights and legacy. Every step echoes royalty, grace and timeless grandeur.",
     heroImage: "/images/signature/royal-entry-hero.jpg",
+    heroAlt: "A symmetrical view of a Rajput palace corridor with gold-lit sandstone pillars and a floral pathway leading to a groom's entrance.",
     cardImage: "/images/signature/royal-entry-card.jpg",
+    cardAlt: "A vertical view of a carved sandstone archway opening onto a candle-lit palace corridor.",
     videoUrl: "/videos/royal-entry-cinematic.mp4",
     audioUrl: "/audio/royal-entry-sound-identity.mp3",
     sequence: [
@@ -93,7 +101,9 @@ export const signatureEntries: SignatureEntry[] = [
     line: "A moment where love is celebrated like a festival.",
     descriptor: "Petals fall. Music flows. The air itself feels alive. A joyful, vibrant entry where the bride/groom is welcomed like a celebration of life.",
     heroImage: "/images/signature/floral-entry-hero.jpg",
+    heroAlt: "A lush canopy of marigold and rose petals falling through beams of warm golden light in a garden setting.",
     cardImage: "/images/signature/floral-entry-card.jpg",
+    cardAlt: "A close-up of falling flower petals captured in slow motion against a luminous gold background.",
     videoUrl: "/videos/floral-entry-cinematic.mp4",
     audioUrl: "/audio/floral-entry-sound-identity.mp3",
     sequence: [
@@ -110,6 +120,7 @@ export const signatureEntries: SignatureEntry[] = [
     customizationOptions: [
       "Floral palette — pastel, vibrant, or monochrome white",
       "Music format — solo instrumental, live band, or DJ with live vocals",
+      "Music format — solo instrumental, live band, or DJ with live vocals",
       "Petal delivery — manual phoolon ki baarish, cannon, or drone release",
       "Dance integration — flash mob, classical, or Bollywood choreography",
     ],
@@ -124,14 +135,16 @@ export const signatureEntries: SignatureEntry[] = [
     line: "Not an entry… a descent from the divine.",
     descriptor: "Floating. Elevated. Surreal. A heavenly arrival designed with light, sound and sacred symbolism creating a moment beyond this world.",
     heroImage: "/images/signature/celestial-entry-hero.jpg",
+    heroAlt: "A surreal, misty arrival where light beams descend from above onto dark temple steps, accompanied by a conch shell and temple bells.",
     cardImage: "/images/signature/celestial-entry-card.jpg",
+    cardAlt: "A vertical view of a conch shell and a brass bell resting on dark stone in a cool dawn-blue mist.",
     videoUrl: "/videos/celestial-entry-cinematic.mp4",
     audioUrl: "/audio/celestial-entry-sound-identity.mp3",
     sequence: [
       { label: "The Stillness", description: "Complete silence or soft ambient drone. Lights dim into soft white/blue hues." },
       { label: "The Divine Sound", description: "Shankh echoes gently followed by temple bells and soft Vedic chants/alaap." },
       { label: "The Atmosphere Forms", description: "Mist spreads across the floor. Light beams cut through like dawn rays." },
-      { label: "The Appearance", description: "Silhouette becomes visible above or within mist. Platform/pathway softly illuminated." },
+      { label: "The Appearance", "Silhouette becomes visible above or within mist. Platform/pathway softly illuminated." },
       { label: "The Descent", description: "Couple enters slowly, extremely graceful, almost gliding. No sudden actions." },
       { label: "The Divine Walk", description: "Each step synced with music. Lighting follows like aura. Guests silent, absorbed." },
       { label: "The Union Point", description: "Light intensifies briefly. Chant peaks softly. Transition into ritual seamless and sacred." },
@@ -146,7 +159,7 @@ export const signatureEntries: SignatureEntry[] = [
     ],
     seoTitle: "The Celestial Entry — Auspicious | Third Eye Events",
     metaDescription:
-      "Shankh, temple bells, mist and descending light — the Celestial Entry by Third Eye Events opens the wedding with auspice.",
+      "Shankh, temple bells, mist and descending la-light — the Celestial Entry by Third Eye Events opens the wedding with auspice.",
   },
 ];
 

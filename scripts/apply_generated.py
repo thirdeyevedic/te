@@ -1,3 +1,4 @@
+from typing import Optional
 #!/usr/bin/env python3
 """
 apply_generated — place the Workers AI images into public/ as web-ready assets.
@@ -50,7 +51,7 @@ FOCUS = {
 }
 
 
-def source(slot: str) -> Image.Image | None:
+def source(slot: str) -> Optional[Image.Image]:
     """Raw generation for `slot` from the scratch dir, or None if absent.
 
     NOTE: `GEN` is a *persistent* scratch dir (/tmp/imgwork/gen), not a
@@ -64,7 +65,7 @@ def source(slot: str) -> Image.Image | None:
     return Image.open(path).convert("RGB")
 
 
-def public_source(rel: str) -> Image.Image | None:
+def public_source(rel: str) -> Optional[Image.Image]:
     """The already-placed asset at `rel` under public/, or None if absent."""
     path = os.path.join(PUBLIC, rel)
     if not os.path.exists(path):

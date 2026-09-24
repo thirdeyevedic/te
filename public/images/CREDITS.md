@@ -4,7 +4,7 @@ This site carries two kinds of imagery, and the table below records which is whi
 
 For the generated assets: no photograph of any real person, client, wedding or venue is depicted. Prompts deliberately avoid recognisable faces — where people appear they are silhouetted, seen from behind, or out of focus. They are illustrative of the *kind* of work Third Eye Events does and should not be presented as a record of past events.
 
-Generated 2026-09-16.
+Generated 2026-09-24.
 
 | Asset | Dimensions | Prompt source |
 | --- | --- | --- |
@@ -28,6 +28,7 @@ Generated 2026-09-16.
 | `images/destinations/kyoto/hero.jpg` | 1365×768 | client-supplied photograph |
 | `images/destinations/maldives/card.jpg` | 900×1200 | `scripts/cf_generate.py` |
 | `images/destinations/maldives/hero.jpg` | 1365×768 | client-supplied photograph |
+| `images/destinations/rajasthan/card.jpg` | 900×1200 | `scripts/cf_generate.py` |
 | `images/destinations/switzerland/card.jpg` | 900×1200 | `scripts/cf_generate.py` |
 | `images/destinations/switzerland/hero.jpg` | 1365×768 | client-supplied photograph |
 | `images/founder-portrait.jpg` | 800×1000 | client-supplied photograph |
@@ -68,13 +69,14 @@ Generated 2026-09-16.
 | `images/weddings/destination-hero.jpg` | 1593×896 | `scripts/cf_generate.py` |
 | `images/weddings/experiences-hero.jpg` | 1593×896 | client-supplied photograph (cropped from `signature/shiva-entry-hero.jpg`) |
 | `images/weddings/index-hero.jpg` | 1593×896 | `scripts/cf_generate.py` |
+| `images/weddings/vaidik-hero.jpg` | 1593×896 | `scripts/cf_generate.py` |
 | `images/weddings/vedic-hero.jpg` | 1593×896 | `scripts/cf_generate.py` |
 
 > Replacing a generated asset with commissioned photography: drop the file in place at the same path and aspect ratio — every page references these paths directly — then mark the row `client-supplied photograph` so a later generation run does not re-claim it.
 
 ## Client-supplied photography
 
-41 assets on this site are supplied photographs, not AI generations, and are marked as such in the table above. They were cropped to the slot aspect, re-encoded as progressive 4:4:4 JPEGs, and written to the paths the pages reference — `scripts/place_client_set.py` and `scripts/place_supplied.py` hold the image-to-slot mapping.
+40 assets on this site are supplied photographs, not AI generations, and are marked as such in the table above. They were cropped to the slot aspect, re-encoded as progressive 4:4:4 JPEGs, and written to the paths the pages reference — `scripts/place_client_set.py` and `scripts/place_supplied.py` hold the image-to-slot mapping.
 
 The images remain illustrative of the *kind* of work Third Eye Events does; if any depicts a real client or event, confirm consent to publish before launch. The founder slot keeps a real photograph deliberately: an AI-generated portrait of a real, named person would fabricate a likeness.
 

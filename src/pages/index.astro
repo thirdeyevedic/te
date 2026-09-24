@@ -76,18 +76,21 @@ const heroImage = "/images/hero-cinematic.jpg";
             name: "Vedic",
             line: "Sacred. Pure. Conscious.",
             image: "/images/weddings/vedic-hero.jpg",
+            alt: "A traditional Vedic wedding mandap decorated with fresh marigolds and sacred fire under a soft morning sky.",
           },
           {
             href: "/weddings/destination/",
             name: "Destination",
             line: "Different locations. Different worlds.",
             image: "/images/weddings/destination-hero.jpg",
+            alt: "A luxury destination wedding setup overlooking a pristine turquoise ocean horizon.",
           },
           {
             href: "/weddings/concepts/",
             name: "Concepts",
             line: "Experiences designed around meaning.",
             image: "/images/weddings/concepts-hero.jpg",
+            alt: "A close-up of intricate Vedic ritual items and floral arrangements signifying sacred union.",
           },
         ].map((p, i) => (
           <a
@@ -95,7 +98,7 @@ const heroImage = "/images/hero-cinematic.jpg";
             style={`--reveal-delay: ${i * 120}ms`}
             href={p.href}
           >
-            <ExperienceImage src={p.image} alt="" fill />
+            <ExperienceImage src={p.image} alt={p.alt} fill />
             <span class="ph__scrim" aria-hidden="true" />
             <span class="pathway__num microcopy">0{i + 1}</span>
             <span class="pathway__name display">{p.name}</span>
@@ -153,7 +156,7 @@ const heroImage = "/images/hero-cinematic.jpg";
               href={`/destinations/${d.slug}/`}
               style={`--reveal-delay: ${i * 60}ms; view-transition-name: dest-${d.slug}`}
             >
-              <ExperienceImage src={d.cardImage} alt="" fill />
+              <ExperienceImage src={d.cardImage} alt={d.cardAlt} fill />
               <span class="ph__scrim" aria-hidden="true" />
               <span class="dcard__region microcopy">{d.region} · {d.country}</span>
               <span class="dcard__name display">{d.name}</span>
@@ -186,7 +189,7 @@ const heroImage = "/images/hero-cinematic.jpg";
             href={`/weddings/experiences/${e.slug}/`}
             style={`--reveal-delay: ${i * 110}ms; view-transition-name: entry-${e.slug}`}
           >
-            <ExperienceImage src={e.cardImage} alt="" fill />
+            <ExperienceImage src={e.cardImage} alt={e.cardAlt} fill />
             <span class="ph__scrim" aria-hidden="true" />
             <span class="microcopy">{e.category}</span>
             <span class="sig-card__title display">{e.title}</span>

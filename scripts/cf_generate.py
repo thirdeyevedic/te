@@ -70,7 +70,7 @@ import subprocess
 import sys
 import threading
 import time
-import tomllib
+import tomli as tomllib
 import urllib.error
 import urllib.request
 import uuid

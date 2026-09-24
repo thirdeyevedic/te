@@ -1,0 +1,28 @@
+22 slots · 0 already present · 22 to generate
+estimated 2,839 Neurons (~28% of the daily free allowance)
+
+  [ 1/22] ok   weddings-vaidik                  1003 KB
+  [ 2/22] ok   weddings-destination             1042 KB
+  [ 3/22] ok   weddings-index                    922 KB
+  [ 4/22] ok   about-index                      1071 KB
+  [ 5/22] ok   about-dance                       747 KB
+  [ 6/22] ok   weddings-concepts                1208 KB
+  [ 7/22] ok   about-story                       817 KB
+  [ 8/22] ok   about-philosophy                  914 KB
+  [ 9/22] ok   about-vision                      951 KB
+  [10/22] ok   destinations-index               1119 KB
+  [11/22] ok   destinations-india               1155 KB
+  [12/22] ok   ip-index                          999 KB
+  [13/22] ok   about-team-vision                 892 KB
+  [14/22] ok   contact                           837 KB
+  [15/22] ok   production-index                 1046 KB
+  [16/22] ok   card-dest-maldives               1024 KB
+  [17/22] ok   card-dest-rajasthan              1039 KB
+  [18/22] ok   card-dest-switzerland            1001 KB
+  [19/22] ok   card-dest-italy                  1065 KB
+  [20/22] ok   card-dest-bali                   1011 KB
+  [21/22] ok   card-dest-kyoto                  1227 KB
+  [22/22] FAIL card-dest-cruises                QUOTA: {"errors":[{"message":"AiError: AiError: you have used up your daily free allocation of 10,000 neurons, please upgrade to Cloudflare's Workers Paid plan if you would like to continue usage. (fa883dc4-a268-4bc1-9287-d80435beaf66)","code":4006}],"success":false,"result":{},"messages":[]}
+
+done: 21 written, 1 failed → /tmp/imgwork/gen
+re-run the same command to retry only the failures (it is resumable)

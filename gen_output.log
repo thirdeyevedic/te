@@ -1,0 +1,27 @@
+22 slots · 0 already present · 22 to generate
+estimated 2,839 Neurons (~28% of the daily free allowance)
+
+  [ 1/22] ok   weddings-vaidik                   932 KB
+  [ 2/22] ok   weddings-index                    922 KB
+  [ 3/22] ok   weddings-destination             1057 KB
+  [ 4/22] ok   weddings-concepts                1130 KB
+  [ 5/22] ok   about-index                      1092 KB
+  [ 6/22] ok   about-dance                       826 KB
+  [ 7/22] ok   about-philosophy                  831 KB
+  [ 8/22] ok   about-vision                      939 KB
+  [ 9/22] ok   about-story                       804 KB
+  [10/22] ok   destinations-india               1100 KB
+  [11/22] ok   destinations-index               1230 KB
+  [12/22] ok   production-index                  899 KB
+  [13/22] ok   ip-index                          757 KB
+  [14/22] ok   contact                          1004 KB
+  [15/22] ok   card-dest-rajasthan              1236 KB
+  [16/22] ok   card-dest-maldives               1066 KB
+  [17/22] ok   about-team-vision                 843 KB
+  [18/22] ok   card-dest-switzerland             961 KB
+  [19/22] ok   card-dest-bali                   1075 KB
+  [20/22] ok   card-dest-kyoto                  1125 KB
+  [21/22] ok   card-dest-italy                  1138 KB
+  [22/22] ok   card-dest-cruises                 889 KB
+
+done: 22 written, 0 failed → /tmp/imgwork/gen

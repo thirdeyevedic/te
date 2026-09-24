@@ -27,12 +27,17 @@ const description =
             href={`/destinations/${d.slug}/`}
             style={`--reveal-delay: ${(i % 3) * 110}ms; view-transition-name: dest-${d.slug}`}
           >
-            <ExperienceImage src={d.cardImage} fill />
-            <span class="ph__scrim" aria-hidden="true" />
-            <span class="microcopy">{d.region}</span>
-            <h2 class="display world__name">{d.name}</h2>
-            <p class="statement world__tagline">{d.tagline}</p>
-            <span class="link-line">Enter Experience</span>
+            <div class="world__media">
+              <ExperienceImage src={d.cardImage} fill alt={d.cardAlt} />
+              <span class="ph__scrim" aria-hidden="true" />
+            </div>
+            
+            <div class="world__content">
+              <span class="microcopy">{d.region}</span>
+              <h2 class="display world__name">{d.name}</h2>
+              <p class="statement world__tagline">{d.tagline}</p>
+              <span class="link-line">Enter Experience</span>
+            </div>
           </a>
         ))
       }
@@ -44,22 +49,88 @@ const description =
 
 <style>
   .worlds {
-    row-gap: 1.25rem;
+    row-gap: 2rem;
   }
 
   .world {
     grid-column: span 4;
     display: flex;
     flex-direction: column;
-    gap: 0.7rem;
-    min-height: clamp(18rem, 40vh, 26rem);
-    padding: 1.9rem;
-    border: 1px solid transparent;
-    transition: border-color var(--dur-standard) ease;
+    min-height: clamp(22rem, 45vh, 30rem);
+    position: relative;
+    overflow: hidden;
+    background: #111;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: border-color 0.4s var(--ease-in-out-soft), transform 0.4s var(--ease-in-out-soft);
+    text-decoration: none;
   }
 
   .world:hover {
     border-color: var(--color-gold);
+    transform: translateY(-4px);
+  }
+
+  .world__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    transition: transform 0.8s var(--ease-in-out-soft);
+  }
+
+  .world:hover .world__media {
+    transform: scale(1.05);
+  }
+
+  .world__content {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 2rem;
+    background: linear-gradient(
+      to top,
+      rgba(10, 10, 10, 0.9) 0%,
+      rgba(10, 10, 10, 0.4) 40%,
+      transparent 100%
+    );
+  }
+
+  .world__name {
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    margin-block-start: 0.5rem;
+    line-height: 1.1;
+    color: #fff;
+  }
+
+  .world__tagline {
+    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+    margin-bottom: 1.5rem;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 300px;
+  }
+
+  .link-line {
+    font-family: var(--font-manrope);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-gold);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: gap 0.3s ease;
+  }
+
+  .world:hover .link-line {
+    gap: 1rem;
+  }
+
+  .link-line::after {
+    content: "→";
+    transition: transform 0.3s ease;
   }
 
   @media (min-width: 48em) {
@@ -72,14 +143,5 @@ const description =
     .world {
       grid-column: span 4;
     }
-  }
-
-  .world__name {
-    font-size: clamp(2.1rem, 3.4vw, 3rem);
-    margin-block-start: auto;
-  }
-
-  .world__tagline {
-    font-size: 1rem;
   }
 </style>

@@ -1,10 +1,6 @@
 ---
 import "@fontsource-variable/fraunces";
 import "@fontsource-variable/manrope";
-// Resolved by the bundler so the preload href matches the hashed asset the
-// stylesheet actually loads. Both families are *variable*, so a single file
-// per family covers every weight — preloading 400 and 600 separately was
-// redundant as well as pointing at filenames that never existed.
 import frauncesLatin from "@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2";
 import manropeLatin from "@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2";
 import { ClientRouter } from "astro:transitions";
@@ -17,11 +13,8 @@ interface Props {
   title: string;
   description: string;
   path?: string;
-  /** JSON-LD blocks, injected verbatim */
   structuredData?: Record<string, unknown>[];
-  /** Disables transparent-over-hero nav (default: overlay nav on) */
   solidNav?: boolean;
-  /** Excludes the page from search indexing (utility pages) */
   noindex?: boolean;
 }
 
@@ -100,7 +93,6 @@ const webPage = {
     <meta property="og:locale" content="en_IN" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <!-- Font preloads for performance -->
     <link rel="preload" href={frauncesLatin} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={manropeLatin} as="font" type="font/woff2" crossorigin />
 
@@ -108,22 +100,20 @@ const webPage = {
     <link rel="sitemap" href="/sitemap-index.xml" />
     <ClientRouter />
 
-    {/* JSON-LD is data, not a script to bundle or process — `is:inline` says so
-        explicitly instead of leaving Astro to infer it from the attributes. */}
     <script is:inline type="application/ld+json" set:html={JSON.stringify(organization)} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(website)} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(webPage)} />
     {structuredData.map((block) => <script is:inline type="application/ld+json" set:html={JSON.stringify(block)} />)}
 
-<script is:inline>
-       document.documentElement.dataset.nav = "overlay";
-       if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-         document.documentElement.classList.add("reduced-motion");
-       }
-     </script>
-   </head>
+    <script is:inline>
+      document.documentElement.dataset.nav = "overlay";
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("reduced-motion");
+      }
+    </script>
+  </head>
 
-  <body data-solid-nav={solidNav ? "" : undefined}>
+  <body data-solid-nav={solidNav ? "" : undefined} class="page-fade-out">
     <a class="skip-link" href="#main">Skip to content</a>
     <Navbar solid={solidNav} />
     <main id="main">
@@ -134,7 +124,6 @@ const webPage = {
     <Cursor />
 
     <script>
-      /* Scroll reveals — re-initialised on every astro:page-load */
       function initReveals() {
         const revealables = document.querySelectorAll(".reveal, .reveal-mask");
         if (document.documentElement.classList.contains("reduced-motion")) {
@@ -155,7 +144,22 @@ const webPage = {
         revealables.forEach((el) => io.observe(el));
       }
 
-      document.addEventListener("astro:page-load", initReveals);
+      document.addEventListener("astro:page-load", () => {
+        initReveals();
+        // Cinematic page entry fade
+        document.body.classList.remove("page-fade-out");
+      });
     </script>
   </body>
 </html>
+
+<style>
+  /* Cinematic page fade to prevent FOUC and add luxury polish */
+  .page-fade-out {
+    opacity: 0;
+    transition: opacity 800ms var(--ease-in-out-soft);
+  }
+  body:not(.page-fade-out) {
+    opacity: 1;
+  }
+</style>

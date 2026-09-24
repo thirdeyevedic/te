@@ -1,1057 +1,305 @@
 ---
-import { destinations } from "../data/destinations";
+import { ClientRouter } from "astro:transitions";
+import "../styles/global.css";
 
 interface Props {
   solid?: boolean;
 }
 
 const { solid = false } = Astro.props;
-
-interface NavLink {
-  label: string;
-  href: string;
-  note?: string;
-}
-
-interface MenuItem {
-  /** Stable id — never derive ids from the visible label. */
-  id: string;
-  label: string;
-  /** Section index page. Reachable from the panel's overview link. */
-  href: string;
-  overview: string;
-  intro: string;
-  links: NavLink[];
-}
-
-const menu: MenuItem[] = [
-  {
-    id: "weddings",
-    label: "Weddings",
-    href: "/weddings/",
-    overview: "All weddings",
-    intro: "Where celebration becomes experience.",
-    links: [
-      { label: "Vedic Weddings", href: "/weddings/vedic/", note: "Sacred. Pure. Conscious." },
-      {
-        label: "Destination Weddings",
-        href: "/weddings/destination/",
-        note: "Different destinations. Different worlds.",
-      },
-      {
-        label: "Wedding Concepts",
-        href: "/weddings/concepts/",
-        note: "Locations are common. Concepts create emotion.",
-      },
-      {
-        label: "Signature Entries",
-        href: "/weddings/experiences/",
-        note: "Moments that define the wedding before it begins.",
-      },
-    ],
-  },
-  {
-    id: "destinations",
-    label: "Destinations",
-    href: "/destinations/",
-    overview: "All destinations",
-    intro: "Different destinations. Different worlds.",
-    links: [
-      { label: "India", href: "/destinations/india/", note: "One country. Seven worlds." },
-      // Single source of truth — see src/data/destinations.ts
-      ...destinations.map((d) => ({
-        label: d.name,
-        href: `/destinations/${d.slug}/`,
-        note: d.region,
-      })),
-    ],
-  },
-  {
-    id: "ip-events",
-    label: "IP Events",
-    href: "/ip-events/",
-    overview: "All Third Eye IP Events",
-    intro: "An ecosystem of signature experiences — owned, designed and delivered by Third Eye.",
-    links: [
-      { label: "Exhibitions & Expos", href: "/ip-events/exhibitions/" },
-      { label: "Automotive & Mobility", href: "/ip-events/automotive/" },
-      { label: "Awards & Gala", href: "/ip-events/awards/" },
-      { label: "Best Products of India", href: "/ip-events/products/" },
-      { label: "Sports Leagues", href: "/ip-events/sports/" },
-      { label: "Fashion & Modeling", href: "/ip-events/fashion/" },
-      { label: "Political & Public", href: "/ip-events/political/" },
-      { label: "Devotional & Spiritual", href: "/ip-events/devotional/" },
-      { label: "Concerts & Live", href: "/ip-events/concerts/" },
-    ],
-  },
-  {
-    id: "production",
-    label: "Production",
-    href: "/production/",
-    overview: "All production",
-    intro: "Behind every frame — structured, managed, delivered.",
-    links: [
-      { label: "Feature Films", href: "/production/feature-films/" },
-      { label: "Short Films", href: "/production/short-films/" },
-      { label: "Documentaries", href: "/production/documentaries/" },
-      { label: "Digital Content", href: "/production/digital-content/" },
-      { label: "Branded Content", href: "/production/branded-content/" },
-      { label: "Ad Shoots", href: "/production/ad-shoots/" },
-    ],
-  },
-  {
-    id: "about",
-    label: "About",
-    href: "/about/",
-    overview: "About Third Eye",
-    intro: "Not built on events. Built on vision.",
-    links: [
-      { label: "Our Story", href: "/about/story/" },
-      { label: "Gautam GS", href: "/about/founder/" },
-      { label: "Philosophy", href: "/about/philosophy/" },
-      { label: "Vision", href: "/about/vision/" },
-    ],
-  },
-];
-
-const path = Astro.url.pathname;
-
-/** True when the current page lives inside a section. */
-function isCurrent(href: string): boolean {
-  return path === href || path.startsWith(href);
-}
-
-/** Columns for a panel's link grid — keeps rows even instead of ragged. */
-function columnsFor(count: number): number {
-  return count >= 8 ? 3 : 2;
-}
 ---
 
-<header class="nav" data-solid={solid ? "" : undefined}>
-  <div class="nav__inner container">
-    <a class="nav__brand display" href="/" aria-label="Third Eye Events — home">Third&nbsp;Eye</a>
+<nav class="navbar" data-solid={solid}>
+  <div class="nav-container">
+    <a href="/" class="nav-logo">
+      <img src="/images/logo-white.svg" alt="Third Eye Events" width="140" height="40" />
+    </a>
 
-    <nav class="nav__desktop" aria-label="Primary">
-      <ul role="list">
-        {
-          menu.map((item) => (
-            <li class="nav__item">
-              {/* A link, not a button: activating a top-level ribbon has to take
-                  you to that section's own page. The mega panel is an
-                  enhancement on top — it opens on hover, on Tab focus and on
-                  ArrowDown, never on activation. `data-open` carries the
-                  panel's state for styling because `aria-expanded` is not a
-                  valid attribute on a link. */}
-              <a
-                class="nav__link"
-                id={`nav-btn-${item.id}`}
-                href={item.href}
-                aria-controls={`nav-panel-${item.id}`}
-                aria-current={isCurrent(item.href) ? "page" : undefined}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
+    <div class="nav-links">
+      <a href="/destinations" class="nav-link">Destinations</a>
+      <a href="/signature-experiences" class="nav-link">Signature Experiences</a>
+      <a href="/ip-events" class="nav-link">IP Events</a>
+      <a href="/services" class="nav-link">Services</a>
+      <a href="/about" class="nav-link">About</a>
+      <a href="/contact" class="nav-cta">Get in Touch</a>
+    </div>
 
-    <a class="btn btn--ghost nav__cta" href="/contact/">Start a Conversation</a>
-
-    <button
-      class="nav__toggle"
-      type="button"
-      aria-expanded="false"
-      aria-controls="mobile-menu"
-      aria-label="Open menu"
-    >
-      <span></span><span></span>
+    <button class="nav-toggle" aria-label="Toggle Menu" aria-expanded="false" aria-controls="nav-menu">
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
     </button>
   </div>
 
-  <!-- Desktop mega panels. `hidden` is the single source of truth for closed:
-       the stylesheet never overrides it, so closed panels stay out of the tab
-       order and out of the accessibility tree. -->
-  {
-    menu.map((item) => (
-      <div
-        class="mega"
-        id={`nav-panel-${item.id}`}
-        role="group"
-        aria-labelledby={`nav-btn-${item.id}`}
-        hidden
-        inert
-      >
-        <div class="container mega__grid">
-          <div class="mega__aside">
-            <p class="mega__intro statement">{item.intro}</p>
-            <a class="link-line mega__overview" href={item.href} aria-current={isCurrent(item.href) ? "page" : undefined}>
-              {item.overview}
-            </a>
-          </div>
-          <ul
-            role="list"
-            class="mega__links"
-            style={`--mega-cols: ${columnsFor(item.links.length)}`}
-          >
-            {item.links.map((link) => (
-              <li>
-                <a
-                  class="mega__link"
-                  href={link.href}
-                  aria-current={isCurrent(link.href) ? "page" : undefined}
-                >
-                  <span>{link.label}</span>
-                  {link.note && <small>{link.note}</small>}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+  <div id="nav-menu" class="nav-overlay">
+    <div class="overlay-content">
+      <div class="overlay-links">
+        <a href="/destinations" class="overlay-link">Destinations</a>
+        <a href="/signature-experiences" class="overlay-link">Signature Experiences</a>
+        <a href="/ip-events" class="overlay-link">IP Events</a>
+        <a href="/services" class="overlay-link">Services</a>
+        <a href="/about" class="overlay-link">About</a>
+        <a href="/contact" class="overlay-cta">Get in Touch</a>
       </div>
-    ))
-  }
-</header>
-
-<!-- Scrim sits under the panels, over the page. Gives the mega a clear click-out target. -->
-<div class="nav__scrim" aria-hidden="true"></div>
-
-<!-- Mobile full-screen menu -->
-<div class="mobile-menu" id="mobile-menu" hidden inert aria-hidden="true" role="dialog" aria-label="Site menu">
-  <nav aria-label="Mobile" class="mobile-menu__nav container">
-    {
-      menu.map((item) => (
-        <section class="mobile-menu__group">
-          <h2>
-            <button
-              class="mobile-menu__trigger"
-              type="button"
-              aria-expanded="false"
-              aria-controls={`mob-panel-${item.id}`}
-            >
-              <span class="mobile-menu__label">{item.label}</span>
-              <span class="mobile-menu__sign" aria-hidden="true" />
-            </button>
-          </h2>
-          <div class="mobile-menu__panel" id={`mob-panel-${item.id}`}>
-            <ul role="list">
-              <li>
-                <a href={item.href} aria-current={path === item.href ? "page" : undefined}>
-                  {item.overview}
-                </a>
-              </li>
-              {item.links.map((link) => (
-                <li>
-                  <a href={link.href} aria-current={isCurrent(link.href) ? "page" : undefined}>
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      ))
-    }
-    <a class="btn btn--solid mobile-menu__cta" href="/contact/">Start a Conversation</a>
-  </nav>
-</div>
-
-<style>
-  /* ---------- Header shell ---------- */
-  .nav {
-    position: fixed;
-    inset-inline: 0;
-    top: 0;
-    z-index: 100;
-    /* Compensates the scrollbar that disappears while the mobile menu locks
-       the page, so the header does not shift horizontally. */
-    padding-right: var(--scrollbar-comp, 0px);
-    transition:
-      background-color var(--dur-standard) ease,
-      border-color var(--dur-standard) ease,
-      translate var(--dur-standard) var(--ease-out-expo);
-    border-bottom: 1px solid transparent;
-  }
-
-  .nav__inner {
-    display: flex;
-    align-items: center;
-    gap: clamp(1.25rem, 2.5vw, 2.5rem);
-    height: var(--nav-h);
-  }
-
-  .nav[data-solid],
-  .nav.is-scrolled {
-    background: rgba(10, 10, 10, 0.82);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-    border-bottom-color: var(--line);
-  }
-
-  .nav.is-hidden {
-    translate: 0 -100%;
-  }
-
-  .nav__brand {
-    font-size: clamp(1.25rem, 1.8vw, 1.6rem);
-    letter-spacing: 0.04em;
-    color: var(--ink);
-  }
-
-  /* ---------- Desktop nav ----------
-     The items stretch to the full header height so the pointer never crosses
-     dead space on its way from a label down into its panel. */
-  .nav__desktop {
-    margin-inline-start: auto;
-    align-self: stretch;
-    display: flex;
-    align-items: stretch;
-  }
-
-  .nav__desktop ul {
-    display: flex;
-    align-items: stretch;
-    gap: clamp(0.9rem, 1.6vw, 2.25rem);
-    height: 100%;
-  }
-
-  .nav__item {
-    display: flex;
-  }
-
-  .nav__link {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    padding-block: 0.6em;
-    font-size: var(--text-label);
-    font-weight: 600;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: var(--ink-muted);
-    transition: color var(--dur-micro) ease;
-  }
-
-  .nav__link::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 1px;
-    background: var(--color-gold);
-    scale: 0 1;
-    transform-origin: left;
-    transition: scale var(--dur-standard) var(--ease-out-expo);
-  }
-
-  /* `data-open` replaces `aria-expanded` now that the ribbon is a link —
-     aria-expanded is not a supported state on role=link. */
-  .nav__link:hover,
-  .nav__link[data-open],
-  .nav__link[aria-current="page"] {
-    color: var(--ink);
-  }
-
-  .nav__link:hover::after,
-  .nav__link[data-open]::after,
-  .nav__link[aria-current="page"]::after {
-    scale: 1 1;
-  }
-
-  .nav__cta {
-    white-space: nowrap;
-  }
-
-  /* ---------- Scrim ---------- */
-  .nav__scrim {
-    position: fixed;
-    inset: var(--nav-h) 0 0 0;
-    z-index: 99;
-    background: rgba(10, 10, 10, 0.55);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity var(--dur-standard) ease;
-  }
-
-  .nav__scrim.is-open {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  /* ---------- Mega panels ----------
-     `hidden` is authoritative: nothing here sets `display`, so a closed panel
-     is display:none and cannot be tabbed into. `visibility` is transitioned
-     with a delay so the fade-out still plays. */
-  .mega {
-    position: absolute;
-    inset-inline: 0;
-    top: 100%;
-    background: rgba(12, 12, 12, 0.96);
-    -webkit-backdrop-filter: blur(18px);
-    backdrop-filter: blur(18px);
-    border-bottom: 1px solid var(--line);
-    opacity: 0;
-    visibility: hidden;
-    translate: 0 -0.6rem;
-    transition:
-      opacity 240ms ease,
-      translate 420ms var(--ease-out-expo),
-      visibility 0s linear 300ms;
-  }
-
-  .mega.is-open {
-    opacity: 1;
-    visibility: visible;
-    translate: 0 0;
-    transition:
-      opacity 240ms ease,
-      translate 420ms var(--ease-out-expo),
-      visibility 0s linear 0s;
-  }
-
-  .mega__grid {
-    display: grid;
-    grid-template-columns: minmax(15rem, 1fr) 2.2fr;
-    gap: clamp(2rem, 5vw, 6rem);
-    padding-block: clamp(2rem, 4vw, 3.5rem);
-  }
-
-  .mega__aside {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.75rem;
-  }
-
-  .mega__intro {
-    max-width: 22ch;
-    font-size: 1.15rem;
-  }
-
-  .mega__overview {
-    color: var(--color-gold);
-  }
-
-  .mega__links {
-    display: grid;
-    grid-template-columns: repeat(var(--mega-cols, 2), minmax(0, 1fr));
-    gap: 0.35rem 3rem;
-    align-content: start;
-  }
-
-  .mega__link {
-    display: grid;
-    gap: 0.2rem;
-    padding: 0.7rem 0;
-    border-bottom: 1px solid transparent;
-    transition: border-color var(--dur-standard) ease;
-  }
-
-  .mega__link span {
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-  }
-
-  .mega__link small {
-    font-size: 0.78rem;
-    color: var(--ink-faint);
-    line-height: 1.4;
-  }
-
-  .mega__link:hover span,
-  .mega__link[aria-current="page"] span {
-    color: var(--color-gold);
-  }
-
-  /* ---------- Mobile ---------- */
-  .nav__toggle,
-  .mobile-menu {
-    display: none;
-  }
-
-  @media (max-width: 67.99em) {
-    .nav__desktop,
-    .nav__cta {
-      display: none;
-    }
-
-    .nav__toggle {
-      display: grid;
-      place-content: center;
-      gap: 7px;
-      width: 44px;
-      height: 44px;
-      margin-inline-start: auto;
-    }
-
-    .nav__toggle span {
-      width: 26px;
-      height: 1.5px;
-      background: var(--ink);
-      transition:
-        rotate var(--dur-standard) var(--ease-out-expo),
-        translate var(--dur-standard) var(--ease-out-expo);
-    }
-
-    .nav__toggle[aria-expanded="true"] span:first-child {
-      rotate: 45deg;
-      translate: 0 4.25px;
-    }
-
-    .nav__toggle[aria-expanded="true"] span:last-child {
-      rotate: -45deg;
-      translate: 0 -4.25px;
-    }
-
-    /* `:not([hidden])` keeps the hidden attribute in charge — the overlay is
-       display:none when closed rather than an invisible focusable layer. */
-    .mobile-menu:not([hidden]) {
-      display: block;
-    }
-
-    .mobile-menu {
-      position: fixed;
-      inset: 0;
-      z-index: 90;
-      overflow-y: auto;
-      overscroll-behavior: contain;
-      padding-right: var(--scrollbar-comp, 0px);
-      background: var(--color-ink);
-      opacity: 0;
-      visibility: hidden;
-      transition:
-        opacity 320ms ease,
-        visibility 0s linear 340ms;
-    }
-
-    .mobile-menu.is-open {
-      opacity: 1;
-      visibility: visible;
-      transition:
-        opacity 320ms ease,
-        visibility 0s linear 0s;
-    }
-
-    .mobile-menu__nav {
-      display: flex;
-      flex-direction: column;
-      padding-block: calc(var(--nav-h) + 1rem) 3rem;
-      min-height: 100dvh;
-    }
-
-    .mobile-menu__group {
-      border-top: 1px solid var(--line);
-    }
-
-    .mobile-menu__group h2 {
-      margin: 0;
-    }
-
-    .mobile-menu__trigger {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      width: 100%;
-      padding-block: 1.1rem;
-      font-family: var(--font-display);
-      font-size: 1.7rem;
-      font-weight: 340;
-      text-align: left;
-      color: var(--ink);
-    }
-
-    .mobile-menu__sign {
-      position: relative;
-      flex: none;
-      width: 15px;
-      height: 15px;
-      color: var(--color-gold);
-    }
-
-    .mobile-menu__sign::before,
-    .mobile-menu__sign::after {
-      content: "";
-      position: absolute;
-      background: currentColor;
-    }
-
-    .mobile-menu__sign::before {
-      left: 0;
-      right: 0;
-      top: 50%;
-      height: 1px;
-    }
-
-    .mobile-menu__sign::after {
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      width: 1px;
-      transition: scale var(--dur-standard) var(--ease-out-expo);
-    }
-
-    .mobile-menu__trigger[aria-expanded="true"] .mobile-menu__sign::after {
-      scale: 1 0;
-    }
-
-    /* Accordion without the hidden attribute: a collapsed panel is clipped to
-       zero height AND visibility:hidden, so its links are never focusable. */
-    .mobile-menu__panel {
-      display: grid;
-      grid-template-rows: 0fr;
-      visibility: hidden;
-      transition:
-        grid-template-rows 420ms var(--ease-out-expo),
-        visibility 0s linear 340ms;
-    }
-
-    .mobile-menu__panel.is-open {
-      grid-template-rows: 1fr;
-      visibility: visible;
-      transition:
-        grid-template-rows 420ms var(--ease-out-expo),
-        visibility 0s linear 0s;
-    }
-
-    /* The panel's own box must be zero-height when collapsed, so the bottom
-       spacing lives on the last link rather than on the clipped list. */
-    .mobile-menu__panel > ul {
-      min-height: 0;
-      overflow: hidden;
-    }
-
-    .mobile-menu__panel ul li:last-child a {
-      padding-bottom: 1.3rem;
-    }
-
-    .mobile-menu__panel ul li a {
-      display: block;
-      padding-block: 0.55rem;
-      color: var(--ink-muted);
-      font-size: 1rem;
-      transition: color var(--dur-micro) ease;
-    }
-
-    .mobile-menu__panel ul li a:hover,
-    .mobile-menu__panel ul li a[aria-current="page"] {
-      color: var(--color-gold);
-    }
-
-    .mobile-menu__cta {
-      margin-top: auto;
-      padding-top: 3rem;
-      justify-content: center;
-    }
-  }
-
-  /* While the mobile overlay is open the header must read as a solid bar. */
-  :global(html.is-menu-open) .nav {
-    background: rgba(10, 10, 10, 0.94);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-    border-bottom-color: var(--line);
-  }
-</style>
+    </div>
+  </div>
+</nav>
 
 <script>
-  /* window.setTimeout returns a number in the DOM lib; the ambient workers
-     types redefine the global setTimeout, so pin the type explicitly. */
-  type Timer = number;
+  function initNavbar() {
+    const toggle = document.querySelector(".nav-toggle");
+    const menu = document.querySelector(".nav-overlay");
+    const links = document.querySelectorAll(".overlay-link, .overlay-cta");
+    const body = document.body;
 
-  const desktopMq = matchMedia("(min-width: 68em)");
-  const motionMq = matchMedia("(prefers-reduced-motion: reduce)");
-  const hoverCapable = matchMedia("(hover: hover) and (pointer: fine)").matches;
+    if (!toggle || !menu) return;
 
-  let reducedMotion = motionMq.matches;
-  motionMq.addEventListener("change", (e) => (reducedMotion = e.matches));
+    function toggleMenu(forceClose = false) {
+      const isOpen = forceClose ? false : toggle.getAttribute("aria-expanded") === "true";
+      const newState = !isOpen;
 
-  /* ── Window-level state — attached once, survives view transitions ── */
-  let headerEl: HTMLElement | null = null;
-  let openBtn: HTMLAnchorElement | null = null;
-  let openedByHover = false;
-  let hoverCloseTimer: Timer | undefined;
-  let panelHideTimer: Timer | undefined;
-  let mobileOpen = false;
-  let mobileHideTimer: Timer | undefined;
-  let lastY = window.scrollY;
-  let scrollQueued = false;
-
-  const INERT_SELECTORS = ["main", "footer", ".grain", "#cursor", ".skip-link"].join(",");
-
-  /* ── Header chrome ── */
-  function onScroll() {
-    if (scrollQueued) return;
-    scrollQueued = true;
-    requestAnimationFrame(() => {
-      scrollQueued = false;
-      if (!headerEl) return;
-      const y = window.scrollY;
-      headerEl.classList.toggle("is-scrolled", y > 24);
-      // Never slide the bar away while a panel or the mobile menu is open —
-      // the panel travels with the header and would vanish mid-interaction.
-      if (!reducedMotion && !mobileOpen && !openBtn) {
-        headerEl.classList.toggle("is-hidden", y > lastY && y > 420);
-      }
-      lastY = y;
-    });
-  }
-  addEventListener("scroll", onScroll, { passive: true });
-
-  /* ── Mega panels ── */
-  function panelOf(btn: HTMLElement | null): HTMLElement | null {
-    const id = btn?.getAttribute("aria-controls");
-    return id ? document.getElementById(id) : null;
-  }
-
-  function setScrim(on: boolean) {
-    document.querySelector(".nav__scrim")?.classList.toggle("is-open", on);
-  }
-
-  /* `data-open` is presentation only — the link is the control, and activating
-     it navigates, so there is no disclosure state to expose to AT. */
-  function syncOpen() {
-    document.querySelectorAll<HTMLElement>(".nav__link").forEach((b) => {
-      if (b === openBtn) b.setAttribute("data-open", "");
-      else b.removeAttribute("data-open");
-    });
-  }
-
-  function openPanel(btn: HTMLAnchorElement, focusEdge?: "first" | "last") {
-    if (openBtn === btn) return;
-    const panel = panelOf(btn);
-    if (!panel) return;
-
-    clearTimeout(panelHideTimer);
-    clearTimeout(hoverCloseTimer);
-
-    if (openBtn) {
-      const prev = panelOf(openBtn);
-      prev?.classList.remove("is-open");
-      prev?.setAttribute("inert", "");
-      prev?.setAttribute("hidden", "");
+      toggle.setAttribute("aria-expanded", String(newState));
+      menu.classList.toggle("is-open", newState);
+      body.classList.toggle("no-scroll", newState);
+      
+      // Update burger icon state
+      toggle.classList.toggle("is-active", newState);
     }
 
-    openBtn = btn;
-    syncOpen();
-    panel.removeAttribute("inert");
-    panel.removeAttribute("hidden");
-    requestAnimationFrame(() => {
-      if (openBtn !== btn) return;
-      panel.classList.add("is-open");
-      // Focus only once `is-open` has made the panel visible — a
-      // visibility:hidden element cannot take focus.
-      if (!focusEdge) return;
-      const links = panel.querySelectorAll<HTMLElement>("a[href]");
-      if (links.length === 0) return;
-      links[focusEdge === "first" ? 0 : links.length - 1].focus();
-    });
-    setScrim(true);
-  }
+    toggle.addEventListener("click", () => toggleMenu());
 
-  function closePanel({ focusButton = false }: { focusButton?: boolean } = {}) {
-    const btn = openBtn;
-    if (!btn) return;
-    const panel = panelOf(btn);
-    const hadFocus = !!panel && panel.contains(document.activeElement);
-
-    openBtn = null;
-    openedByHover = false;
-    syncOpen();
-    setScrim(false);
-    clearTimeout(panelHideTimer);
-
-    if (panel) {
-      // `inert` takes it out of the tab order immediately, so the fade-out
-      // cannot be tabbed into; `hidden` follows once the fade has played.
-      panel.classList.remove("is-open");
-      panel.setAttribute("inert", "");
-      panelHideTimer = window.setTimeout(
-        () => panel.setAttribute("hidden", ""),
-        reducedMotion ? 0 : 320,
-      );
-    }
-    if ((focusButton || hadFocus) && btn.isConnected) btn.focus();
-  }
-
-  /* Escape only acts when something is actually open, and returns focus to
-     the control that owns it. */
-  document.addEventListener("keydown", (e) => {
-    if (e.key !== "Escape") return;
-    if (mobileOpen) {
-      e.preventDefault();
-      closeMobile({ restoreFocus: true });
-      return;
-    }
-    if (openBtn) {
-      e.preventDefault();
-      closePanel({ focusButton: true });
-    }
-  });
-
-  /* Click anywhere outside the open panel closes it. */
-  document.addEventListener("pointerdown", (e) => {
-    if (!openBtn) return;
-    const target = e.target;
-    if (!(target instanceof Node)) return;
-    if (openBtn.contains(target)) return;
-    if (panelOf(openBtn)?.contains(target)) return;
-    closePanel();
-  });
-
-  /* ── Mobile menu ── */
-  function setPageInert(on: boolean) {
-    document
-      .querySelectorAll<HTMLElement>(INERT_SELECTORS)
-      .forEach((el) => el.toggleAttribute("inert", on));
-  }
-
-  function setMenuOpenClass(on: boolean) {
-    const root = document.documentElement;
-    if (on) {
-      const scrollbar = window.innerWidth - root.clientWidth;
-      if (scrollbar > 0) root.style.setProperty("--scrollbar-comp", `${scrollbar}px`);
-      root.classList.add("is-menu-open");
-    } else {
-      root.classList.remove("is-menu-open");
-      root.style.removeProperty("--scrollbar-comp");
-    }
-  }
-
-  function openMobile() {
-    const menu = document.getElementById("mobile-menu");
-    const burger = document.querySelector<HTMLElement>(".nav__toggle");
-    if (!menu || !burger || mobileOpen) return;
-
-    clearTimeout(mobileHideTimer);
-    mobileOpen = true;
-    headerEl?.classList.remove("is-hidden");
-    menu.removeAttribute("hidden");
-    menu.removeAttribute("inert");
-    menu.removeAttribute("aria-hidden");
-    burger.setAttribute("aria-expanded", "true");
-    burger.setAttribute("aria-label", "Close menu");
-    setMenuOpenClass(true);
-    setPageInert(true);
-
-    // Focus after the overlay is actually visible, otherwise it is unfocusable.
-    requestAnimationFrame(() => {
-      if (!mobileOpen) return;
-      menu.classList.add("is-open");
-      menu
-        .querySelector<HTMLElement>("a[href], button:not([disabled])")
-        ?.focus({ preventScroll: true });
-    });
-  }
-
-  function closeMobile({ restoreFocus = false }: { restoreFocus?: boolean } = {}) {
-    const menu = document.getElementById("mobile-menu");
-    const burger = document.querySelector<HTMLElement>(".nav__toggle");
-    if (!menu || !burger || !mobileOpen) return;
-
-    mobileOpen = false;
-    menu.classList.remove("is-open");
-    menu.setAttribute("inert", "");
-    clearTimeout(mobileHideTimer);
-    mobileHideTimer = window.setTimeout(
-      () => {
-        menu.setAttribute("hidden", "");
-        menu.setAttribute("aria-hidden", "true");
-      },
-      reducedMotion ? 0 : 340,
-    );
-    burger.setAttribute("aria-expanded", "false");
-    burger.setAttribute("aria-label", "Open menu");
-    setMenuOpenClass(false);
-    setPageInert(false);
-
-    if (restoreFocus && burger.isConnected) burger.focus();
-  }
-
-  /* Tab cycles through the controls that are actually reachable: the header
-     chrome plus the overlay. Everything behind the overlay is inert. */
-  function onTab(e: KeyboardEvent) {
-    if (e.key !== "Tab" || !mobileOpen) return;
-    const focusable = Array.from(
-      document.querySelectorAll<HTMLElement>(
-        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
-      ),
-    ).filter((el) => !el.closest("[inert]") && el.getClientRects().length > 0);
-    if (focusable.length === 0) return;
-
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    if (e.shiftKey && document.activeElement === first) {
-      e.preventDefault();
-      last.focus();
-    } else if (!e.shiftKey && document.activeElement === last) {
-      e.preventDefault();
-      first.focus();
-    }
-  }
-  document.addEventListener("keydown", onTab);
-
-  /* Crossing back to desktop with the overlay open would otherwise leave the
-     page scroll-locked with no visible menu. */
-  desktopMq.addEventListener("change", (e) => {
-    if (e.matches && mobileOpen) closeMobile();
-    closePanel();
-  });
-
-  /* ── Per-page DOM bindings — fresh elements on every navigation ── */
-  function initNav() {
-    const root = document.querySelector<HTMLElement>(".nav");
-    if (!root || root.dataset.navReady) return;
-    root.dataset.navReady = "1";
-    headerEl = root;
-
-    /* Reset everything, including state that lives on <html> and therefore
-       survives the body swap. */
-    openBtn = null;
-    openedByHover = false;
-    mobileOpen = false;
-    clearTimeout(hoverCloseTimer);
-    clearTimeout(panelHideTimer);
-    clearTimeout(mobileHideTimer);
-    setScrim(false);
-    setMenuOpenClass(false);
-    setPageInert(false);
-    document.querySelectorAll<HTMLElement>(".mega").forEach((panel) => {
-      panel.classList.remove("is-open");
-      panel.setAttribute("inert", "");
-      panel.setAttribute("hidden", "");
-    });
-    document.querySelectorAll<HTMLElement>(".nav__link").forEach((b) => b.removeAttribute("data-open"));
-
-    const menu = document.getElementById("mobile-menu");
-    menu?.classList.remove("is-open");
-    menu?.setAttribute("hidden", "");
-    menu?.setAttribute("inert", "");
-    menu?.setAttribute("aria-hidden", "true");
-    document.querySelectorAll<HTMLElement>(".mobile-menu__panel").forEach((p) => p.classList.remove("is-open"));
-    document
-      .querySelectorAll<HTMLElement>(".mobile-menu__trigger")
-      .forEach((t) => t.setAttribute("aria-expanded", "false"));
-
-    onScroll();
-
-    /* Reveal the bar if focus ever lands on it while it is slid away. */
-    root.addEventListener("focusin", () => root.classList.remove("is-hidden"));
-
-    /* Close the panel once focus leaves the header entirely (Tab past the
-       last link). */
-    root.addEventListener("focusout", (e) => {
-      if (!openBtn) return;
-      const next = e.relatedTarget;
-      if (next instanceof Node && root.contains(next)) return;
-      closePanel();
+    links.forEach(link => {
+      link.addEventListener("click", () => toggleMenu(true));
     });
 
-    document.querySelectorAll<HTMLAnchorElement>(".nav__link").forEach((btn) => {
-      const item = btn.closest(".nav__item");
-      const panel = panelOf(btn);
-
-      /* No click handler on purpose: the ribbon is a link and activating it
-         must navigate to the section page. The panel is reached by hover, by
-         Tab focus, or by ArrowDown — never by activation. */
-
-      btn.addEventListener("focus", () => {
-        // Keyboard users get the panel as soon as they tab onto the ribbon, so
-        // the next Tab lands inside it instead of skipping past the section.
-        if (openBtn === btn) return;
-        // Focus — not hover — now owns the panel, so a later pointer leave must
-        // not dismiss it out from under the keyboard.
-        openedByHover = false;
-        openPanel(btn);
-      });
-
-      btn.addEventListener("keydown", (e) => {
-        if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
-        e.preventDefault();
-        const edge = e.key === "ArrowDown" ? "first" : "last";
-        if (openBtn === btn) {
-          const links = panel?.querySelectorAll<HTMLElement>("a[href]");
-          if (links?.length) links[edge === "first" ? 0 : links.length - 1].focus();
-          return;
-        }
-        openPanel(btn, edge);
-      });
-
-      if (hoverCapable && item) {
-        item.addEventListener("mouseenter", () => {
-          clearTimeout(hoverCloseTimer);
-          if (openBtn === btn) return;
-          openPanel(btn);
-          openedByHover = true;
-        });
-        item.addEventListener("mouseleave", () => {
-          clearTimeout(hoverCloseTimer);
-          hoverCloseTimer = window.setTimeout(() => {
-            if (openedByHover) closePanel();
-          }, 220);
-        });
-      }
-
-      if (panel) {
-        panel.addEventListener("keydown", (e) => {
-          const links = Array.from(panel.querySelectorAll<HTMLElement>("a[href]"));
-          if (links.length === 0) return;
-          const i = links.indexOf(document.activeElement as HTMLElement);
-          if (e.key === "ArrowDown") {
-            e.preventDefault();
-            links[(i + 1) % links.length].focus();
-          } else if (e.key === "ArrowUp") {
-            e.preventDefault();
-            links[(i - 1 + links.length) % links.length].focus();
-          } else if (e.key === "Home") {
-            e.preventDefault();
-            links[0].focus();
-          } else if (e.key === "End") {
-            e.preventDefault();
-            links[links.length - 1].focus();
-          }
-        });
-
-        if (hoverCapable) {
-          panel.addEventListener("mouseenter", () => clearTimeout(hoverCloseTimer));
-          panel.addEventListener("mouseleave", () => {
-            clearTimeout(hoverCloseTimer);
-            hoverCloseTimer = window.setTimeout(() => {
-              if (openedByHover) closePanel();
-            }, 220);
-          });
-        }
+    // Close on Escape key
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && menu.classList.contains("is-open")) {
+        toggleMenu(true);
+        toggle.focus();
       }
     });
-
-    document
-      .querySelector<HTMLElement>(".nav__toggle")
-      ?.addEventListener("click", () => (mobileOpen ? closeMobile({ restoreFocus: true }) : openMobile()));
-
-    document.querySelectorAll<HTMLElement>(".mobile-menu__trigger").forEach((trigger) => {
-      // The trigger lives inside an <h2>, so nextElementSibling is null here.
-      // Resolve the panel through aria-controls instead.
-      const panelId = trigger.getAttribute("aria-controls");
-      const panel = panelId ? document.getElementById(panelId) : null;
-      if (!panel) return;
-      trigger.addEventListener("click", () => {
-        const expanded = trigger.getAttribute("aria-expanded") === "true";
-        trigger.setAttribute("aria-expanded", String(!expanded));
-        panel.classList.toggle("is-open", !expanded);
-      });
-    });
-
-    document
-      .querySelectorAll<HTMLAnchorElement>("#mobile-menu a")
-      .forEach((a) => a.addEventListener("click", () => closeMobile()));
   }
 
-  document.addEventListener("astro:page-load", initNav);
-  // The router dispatches astro:page-load after the first paint; this covers
-  // the case where it has already fired by the time this module executes.
-  // initNav is idempotent per DOM, so a double call is harmless.
-  initNav();
+  document.addEventListener("astro:page-load", initNavbar);
 </script>
+
+<style>
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: background 0.4s var(--ease-in-out-soft), padding 0.4s var(--ease-in-out-soft);
+    padding: 1.5rem 0;
+  }
+
+  .navbar[data-solid="true"] {
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(12px);
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav-logo img {
+    display: block;
+    transition: opacity 0.3s ease;
+  }
+
+  .nav-logo:hover img {
+    opacity: 0.8;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+  }
+
+  .nav-link {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-family: var(--font-manrope);
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: color 0.3s ease;
+    position: relative;
+  }
+
+  .nav-link:hover {
+    color: #fff;
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: #c5a059;
+    transition: width 0.3s var(--ease-in-out-soft);
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  .nav-cta {
+    background: #c5a059;
+    color: #000;
+    text-decoration: none;
+    padding: 0.6rem 1.2rem;
+    font-family: var(--font-manrope);
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 2px;
+    transition: transform 0.3s var(--ease-in-out-soft), background 0.3s ease;
+  }
+
+  .nav-cta:hover {
+    background: #d4b57a;
+    transform: translateY(-1px);
+  }
+
+  .nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1100;
+    width: 30px;
+    height: 20px;
+    position: relative;
+    padding: 0;
+  }
+
+  .burger-line {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: #fff;
+    transition: all 0.4s var(--ease-in-out-soft);
+  }
+
+  .burger-line:nth-child(1) { top: 0; }
+  .burger-line:nth-child(2) { top: 10px; }
+  .burger-line:nth-child(3) { top: 20px; }
+
+  .nav-toggle.is-active .burger-line:nth-child(1) {
+    transform: translateY(10px) rotate(45deg);
+  }
+  .nav-toggle.is-active .burger-line:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  .nav-toggle.is-active .burger-line:nth-child(3) {
+    transform: translateY(-10px) rotate(-45deg);
+  }
+
+  .nav-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100vh;
+    background: #0A0A0A;
+    z-index: 1050;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.4s, opacity 0.5s var(--ease-in-out-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-overlay.is-open {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .overlay-content {
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+    padding: 0 2rem;
+  }
+
+  .overlay-links {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .overlay-link {
+    color: #fff;
+    text-decoration: none;
+    font-family: var(--font-fraunces);
+    font-size: 2.5rem;
+    font-weight: 400;
+    transition: color 0.3s ease, transform 0.3s var(--ease-in-out-soft);
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .nav-overlay.is-open .overlay-link {
+    animation: slideUp 0.6s var(--ease-in-out-soft) forwards;
+  }
+
+  .overlay-link:hover {
+    color: #c5a059;
+    transform: scale(1.05);
+  }
+
+  .overlay-cta {
+    margin-top: 1rem;
+    background: #c5a059;
+    color: #000;
+    text-decoration: none;
+    padding: 1rem 2.5rem;
+    font-family: var(--font-manrope);
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 2px;
+    transition: background 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .nav-overlay.is-open .overlay-cta {
+    animation: slideUp 0.6s var(--ease-in-out-soft) 0.4s forwards;
+  }
+
+  .overlay-cta:hover {
+    background: #d4b57a;
+  }
+
+  @keyframes slideUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .nav-links {
+      display: none;
+    }
+    .nav-toggle {
+      display: block;
+    }
+  }
+</style>

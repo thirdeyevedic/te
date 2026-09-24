@@ -18,8 +18,12 @@ export interface Destination {
   tagline: string;
   /** Wide hero imagery — public/ URL or imported asset */
   heroImage?: string;
+  /** Wide hero alt text */
+  heroAlt?: string;
   /** Portrait crop of the same photograph, used by listing cards */
   cardImage?: string;
+  /** Portrait card alt text */
+  cardAlt?: string;
   landscape: string;
   culturalContext: string;
   luxuryContext: string;
@@ -40,7 +44,9 @@ export const destinations: Destination[] = [
     country: "Maldives",
     tagline: "Ocean silence. Sky infinity.",
     heroImage: "/images/destinations/maldives/hero.jpg",
+    heroAlt: "A serene overwater mandapa in the Maldives at sunrise, with turquoise waters stretching to a seamless horizon.",
     cardImage: "/images/destinations/maldives/card.jpg",
+    cardAlt: "A vertical view of a luxury overwater villa on stilts above a crystal-clear Maldives lagoon.",
     landscape:
       "Low coral islands, turquoise lagoons and sand that dissolves into shallow sea — a horizon with almost no edges.",
     culturalContext:
@@ -67,7 +73,9 @@ export const destinations: Destination[] = [
     country: "Switzerland",
     tagline: "Fire meets ice. Vows meet silence.",
     heroImage: "/images/destinations/switzerland/hero.jpg",
+    heroAlt: "A glowing brass homa fire contrasted against the stark white snow of the Swiss Alps, with the Matterhorn peak rising in the distance.",
     cardImage: "/images/destinations/switzerland/card.jpg",
+    cardAlt: "A close-up of a sacred fire burning on a snowfield, with towering Alpine peaks in the background.",
     landscape:
       "Glaciated peaks, meadow valleys, waterfalls falling from cliff villages and trains crossing the high snow.",
     culturalContext:
@@ -94,7 +102,9 @@ export const destinations: Destination[] = [
     country: "Japan",
     tagline: "Precision as devotion.",
     heroImage: "/images/destinations/kyoto/hero.jpg",
+    heroAlt: "A meditative Kyoto moss garden at dawn, with raked gravel, a stone lantern, and a soft mist between ancient cedar trees.",
     cardImage: "/images/destinations/kyoto/card.jpg",
+    cardAlt: "A vertical composition of a traditional Japanese zen garden with wet moss and grey stone lanterns.",
     landscape:
       "Wooden machiya lanes, vermilion gates climbing forested hills, moss gardens and bamboo moving in wind.",
     culturalContext:
@@ -121,7 +131,9 @@ export const destinations: Destination[] = [
     country: "Italy",
     tagline: "La dolce vita, sacred.",
     heroImage: "/images/destinations/italy/hero.jpg",
+    heroAlt: "An elegant lakefront villa in Italy at golden hour, with cypress trees and a mirrored reflection in the still water.",
     cardImage: "/images/destinations/italy/card.jpg",
+    cardAlt: "A narrow view of a Tuscan hillside with a single cypress tree and a honey-coloured stone wall.",
     landscape:
       "Lake villas mirrored in still water, cypress-lined Tuscan ridges, Amalfi cliffs stacked above the sea.",
     culturalContext:
@@ -148,7 +160,9 @@ export const destinations: Destination[] = [
     country: "Indonesia",
     tagline: "Island of the gods.",
     heroImage: "/images/destinations/bali/hero.jpg",
+    heroAlt: "A cliff-top Vedic ceremony in Bali, with cascading frangipani flowers and a burning sunset over the Indian Ocean.",
     cardImage: "/images/destinations/bali/card.jpg",
+    cardAlt: "A silhouette of a Balinese meru pagoda against a vivid vermilion and gold sunset sky.",
     landscape:
       "Cliff temples above breaking surf, rice terraces stepped into volcano slopes, mist rising from river gorges.",
     culturalContext:
@@ -175,7 +189,9 @@ export const destinations: Destination[] = [
     country: "Multiple",
     tagline: "A world that moves with you.",
     heroImage: "/images/destinations/cruises/hero.jpg",
+    heroAlt: "A luxury cruise ship deck at dusk, with warm gold ambient lighting and a vast, dark indigo ocean horizon.",
     cardImage: "/images/destinations/cruises/card.jpg",
+    cardAlt: "The bow of a white luxury liner cutting through a calm ocean under a magenta twilight sky.",
     landscape:
       "Open ocean horizons, ports changing outside your window, decks that become venues at night.",
     culturalContext:
