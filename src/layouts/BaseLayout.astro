@@ -107,7 +107,7 @@ const webPage = {
 
     <script is:inline>
       document.documentElement.dataset.nav = "overlay";
-      if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      if (matchMedia("(prefers-reduced-motion: reduce").matches) {
         document.documentElement.classList.add("reduced-motion");
       }
     </script>
@@ -154,7 +154,6 @@ const webPage = {
 </html>
 
 <style>
-  /* Cinematic page fade to prevent FOUC and add luxury polish */
   .page-fade-out {
     opacity: 0;
     transition: opacity 800ms var(--ease-in-out-soft);

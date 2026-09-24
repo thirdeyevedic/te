@@ -1,118 +1,157 @@
 ---
 /**
- * Custom cursor — dot + trailing ring.
- * Desktop fine-pointers only; disabled under reduced motion.
+ * Cursor — A luxury interaction layer.
+ * 
+ * Instead of a standard mouse, this provides a "lens" that reacts to 
+ * interactive elements, providing a tactile, high-end feel.
  */
 ---
 
-<div class="cursor" id="cursor" aria-hidden="true">
-  <div class="cursor__dot"></div>
-  <div class="cursor__ring"></div>
+<div class="custom-cursor" id="cursor-dot"></div>
+<div class="custom-cursor-follower" id="cursor-follower">
+  <span class="follower-text"></span>
 </div>
 
 <style>
-  .cursor {
-    display: none;
+  :root {
+    --cursor-color: #b89b5e;
+    --cursor-size: 8px;
+    --follower-size: 40px;
   }
 
-  @media (hover: hover) and (pointer: fine) {
-    html:not(.reduced-motion) .cursor {
-      display: block;
-      position: fixed;
-      inset: 0;
-      z-index: 300;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 400ms ease;
-    }
+  body {
+    cursor: none !important;
+  }
 
-    html:not(.reduced-motion) .cursor.is-active {
-      opacity: 1;
-    }
+  a, button, .interactive, input, select, textarea {
+    cursor: none !important;
+  }
 
-    .cursor__dot,
-    .cursor__ring {
-      position: absolute;
-      top: 0;
-      left: 0;
-      border-radius: 50%;
-      will-change: transform;
-    }
+  .custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--cursor-size);
+    height: var(--cursor-size);
+    background-color: var(--cursor-color);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease-out, opacity 0.3s ease;
+  }
 
-    .cursor__dot {
-      width: 5px;
-      height: 5px;
-      margin: -2.5px 0 0 -2.5px;
-      background: var(--color-gold);
-    }
+  .custom-cursor-follower {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--follower-size);
+    height: var(--follower-size);
+    border: 1px solid var(--cursor-color);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                width 0.3s var(--ease-in-out-soft), 
+                height 0.3s var(--ease-in-out-soft), 
+                background-color 0.3s ease, 
+                opacity 0.3s ease;
+    opacity: 0;
+  }
 
-    .cursor__ring {
-      width: 34px;
-      height: 34px;
-      margin: -17px 0 0 -17px;
-      border: 1px solid rgba(184, 155, 94, 0.55);
-      transition:
-        width var(--dur-micro) ease,
-        height var(--dur-micro) ease,
-        margin var(--dur-micro) ease,
-        border-color var(--dur-micro) ease,
-        opacity var(--dur-micro) ease;
-    }
+  .follower-text {
+    font-family: var(--font-manrope);
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--cursor-color);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    white-space: nowrap;
+  }
 
-    .cursor.is-hover .cursor__ring {
-      width: 52px;
-      height: 52px;
-      margin: -26px 0 0 -26px;
-      border-color: rgba(184, 155, 94, 0.9);
-    }
+  /* Active States */
+  .cursor-active .custom-cursor {
+    transform: scale(0.5);
+    opacity: 0.5;
+  }
 
-    /* Keep native cursor visible — this is an accent, not a replacement */
+  .cursor-active .custom-cursor-follower {
+    opacity: 1;
+    background-color: rgba(184, 155, 94, 0.1);
+  }
+
+  .cursor-active .follower-text {
+    opacity: 1;
+  }
+
+  @media (max-width: 1024px) {
+    .custom-cursor, .custom-cursor-follower {
+      display: none;
+    }
+    body, a, button, .interactive, input, select, textarea {
+      cursor: auto !important;
+    }
   }
 </style>
 
 <script>
-  const finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
-  const reducedMotion = document.documentElement.classList.contains("reduced-motion");
-
   function initCursor() {
-    const root = document.getElementById("cursor");
-    if (!root || !finePointer || reducedMotion || root.dataset.bound) return;
-    root.dataset.bound = "1";
+    const dot = document.getElementById("cursor-dot");
+    const follower = document.getElementById("cursor-follower");
+    const text = follower?.querySelector(".follower-text");
+    
+    if (!dot || !follower) return;
 
-    let x = innerWidth / 2;
-    let y = innerHeight / 2;
-    let ringX = x;
-    let ringY = y;
-    let raf = 0;
+    let mouseX = 0;
+    let mouseY = 0;
+    let dotX = 0;
+    let dotY = 0;
+    let followerX = 0;
+    let followerY = 0;
 
-    const dot = root.querySelector<HTMLElement>(".cursor__dot")!;
-    const ring = root.querySelector<HTMLElement>(".cursor__ring")!;
+    window.addEventListener("mousemove", (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
 
-    const render = () => {
-      ringX += (x - ringX) * 0.16;
-      ringY += (y - ringY) * 0.16;
-      dot.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`;
-      raf = requestAnimationFrame(render);
-    };
+    // Smooth animation loop
+    function animate() {
+      // Dot follows mouse exactly
+      dotX += (mouseX - dotX) * 0.2;
+      dotY += (mouseY - dotY) * 0.2;
+      
+      // Follower lags behind for "weighty" feel
+      followerX += (mouseX - followerX) * 0.1;
+      followerY += (mouseY - followerY) * 0.1;
 
-    addEventListener(
-      "mousemove",
-      (e) => {
-        if (!raf) raf = requestAnimationFrame(render);
-        root.classList.add("is-active");
-        x = e.clientX;
-        y = e.clientY;
-        const target = e.target as Element | null;
-        root.classList.toggle("is-hover", !!target?.closest("a, button"));
-      },
-      { passive: true },
-    );
+      dot.style.transform = `translate(${dotX}px, ${dotY}px)`;
+      follower.style.transform = `translate(${followerX - (follower.offsetWidth / 2)}px, ${followerY - (follower.offsetHeight / 2)}px)`;
 
-    document.documentElement.addEventListener("mouseleave", () => {
-      root.classList.remove("is-active");
-      cancelAnimationFrame(raf);
-      raf = 0;
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Interaction detection
+    const interactives = document.querySelectorAll("a, button, .interactive");
+    
+    interactives.forEach(el => {
+      el.addEventListener("mouseenter", () => {
+        document.body.classList.add("cursor-active");
+        
+        // Set custom text based on element
+        const label = el.getAttribute("data-cursor-text") || 
+                      (el.tagName === "A" ? "EXPLORE" : "CLICK");
+        if (text) text.textContent = label;
+      });
+      
+      el.addEventListener("mouseleave", () => {
+        document.body.classList.remove("cursor-active");
+      });
     });
   }
 
