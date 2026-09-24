@@ -42,7 +42,12 @@ const description =
     <div class="container">
       {
         ipEvents.map((ip, i) => (
-          <article class="ip reveal" id={ip.id} style={`--reveal-delay: ${(i % 3) * 60}ms`}>
+          <a 
+            class="ip reveal" 
+            href={`/ip-events/${ip.id}`} 
+            id={ip.id} 
+            style={`--reveal-delay: ${(i % 3) * 60}ms`}
+          >
             <div class="ip__visual-wrapper">
               <figure class="ip__visual">
                 <ExperienceImage src={ip.heroImage} fill alt={`High-impact visual for ${ip.name}`} />
@@ -76,7 +81,7 @@ const description =
                 </div>
               </dl>
             </div>
-          </article>
+          </a>
         ))
       }
     </div>
@@ -129,6 +134,8 @@ const description =
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     scroll-margin-top: calc(var(--nav-h) + 1rem);
     transition: background 0.4s var(--ease-in-out-soft);
+    text-decoration: none;
+    color: inherit;
   }
 
   .ip:hover {
@@ -142,6 +149,7 @@ const description =
   .ip__visual-wrapper {
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    pointer-events: none;
   }
 
   .ip__visual {
@@ -166,6 +174,8 @@ const description =
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    position: relative;
+    z-index: 2;
   }
 
   .ip__num {
@@ -194,6 +204,8 @@ const description =
   .ip__details {
     display: flex;
     align-items: center;
+    position: relative;
+    z-index: 2;
   }
 
   .ip__meta {
