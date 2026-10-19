@@ -260,12 +260,30 @@
     const stage = document.getElementById('cinema-stage');
     if (!stage) return;
 
+    // SAFETY VALVE: Force reveal if cinematic doesn't start in 6s
+    const safetyTimer = setTimeout(() => {
+      console.warn('Cinematic intro timeout: Forcing reveal');
+      gsap.to(stage, { 
+        opacity: 0, 
+        duration: 1, 
+        onComplete: () => {
+          stage.style.display = 'none';
+          document.body.style.overflow = '';
+        }
+      });
+    }, 6000);
+
     const lenis = new Lenis({
       duration: 1.5,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
 
-    lenis.on('scroll', ScrollTrigger.update);
+    lenis.on('scroll', () => {
+      // Clear safety timer once user starts interacting
+      clearTimeout(safetyTimer);
+      ScrollTrigger.update();
+    });
+
     gsap.ticker.add((time) => {
       lenis.raf(time * 1000);
     });
