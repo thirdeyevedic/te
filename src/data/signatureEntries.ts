@@ -144,7 +144,7 @@ export const signatureEntries: SignatureEntry[] = [
       { label: "The Stillness", description: "Complete silence or soft ambient drone. Lights dim into soft white/blue hues." },
       { label: "The Divine Sound", description: "Shankh echoes gently followed by temple bells and soft Vedic chants/alaap." },
       { label: "The Atmosphere Forms", description: "Mist spreads across the floor. Light beams cut through like dawn rays." },
-      { label: "The Appearance", "Silhouette becomes visible above or within mist. Platform/pathway softly illuminated." },
+      { label: "The Appearance", description: "Silhouette becomes visible above or within mist. Platform/pathway softly illuminated." },
       { label: "The Descent", description: "Couple enters slowly, extremely graceful, almost gliding. No sudden actions." },
       { label: "The Divine Walk", description: "Each step synced with music. Lighting follows like aura. Guests silent, absorbed." },
       { label: "The Union Point", description: "Light intensifies briefly. Chant peaks softly. Transition into ritual seamless and sacred." },

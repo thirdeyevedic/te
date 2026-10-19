@@ -7,6 +7,23 @@
     ],
     "w": 900
   },
+  "/images/about/archival-dance@480.jpg": {
+    "h": 600,
+    "variants": [],
+    "w": 480
+  },
+  "/images/about/archival-dance@768.jpg": {
+    "h": 960,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/about/archival-dance@768@480.jpg": {
+    "h": 600,
+    "variants": [],
+    "w": 480
+  },
   "/images/about/founder-hero.jpg": {
     "h": 900,
     "variants": [
@@ -15,6 +32,48 @@
       1200
     ],
     "w": 1600
+  },
+  "/images/about/founder-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/about/founder-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/about/founder-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/about/founder-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/about/founder-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/about/founder-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/about/founder-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
   },
   "/images/about/hero.jpg": {
     "h": 896,
@@ -25,6 +84,48 @@
     ],
     "w": 1593
   },
+  "/images/about/hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/about/hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/about/hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/about/hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/about/hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/about/hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/about/hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/about/philosophy-hero.jpg": {
     "h": 896,
     "variants": [
@@ -33,6 +134,48 @@
       1200
     ],
     "w": 1593
+  },
+  "/images/about/philosophy-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/about/philosophy-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/about/philosophy-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/about/philosophy-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/about/philosophy-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/about/philosophy-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/about/philosophy-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
   },
   "/images/about/story-hero.jpg": {
     "h": 896,
@@ -43,6 +186,48 @@
     ],
     "w": 1593
   },
+  "/images/about/story-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/about/story-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/about/story-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/about/story-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/about/story-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/about/story-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/about/story-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/about/team-vision.jpg": {
     "h": 896,
     "variants": [
@@ -51,6 +236,48 @@
       1200
     ],
     "w": 1593
+  },
+  "/images/about/team-vision@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/about/team-vision@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/about/team-vision@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/about/team-vision@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/about/team-vision@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/about/team-vision@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/about/team-vision@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
   },
   "/images/about/vision-hero.jpg": {
     "h": 896,
@@ -61,6 +288,48 @@
     ],
     "w": 1593
   },
+  "/images/about/vision-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/about/vision-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/about/vision-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/about/vision-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/about/vision-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/about/vision-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/about/vision-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/contact-hero.jpg": {
     "h": 896,
     "variants": [
@@ -70,6 +339,48 @@
     ],
     "w": 1593
   },
+  "/images/contact-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/contact-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/contact-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/contact-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/contact-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/contact-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/contact-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/destinations/bali/card.jpg": {
     "h": 1200,
     "variants": [
@@ -77,6 +388,23 @@
       768
     ],
     "w": 900
+  },
+  "/images/destinations/bali/card@480.jpg": {
+    "h": 640,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/bali/card@768.jpg": {
+    "h": 1024,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/bali/card@768@480.jpg": {
+    "h": 640,
+    "variants": [],
+    "w": 480
   },
   "/images/destinations/bali/hero.jpg": {
     "h": 768,
@@ -87,6 +415,48 @@
     ],
     "w": 1365
   },
+  "/images/destinations/bali/hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/destinations/bali/hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/bali/hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/bali/hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/bali/hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/bali/hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/bali/hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/destinations/cruises/card.jpg": {
     "h": 1200,
     "variants": [
@@ -94,6 +464,23 @@
       768
     ],
     "w": 900
+  },
+  "/images/destinations/cruises/card@480.jpg": {
+    "h": 640,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/cruises/card@768.jpg": {
+    "h": 1024,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/cruises/card@768@480.jpg": {
+    "h": 640,
+    "variants": [],
+    "w": 480
   },
   "/images/destinations/cruises/hero.jpg": {
     "h": 768,
@@ -104,6 +491,48 @@
     ],
     "w": 1365
   },
+  "/images/destinations/cruises/hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/destinations/cruises/hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/cruises/hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/cruises/hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/cruises/hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/cruises/hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/cruises/hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/destinations/index-hero.jpg": {
     "h": 896,
     "variants": [
@@ -112,6 +541,48 @@
       1200
     ],
     "w": 1593
+  },
+  "/images/destinations/index-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/destinations/index-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/index-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/index-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/index-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/index-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/index-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
   },
   "/images/destinations/india-hero.jpg": {
     "h": 896,
@@ -122,6 +593,48 @@
     ],
     "w": 1593
   },
+  "/images/destinations/india-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/destinations/india-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/india-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/india-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/india-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/india-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/india-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/destinations/italy/card.jpg": {
     "h": 1200,
     "variants": [
@@ -129,6 +642,23 @@
       768
     ],
     "w": 900
+  },
+  "/images/destinations/italy/card@480.jpg": {
+    "h": 640,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/italy/card@768.jpg": {
+    "h": 1024,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/italy/card@768@480.jpg": {
+    "h": 640,
+    "variants": [],
+    "w": 480
   },
   "/images/destinations/italy/hero.jpg": {
     "h": 768,
@@ -139,6 +669,48 @@
     ],
     "w": 1365
   },
+  "/images/destinations/italy/hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/destinations/italy/hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/italy/hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/italy/hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/italy/hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/italy/hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/italy/hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/destinations/kyoto/card.jpg": {
     "h": 1200,
     "variants": [
@@ -146,6 +718,23 @@
       768
     ],
     "w": 900
+  },
+  "/images/destinations/kyoto/card@480.jpg": {
+    "h": 640,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/kyoto/card@768.jpg": {
+    "h": 1024,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/kyoto/card@768@480.jpg": {
+    "h": 640,
+    "variants": [],
+    "w": 480
   },
   "/images/destinations/kyoto/hero.jpg": {
     "h": 768,
@@ -156,6 +745,48 @@
     ],
     "w": 1365
   },
+  "/images/destinations/kyoto/hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/destinations/kyoto/hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/kyoto/hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/kyoto/hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/kyoto/hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/kyoto/hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/kyoto/hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/destinations/maldives/card.jpg": {
     "h": 1200,
     "variants": [
@@ -163,6 +794,23 @@
       768
     ],
     "w": 900
+  },
+  "/images/destinations/maldives/card@480.jpg": {
+    "h": 640,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/maldives/card@768.jpg": {
+    "h": 1024,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/maldives/card@768@480.jpg": {
+    "h": 640,
+    "variants": [],
+    "w": 480
   },
   "/images/destinations/maldives/hero.jpg": {
     "h": 768,
@@ -173,6 +821,73 @@
     ],
     "w": 1365
   },
+  "/images/destinations/maldives/hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/destinations/maldives/hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/maldives/hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/maldives/hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/maldives/hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/maldives/hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/maldives/hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/rajasthan/card.jpg": {
+    "h": 1200,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 900
+  },
+  "/images/destinations/rajasthan/card@480.jpg": {
+    "h": 640,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/rajasthan/card@768.jpg": {
+    "h": 1024,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/rajasthan/card@768@480.jpg": {
+    "h": 640,
+    "variants": [],
+    "w": 480
+  },
   "/images/destinations/switzerland/card.jpg": {
     "h": 1200,
     "variants": [
@@ -180,6 +895,23 @@
       768
     ],
     "w": 900
+  },
+  "/images/destinations/switzerland/card@480.jpg": {
+    "h": 640,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/switzerland/card@768.jpg": {
+    "h": 1024,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/switzerland/card@768@480.jpg": {
+    "h": 640,
+    "variants": [],
+    "w": 480
   },
   "/images/destinations/switzerland/hero.jpg": {
     "h": 768,
@@ -190,6 +922,48 @@
     ],
     "w": 1365
   },
+  "/images/destinations/switzerland/hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/destinations/switzerland/hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/switzerland/hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/switzerland/hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/switzerland/hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/destinations/switzerland/hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/destinations/switzerland/hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/founder-portrait.jpg": {
     "h": 1000,
     "variants": [
@@ -197,6 +971,23 @@
       768
     ],
     "w": 800
+  },
+  "/images/founder-portrait@480.jpg": {
+    "h": 600,
+    "variants": [],
+    "w": 480
+  },
+  "/images/founder-portrait@768.jpg": {
+    "h": 960,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/founder-portrait@768@480.jpg": {
+    "h": 600,
+    "variants": [],
+    "w": 480
   },
   "/images/hero-cinematic.jpg": {
     "h": 768,
@@ -207,6 +998,48 @@
     ],
     "w": 1365
   },
+  "/images/hero-cinematic@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/hero-cinematic@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/hero-cinematic@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/hero-cinematic@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/hero-cinematic@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/hero-cinematic@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/hero-cinematic@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/ip/automotive-hero.jpg": {
     "h": 768,
     "variants": [
@@ -215,6 +1048,48 @@
       1200
     ],
     "w": 1365
+  },
+  "/images/ip/automotive-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/ip/automotive-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/automotive-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/ip/automotive-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/automotive-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/automotive-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/ip/automotive-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
   },
   "/images/ip/awards-hero.jpg": {
     "h": 768,
@@ -225,6 +1100,48 @@
     ],
     "w": 1365
   },
+  "/images/ip/awards-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/ip/awards-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/awards-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/ip/awards-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/awards-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/awards-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/ip/awards-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/ip/best-products-hero.jpg": {
     "h": 768,
     "variants": [
@@ -233,6 +1150,48 @@
       1200
     ],
     "w": 1365
+  },
+  "/images/ip/best-products-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/ip/best-products-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/best-products-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/ip/best-products-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/best-products-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/best-products-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/ip/best-products-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
   },
   "/images/ip/concerts-hero.jpg": {
     "h": 768,
@@ -243,6 +1202,48 @@
     ],
     "w": 1365
   },
+  "/images/ip/concerts-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/ip/concerts-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/concerts-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/ip/concerts-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/concerts-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/concerts-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/ip/concerts-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/ip/devotional-hero.jpg": {
     "h": 768,
     "variants": [
@@ -251,6 +1252,48 @@
       1200
     ],
     "w": 1365
+  },
+  "/images/ip/devotional-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/ip/devotional-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/devotional-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/ip/devotional-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/devotional-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/devotional-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/ip/devotional-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
   },
   "/images/ip/exhibitions-hero.jpg": {
     "h": 768,
@@ -261,6 +1304,48 @@
     ],
     "w": 1365
   },
+  "/images/ip/exhibitions-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/ip/exhibitions-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/exhibitions-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/ip/exhibitions-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/exhibitions-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/exhibitions-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/ip/exhibitions-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/ip/fashion-hero.jpg": {
     "h": 768,
     "variants": [
@@ -269,6 +1354,48 @@
       1200
     ],
     "w": 1365
+  },
+  "/images/ip/fashion-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/ip/fashion-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/fashion-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/ip/fashion-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/fashion-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/fashion-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/ip/fashion-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
   },
   "/images/ip/index-hero.jpg": {
     "h": 896,
@@ -279,6 +1406,48 @@
     ],
     "w": 1593
   },
+  "/images/ip/index-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/ip/index-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/index-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/ip/index-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/index-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/index-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/ip/index-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/ip/political-hero.jpg": {
     "h": 768,
     "variants": [
@@ -287,6 +1456,48 @@
       1200
     ],
     "w": 1365
+  },
+  "/images/ip/political-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/ip/political-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/political-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/ip/political-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/political-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/political-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/ip/political-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
   },
   "/images/ip/sports-hero.jpg": {
     "h": 768,
@@ -297,6 +1508,48 @@
     ],
     "w": 1365
   },
+  "/images/ip/sports-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/ip/sports-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/sports-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/ip/sports-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/sports-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/ip/sports-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/ip/sports-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/og.jpg": {
     "h": 630,
     "variants": [
@@ -304,6 +1557,23 @@
       768
     ],
     "w": 1200
+  },
+  "/images/og@480.jpg": {
+    "h": 252,
+    "variants": [],
+    "w": 480
+  },
+  "/images/og@768.jpg": {
+    "h": 403,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/og@768@480.jpg": {
+    "h": 252,
+    "variants": [],
+    "w": 480
   },
   "/images/production/ad-shoots.jpg": {
     "h": 768,
@@ -314,6 +1584,48 @@
     ],
     "w": 1365
   },
+  "/images/production/ad-shoots@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/production/ad-shoots@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/ad-shoots@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/production/ad-shoots@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/ad-shoots@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/ad-shoots@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/production/ad-shoots@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/production/branded-content.jpg": {
     "h": 768,
     "variants": [
@@ -322,6 +1634,48 @@
       1200
     ],
     "w": 1365
+  },
+  "/images/production/branded-content@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/production/branded-content@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/branded-content@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/production/branded-content@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/branded-content@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/branded-content@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/production/branded-content@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
   },
   "/images/production/documentaries.jpg": {
     "h": 768,
@@ -332,6 +1686,48 @@
     ],
     "w": 1365
   },
+  "/images/production/documentaries@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/production/documentaries@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/documentaries@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/production/documentaries@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/documentaries@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/documentaries@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/production/documentaries@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/production/feature-films.jpg": {
     "h": 768,
     "variants": [
@@ -340,6 +1736,48 @@
       1200
     ],
     "w": 1365
+  },
+  "/images/production/feature-films@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/production/feature-films@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/feature-films@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/production/feature-films@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/feature-films@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/feature-films@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/production/feature-films@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
   },
   "/images/production/index-hero.jpg": {
     "h": 896,
@@ -350,6 +1788,48 @@
     ],
     "w": 1593
   },
+  "/images/production/index-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/production/index-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/index-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/production/index-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/index-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/index-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/production/index-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/production/short-films.jpg": {
     "h": 768,
     "variants": [
@@ -358,6 +1838,48 @@
       1200
     ],
     "w": 1365
+  },
+  "/images/production/short-films@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/production/short-films@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/short-films@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/production/short-films@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/short-films@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/short-films@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/production/short-films@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
   },
   "/images/production/youtube-digital.jpg": {
     "h": 768,
@@ -368,12 +1890,59 @@
     ],
     "w": 1365
   },
+  "/images/production/youtube-digital@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/production/youtube-digital@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/youtube-digital@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/production/youtube-digital@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/youtube-digital@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/production/youtube-digital@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/production/youtube-digital@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/signature/celestial-entry-card.jpg": {
     "h": 768,
     "variants": [
       480
     ],
     "w": 576
+  },
+  "/images/signature/celestial-entry-card@480.jpg": {
+    "h": 640,
+    "variants": [],
+    "w": 480
   },
   "/images/signature/celestial-entry-hero.jpg": {
     "h": 768,
@@ -384,12 +1953,59 @@
     ],
     "w": 1365
   },
+  "/images/signature/celestial-entry-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/signature/celestial-entry-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/signature/celestial-entry-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/signature/celestial-entry-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/signature/celestial-entry-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/signature/celestial-entry-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/signature/celestial-entry-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/signature/floral-entry-card.jpg": {
     "h": 768,
     "variants": [
       480
     ],
     "w": 576
+  },
+  "/images/signature/floral-entry-card@480.jpg": {
+    "h": 640,
+    "variants": [],
+    "w": 480
   },
   "/images/signature/floral-entry-hero.jpg": {
     "h": 768,
@@ -400,6 +2016,48 @@
     ],
     "w": 1365
   },
+  "/images/signature/floral-entry-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/signature/floral-entry-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/signature/floral-entry-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/signature/floral-entry-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/signature/floral-entry-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/signature/floral-entry-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/signature/floral-entry-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/signature/royal-entry-card.jpg": {
     "h": 1200,
     "variants": [
@@ -407,6 +2065,23 @@
       768
     ],
     "w": 900
+  },
+  "/images/signature/royal-entry-card@480.jpg": {
+    "h": 640,
+    "variants": [],
+    "w": 480
+  },
+  "/images/signature/royal-entry-card@768.jpg": {
+    "h": 1024,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/signature/royal-entry-card@768@480.jpg": {
+    "h": 640,
+    "variants": [],
+    "w": 480
   },
   "/images/signature/royal-entry-hero.jpg": {
     "h": 768,
@@ -417,6 +2092,48 @@
     ],
     "w": 1365
   },
+  "/images/signature/royal-entry-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/signature/royal-entry-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/signature/royal-entry-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/signature/royal-entry-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/signature/royal-entry-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/signature/royal-entry-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/signature/royal-entry-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/signature/shiva-entry-card.jpg": {
     "h": 1200,
     "variants": [
@@ -424,6 +2141,23 @@
       768
     ],
     "w": 900
+  },
+  "/images/signature/shiva-entry-card@480.jpg": {
+    "h": 640,
+    "variants": [],
+    "w": 480
+  },
+  "/images/signature/shiva-entry-card@768.jpg": {
+    "h": 1024,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/signature/shiva-entry-card@768@480.jpg": {
+    "h": 640,
+    "variants": [],
+    "w": 480
   },
   "/images/signature/shiva-entry-hero.jpg": {
     "h": 768,
@@ -434,6 +2168,48 @@
     ],
     "w": 1365
   },
+  "/images/signature/shiva-entry-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/signature/shiva-entry-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/signature/shiva-entry-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/signature/shiva-entry-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/signature/shiva-entry-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/signature/shiva-entry-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/signature/shiva-entry-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/vedic/dining-banana-leaf.jpg": {
     "h": 1024,
     "variants": [
@@ -442,6 +2218,23 @@
     ],
     "w": 819
   },
+  "/images/vedic/dining-banana-leaf@480.jpg": {
+    "h": 600,
+    "variants": [],
+    "w": 480
+  },
+  "/images/vedic/dining-banana-leaf@768.jpg": {
+    "h": 960,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/vedic/dining-banana-leaf@768@480.jpg": {
+    "h": 600,
+    "variants": [],
+    "w": 480
+  },
   "/images/vedic/dining.jpg": {
     "h": 1024,
     "variants": [
@@ -449,6 +2242,23 @@
       768
     ],
     "w": 819
+  },
+  "/images/vedic/dining@480.jpg": {
+    "h": 600,
+    "variants": [],
+    "w": 480
+  },
+  "/images/vedic/dining@768.jpg": {
+    "h": 960,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/vedic/dining@768@480.jpg": {
+    "h": 600,
+    "variants": [],
+    "w": 480
   },
   "/images/vedic/pure-hero.jpg": {
     "h": 768,
@@ -459,6 +2269,48 @@
     ],
     "w": 1365
   },
+  "/images/vedic/pure-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/vedic/pure-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/vedic/pure-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/vedic/pure-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/vedic/pure-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/vedic/pure-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/vedic/pure-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/vedic/satvik-dining-banana-leaf.jpg": {
     "h": 768,
     "variants": [
@@ -467,6 +2319,48 @@
       1200
     ],
     "w": 1365
+  },
+  "/images/vedic/satvik-dining-banana-leaf@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/vedic/satvik-dining-banana-leaf@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/vedic/satvik-dining-banana-leaf@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/vedic/satvik-dining-banana-leaf@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/vedic/satvik-dining-banana-leaf@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/vedic/satvik-dining-banana-leaf@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/vedic/satvik-dining-banana-leaf@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
   },
   "/images/vedic/satvik-dining-copper.jpg": {
     "h": 768,
@@ -477,6 +2371,48 @@
     ],
     "w": 1365
   },
+  "/images/vedic/satvik-dining-copper@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/vedic/satvik-dining-copper@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/vedic/satvik-dining-copper@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/vedic/satvik-dining-copper@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/vedic/satvik-dining-copper@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/vedic/satvik-dining-copper@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/vedic/satvik-dining-copper@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/vedic/satvik-dining-seasonal.jpg": {
     "h": 768,
     "variants": [
@@ -485,6 +2421,48 @@
       1200
     ],
     "w": 1365
+  },
+  "/images/vedic/satvik-dining-seasonal@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/vedic/satvik-dining-seasonal@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/vedic/satvik-dining-seasonal@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/vedic/satvik-dining-seasonal@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/vedic/satvik-dining-seasonal@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/vedic/satvik-dining-seasonal@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/vedic/satvik-dining-seasonal@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
   },
   "/images/weddings/concepts-hero.jpg": {
     "h": 896,
@@ -495,6 +2473,48 @@
     ],
     "w": 1593
   },
+  "/images/weddings/concepts-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/weddings/concepts-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/weddings/concepts-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/weddings/concepts-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/weddings/concepts-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/weddings/concepts-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/weddings/concepts-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/weddings/destination-hero.jpg": {
     "h": 896,
     "variants": [
@@ -503,6 +2523,48 @@
       1200
     ],
     "w": 1593
+  },
+  "/images/weddings/destination-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/weddings/destination-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/weddings/destination-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/weddings/destination-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/weddings/destination-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/weddings/destination-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/weddings/destination-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
   },
   "/images/weddings/experiences-hero.jpg": {
     "h": 896,
@@ -513,6 +2575,48 @@
     ],
     "w": 1593
   },
+  "/images/weddings/experiences-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/weddings/experiences-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/weddings/experiences-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/weddings/experiences-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/weddings/experiences-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/weddings/experiences-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/weddings/experiences-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/weddings/index-hero.jpg": {
     "h": 896,
     "variants": [
@@ -522,6 +2626,99 @@
     ],
     "w": 1593
   },
+  "/images/weddings/index-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/weddings/index-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/weddings/index-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/weddings/index-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/weddings/index-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/weddings/index-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/weddings/index-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/weddings/vaidik-hero.jpg": {
+    "h": 896,
+    "variants": [
+      480,
+      768,
+      1200
+    ],
+    "w": 1593
+  },
+  "/images/weddings/vaidik-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/weddings/vaidik-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/weddings/vaidik-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/weddings/vaidik-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/weddings/vaidik-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/weddings/vaidik-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/weddings/vaidik-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
   "/images/weddings/vedic-hero.jpg": {
     "h": 896,
     "variants": [
@@ -530,5 +2727,47 @@
       1200
     ],
     "w": 1593
+  },
+  "/images/weddings/vedic-hero@1200.jpg": {
+    "h": 675,
+    "variants": [
+      480,
+      768
+    ],
+    "w": 1200
+  },
+  "/images/weddings/vedic-hero@1200@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/weddings/vedic-hero@1200@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/weddings/vedic-hero@1200@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/weddings/vedic-hero@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
+  },
+  "/images/weddings/vedic-hero@768.jpg": {
+    "h": 432,
+    "variants": [
+      480
+    ],
+    "w": 768
+  },
+  "/images/weddings/vedic-hero@768@480.jpg": {
+    "h": 270,
+    "variants": [],
+    "w": 480
   }
 }

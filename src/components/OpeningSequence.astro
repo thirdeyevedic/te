@@ -1,461 +1,354 @@
 ---
 /**
- * Opening Sequence — ॐ → gate → "Welcome to the Satyug" → mantra → reveal.
- *
- * Click-driven: nothing advances until the visitor touches the Om. Plays once
- * per browser session. Skippable (button or Escape). Disabled under reduced
- * motion. Content beneath is never blocked from assistive tech.
+ * Opening Sequence — Cinematic "Ascension"
+ * A high-end, scroll-driven movie experience that leads the user from 
+ * the Void into the divine realm of Satyug.
  */
 ---
 
-<div class="opening" id="opening">
-  {/* `aria-hidden` sits on the decorative layers only, never on the overlay:
-      the overlay holds the Skip button, and a focusable element inside an
-      aria-hidden subtree is an axe `aria-hidden-focus` violation that also
-      leaves screen-reader users with no way to dismiss the intro at all. */}
+<div class="cinema-stage" id="cinema-stage">
+  <!-- GLOBAL FILM GRAIN -->
+  <div class="film-grain" aria-hidden="true"></div>
 
-  {/* Content seen through the open gate */}
-  <div class="opening__reveal" aria-hidden="true">
-    <p class="opening__welcome display">Welcome to the Satyug</p>
-    <div class="opening__mantra" lang="sa">
-      <p>यदा यदा हि धर्मस्य ग्लानिर्भवति भारत।</p>
-      <p>अभ्युत्थानमधर्मस्य तदात्मानं सृजाम्यहम् ॥</p>
+  <!-- SCENE 1: THE VOID -->
+  <div class="scene scene--void" id="scene-1">
+    <div class="seed-container">
+      <div class="seed" id="seed"></div>
+      <div class="seed-glow" id="seed-glow"></div>
+    </div>
+    <div class="void-text" id="void-text">In the silence, the seed of intention is sown...</div>
+  </div>
+
+  <!-- SCENE 2: THE AWAKENING -->
+  <div class="scene scene--awakening" id="scene-2">
+    <div class="saffron-bloom" id="saffron-bloom"></div>
+    <div class="awakening-text" id="awakening-text">
+      <span class="word">Welcome</span>
+      <span class="word">to</span>
+      <span class="word">Satyug</span>
     </div>
   </div>
 
-  {/* The gate — two leaves that part on activation */}
-  <div class="opening__gate" aria-hidden="true">
-    <span class="opening__leaf opening__leaf--l"></span>
-    <span class="opening__leaf opening__leaf--r"></span>
+  <!-- SCENE 3: THE SACRED FRAGMENTS -->
+  <div class="scene scene--fragments" id="scene-3">
+    <div class="fragment-stage">
+      <div class="fragment" id="frag-1">
+        <div class="frag-img" style="background-image: url('/images/weddings/vedic-hero.jpg')"></div>
+        <div class="frag-overlay"></div>
+        <div class="frag-text">The Purity of Tradition</div>
+      </div>
+      <div class="fragment" id="frag-2">
+        <div class="frag-img" style="background-image: url('/images/weddings/destination-hero.jpg')"></div>
+        <div class="frag-overlay"></div>
+        <div class="frag-text">The Breath of the Divine</div>
+      </div>
+      <div class="fragment" id="frag-3">
+        <div class="frag-img" style="background-image: url('/images/weddings/concepts-hero.jpg')"></div>
+        <div class="frag-overlay"></div>
+        <div class="frag-text">A Sacred Sanskar</div>
+      </div>
+    </div>
   </div>
 
-  {/* The Om is the only control the visitor is asked to use */}
-  <button class="opening__om" id="opening-om" type="button" aria-label="Begin — enter Third Eye">
-    <span class="opening__aura" aria-hidden="true">
-      <span class="opening__ring"></span>
-      <span class="opening__ring"></span>
-    </span>
-    <span class="opening__waves" aria-hidden="true">
-      <span class="opening__wave"></span>
-      <span class="opening__wave"></span>
-      <span class="opening__wave"></span>
-    </span>
-    <span class="opening__glyph display" aria-hidden="true">ॐ</span>
-  </button>
+  <!-- SCENE 4: THE ASCENSION -->
+  <div class="scene scene--ascension" id="scene-4">
+    <div class="heaven-light" id="heaven-light"></div>
+    <div class="celestial-mist" id="celestial-mist"></div>
+    <div class="ascension-text" id="ascension-text">
+      Third Eye Events: The Execution of Divinity
+    </div>
+  </div>
 
-  <p class="opening__hint microcopy" aria-hidden="true">Touch the Om to enter</p>
-
-  <button class="opening__skip microcopy" id="opening-skip" tabindex="-1">Skip Intro</button>
+  <!-- PROGRESS INDICATOR -->
+  <div class="cinema-progress">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
 </div>
 
 <style>
-  .opening {
+  .cinema-stage {
     position: fixed;
     inset: 0;
-    z-index: 150;
-    display: grid;
-    place-items: center;
-    background: var(--color-ink);
-    opacity: 1;
+    z-index: 1000;
+    background: #050505;
+    overflow: hidden;
+    color: var(--color-ivory);
+    font-family: var(--font-serif);
+    cursor: none;
   }
 
-  /* ── The gate ───────────────────────────────────────────────────────────
-     Leaves sit above the revealed copy and below the Om, so the Om appears to
-     push the doors apart as it grows. Width is 50.5% so the two halves overlap
-     by a hair — a true 50/50 split shows a sub-pixel seam of background. */
-  .opening__gate {
+  .film-grain {
+    position: absolute;
+    inset: -100% -100%;
+    width: 300%;
+    height: 300%;
+    background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 10;
+    animation: grain-drift 8s linear infinite;
+  }
+
+  @keyframes grain-drift {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-50%, -50%); }
+  }
+
+  .scene {
     position: absolute;
     inset: 0;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .scene--void {
+    background: radial-gradient(circle at center, #111 0%, #050505 100%);
+  }
+  .seed-container {
+    position: relative;
+    display: grid;
+    place-items: center;
+  }
+  .seed {
+    width: 3px;
+    height: 3px;
+    background: #fff;
+    border-radius: 50%;
     z-index: 2;
-    pointer-events: none;
   }
-
-  .opening__leaf {
+  .seed-glow {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 50.5%;
-    background:
-      radial-gradient(120% 80% at 50% 50%, rgba(184, 155, 94, 0.05), transparent 70%),
-      var(--color-ink);
-    transition:
-      translate 1900ms var(--ease-out-expo),
-      opacity 1900ms ease;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(184, 155, 94, 0.4) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
   }
-
-  .opening__leaf--l {
-    left: 0;
-    border-right: 1px solid rgba(184, 155, 94, 0.28);
-  }
-
-  .opening__leaf--r {
-    right: 0;
-    border-left: 1px solid rgba(184, 155, 94, 0.28);
-  }
-
-  .opening.is-awakening .opening__leaf--l {
-    translate: -101% 0;
-  }
-
-  .opening.is-awakening .opening__leaf--r {
-    translate: 101% 0;
-  }
-
-  /* ── Revealed copy ─────────────────────────────────────────────────────── */
-  .opening__reveal {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    place-items: center;
-    padding-inline: var(--space-gutter);
+  .void-text {
+    position: absolute;
+    bottom: 15%;
+    font-style: italic;
+    font-size: 1.1rem;
+    opacity: 0;
+    letter-spacing: 0.15em;
     text-align: center;
+    width: 100%;
   }
 
-  .opening__welcome {
-    position: absolute;
-    font-size: clamp(1.9rem, 5.2vw, 4rem);
-    letter-spacing: 0.02em;
-    color: var(--color-ivory);
-    opacity: 0;
-    translate: 0 0.5rem;
-    transition:
-      opacity 1400ms ease,
-      translate 1400ms var(--ease-out-expo);
+  .scene--awakening {
+    z-index: 2;
   }
-
-  .opening.is-welcome .opening__welcome {
-    opacity: 1;
-    translate: 0 0;
-  }
-
-  .opening__mantra {
-    position: absolute;
-    max-width: min(88vw, 34rem);
-    /* Sanskrit renders via the platform Devanagari face; keep it serif and
-       warm so it reads as scripture, not UI. */
-    font-family: "Noto Serif Devanagari", "Kohinoor Devanagari",
-      "Devanagari Sangam MN", var(--font-body);
-    font-size: clamp(1.15rem, 2.7vw, 1.7rem);
-    line-height: 2.25;
-    letter-spacing: 0.015em;
-    color: var(--color-ivory);
-    text-shadow: 0 0 34px rgba(184, 155, 94, 0.14);
-  }
-
-  .opening__mantra p {
-    opacity: 0;
-    translate: 0 0.7rem;
-    transition:
-      opacity 1100ms ease,
-      translate 1100ms var(--ease-out-expo);
-  }
-
-  .opening.is-mantra .opening__mantra p {
-    opacity: 1;
-    translate: 0 0;
-    /* The welcome line has fully cleared by now (500ms exit), so the mantra
-       arrives into empty space — the two acts never overlap. */
-    transition-delay: 500ms;
-  }
-
-  .opening.is-mantra .opening__mantra p:nth-child(2) {
-    transition-delay: 1200ms;
-  }
-
-  /* The welcome line leaves before the mantra arrives, so the two never
-     overlap and read as one continuous sentence of the film. */
-  .opening.is-mantra .opening__welcome {
-    opacity: 0;
-    translate: 0 -0.4rem;
-    transition:
-      opacity 500ms ease,
-      translate 500ms ease;
-  }
-
-  /* ── The Om ────────────────────────────────────────────────────────────── */
-  .opening__om {
-    position: relative;
-    z-index: 3;
-    display: grid;
-    place-items: center;
-    width: min(46vmin, 20rem);
-    aspect-ratio: 1;
-    /* No UA button chrome — it must read as a glyph, not a control. */
-    appearance: none;
-    background: none;
-    border: 0;
-    color: inherit;
-    font: inherit;
-  }
-
-  .opening__glyph {
-    position: relative;
-    font-size: clamp(5rem, 14vw, 11rem);
-    line-height: 1;
-    color: var(--color-ivory);
-    text-shadow:
-      0 0 60px rgba(184, 155, 94, 0.35),
-      0 0 140px rgba(169, 85, 43, 0.18);
-    opacity: 0;
-    scale: 0.96;
-    animation:
-      om-in 2200ms var(--ease-out-expo) forwards,
-      om-breath 4600ms ease-in-out 2200ms infinite;
-  }
-
-  @keyframes om-in {
-    to {
-      opacity: 1;
-      scale: 1;
-    }
-  }
-
-  @keyframes om-breath {
-    50% {
-      text-shadow:
-        0 0 80px rgba(184, 155, 94, 0.5),
-        0 0 180px rgba(169, 85, 43, 0.26);
-    }
-  }
-
-  .opening.is-awakening .opening__glyph {
-    animation: none;
-    scale: 2.2;
-    opacity: 1;
-    transition: scale 1500ms var(--ease-out-expo);
-  }
-
-  /* Once the gate is open and the welcome line is on its way in, the Om
-     releases — it has carried the eye through the awakening, it does not
-     need to compete with the copy that follows. The is-mantra rule repeats
-     the opacity:0 because removing is-welcome would otherwise drop this
-     rule and the glyph would snap back to opacity:1. */
-  .opening.is-welcome .opening__glyph,
-  .opening.is-mantra .opening__glyph {
-    opacity: 0;
-    transition: opacity 900ms ease;
-  }
-
-  /* ── Aura: a still, barely-there ring while waiting ────────────────────── */
-  .opening__aura,
-  .opening__waves {
+  .saffron-bloom {
     position: absolute;
     inset: 0;
-    display: grid;
-    place-items: center;
-    pointer-events: none;
-  }
-
-  .opening__ring {
-    position: absolute;
-    width: 62%;
-    aspect-ratio: 1;
-    border: 1px solid rgba(184, 155, 94, 0.16);
-    border-radius: 50%;
-  }
-
-  .opening__ring:nth-child(2) {
-    width: 86%;
-    border-color: rgba(184, 155, 94, 0.08);
-  }
-
-  .opening.is-awakening .opening__ring {
+    background: radial-gradient(circle at center, rgba(169, 85, 43, 0.3) 0%, transparent 75%);
     opacity: 0;
-    transition: opacity 700ms ease;
   }
-
-  /* ── Waves: soft ripples released outward on activation ────────────────── */
-  .opening__wave {
-    position: absolute;
-    width: 40%;
-    aspect-ratio: 1;
-    border: 1px solid rgba(184, 155, 94, 0.42);
-    border-radius: 50%;
+  .awakening-text {
+    font-size: clamp(2.2rem, 7vw, 4.5rem);
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    text-align: center;
+    z-index: 1;
+    opacity: 0;
+  }
+  .awakening-text .word {
+    display: inline-block;
+    transform: translateY(30px);
     opacity: 0;
   }
 
-  .opening.is-awakening .opening__wave {
-    animation: wave-out 2600ms var(--ease-out-expo) forwards;
-  }
-
-  .opening.is-awakening .opening__wave:nth-child(2) {
-    animation-delay: 260ms;
-  }
-
-  .opening.is-awakening .opening__wave:nth-child(3) {
-    animation-delay: 520ms;
-  }
-
-  @keyframes wave-out {
-    from {
-      opacity: 0.9;
-      scale: 1;
-    }
-    to {
-      opacity: 0;
-      scale: 4.2;
-    }
-  }
-
-  /* ── Hint + skip ───────────────────────────────────────────────────────── */
-  .opening__hint {
-    position: absolute;
-    bottom: clamp(3.5rem, 9vh, 6rem);
+  .scene--fragments {
     z-index: 3;
-    color: var(--ink-faint);
-    letter-spacing: 0.24em;
+  }
+  .fragment-stage {
+    display: flex;
+    gap: 4rem;
+    padding: 4rem;
+    perspective: 1000px;
+  }
+  .fragment {
+    position: relative;
+    width: 320px;
+    height: 450px;
     opacity: 0;
-    animation: hint-in 1400ms ease 2400ms forwards;
+    transform: scale(0.8) translateZ(-100px);
   }
-
-  @keyframes hint-in {
-    to {
-      opacity: 1;
-    }
+  .frag-img {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    filter: contrast(1.1) brightness(0.7) saturate(0.8);
+    border: 1px solid rgba(184, 155, 94, 0.2);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
   }
-
-  .opening.is-awakening .opening__hint {
-    /* Cancel the entrance animation — otherwise it keeps nudging opacity to
-       1 every frame and wins over the static rule that should fade it out. */
-    animation: none;
-    opacity: 0;
-    transition: opacity 400ms ease;
-  }
-
-  .opening__om:focus-visible {
-    outline: 1px solid var(--color-gold);
-    outline-offset: 1.5rem;
-    border-radius: 50%;
-  }
-
-  .opening__skip {
+  .frag-overlay {
     position: absolute;
-    right: var(--space-gutter);
+    inset: 0;
+    background: linear-gradient(to top, rgba(5,5,5,0.8) 0%, transparent 50%);
+  }
+  .frag-text {
+    position: absolute;
     bottom: 2rem;
-    z-index: 4;
-    /* --ink-faint (0.38 alpha) is ~3.3:1 on the near-black overlay and fails
-       WCAG AA for the button's text; --ink-muted (~7:1) keeps it subtle but
-       legible — axe `color-contrast`. */
-    color: var(--ink-muted);
-    padding: 0.8em;
-    letter-spacing: 0.22em;
-    transition: color var(--dur-micro) ease;
-  }
-
-  .opening__skip:hover {
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-style: italic;
+    font-size: 1.1rem;
     color: var(--color-gold);
-  }
-
-  /* Once the visitor commits to entering, the Skip button withdraws — it was
-     a safety valve for an overlay that never went anywhere, not a second
-     action competing with the Om. */
-  .opening.is-awakening .opening__skip {
+    letter-spacing: 0.05em;
     opacity: 0;
-    pointer-events: none;
-    transition: opacity 600ms ease;
   }
 
-  /* ── Exit ──────────────────────────────────────────────────────────────── */
-  .opening.is-exiting {
+  .scene--ascension {
+    z-index: 4;
+  }
+  .heaven-light {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, #fff 0%, #fff9e5 50%, transparent 100%);
     opacity: 0;
+  }
+  .celestial-mist {
+    position: absolute;
+    inset: 0;
+    background: url('https://www.transparenttextures.com/patterns/clouds.png');
+    opacity: 0.1;
+    filter: invert(1);
     pointer-events: none;
-    transition: opacity 1300ms ease;
+  }
+  .ascension-text {
+    font-size: clamp(1.8rem, 5vw, 3.5rem);
+    text-align: center;
+    z-index: 1;
+    opacity: 0;
+    color: #222;
+    font-weight: 300;
+    letter-spacing: -0.01em;
   }
 
-  .opening.is-done {
-    display: none;
+  .cinema-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(255,255,255,0.05);
+    z-index: 10;
   }
-
-  /* Reduced motion: the whole thing is a film, so there is no reduced-motion
-     variant of it — it simply does not play. */
-  @media (prefers-reduced-motion: reduce) {
-    .opening {
-      display: none;
-    }
+  .progress-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
   }
 </style>
 
 <script>
-  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import Lenis from 'lenis';
 
-  /* window.setTimeout returns a number in the DOM lib, but the ambient workers
-     types redefine the global setTimeout, so pin the type explicitly. */
-  type Timer = number;
-  let timers: Timer[] = [];
+  gsap.registerPlugin(ScrollTrigger);
 
-  function finish(el: HTMLElement) {
-    el.classList.add("is-exiting");
-    document.body.style.overflow = "";
-    timers.forEach(clearTimeout);
-    timers = [];
-    removeEventListener("keydown", onKeydown);
-    setTimeout(() => el.remove(), reducedMotion ? 0 : 1350);
-  }
+  function initCinema() {
+    const stage = document.getElementById('cinema-stage');
+    if (!stage) return;
 
-  function onKeydown(e: KeyboardEvent) {
-    if (e.key !== "Escape") return;
-    const el = document.getElementById("opening");
-    if (el) finish(el);
-  }
-
-  function initOpening() {
-    const el = document.getElementById("opening");
-    const om = document.getElementById("opening-om");
-    const skipBtn = document.getElementById("opening-skip");
-    if (!el) return;
-
-    /* Fresh DOM after client-side navigation — always tear down stale state */
-    document.body.style.overflow = "";
-
-    if (reducedMotion || sessionStorage.getItem("te-opened")) {
-      el.remove();
-      return;
-    }
-
-    sessionStorage.setItem("te-opened", "1");
-    document.body.style.overflow = "hidden";
-    skipBtn?.removeAttribute("tabindex");
-    om?.removeAttribute("tabindex");
-    om?.focus({ preventScroll: true });
-
-    /* The sequence only starts once the Om is touched — that is the whole
-       point of the piece — so the timers are scheduled from the click rather
-       than from load. */
-    let started = false;
-
-    function begin() {
-      if (started) return;
-      started = true;
-      el!.classList.add("is-awakening");
-
-      timers = [
-        /* Act I — awakening: aura ripples out, Om zooms, gate leaves part. */
-        window.setTimeout(() => el!.classList.add("is-welcome"), 1500),
-        /* Act II — "Welcome to the Satyug" revealed through the open gate. */
-        window.setTimeout(() => {
-          el!.classList.remove("is-welcome");
-          el!.classList.add("is-mantra");
-        }, 3300),
-        /* Act III — the Gita mantra holds long enough to read, then home. */
-        window.setTimeout(() => finish(el!), 8000),
-      ];
-    }
-
-    om?.addEventListener("click", begin);
-    om?.addEventListener("keydown", (e) => {
-      // Enter and Space already fire click on a button; this only stops the
-      // page from scrolling when Space is used to begin.
-      if (e.key === " ") e.preventDefault();
+    const lenis = new Lenis({
+      duration: 1.5,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
 
-    skipBtn?.addEventListener("click", () => finish(el));
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
 
-    /* Bound for the whole life of the overlay and removed by finish(). The
-       previous `{ once: true }` was consumed by the first keydown of *any*
-       kind, so a single Tab press silently disabled the Escape-to-skip
-       shortcut this component advertises. */
-    addEventListener("keydown", onKeydown);
+    document.body.style.overflow = 'hidden';
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: 'body',
+        start: 'top top',
+        end: '+=500%', 
+        scrub: 1,
+        pin: true,
+        onLeave: () => {
+          const heroContent = document.querySelector('.hero__content');
+          const heroTitle = document.querySelector('.hero__title');
+          
+          gsap.to(stage, { 
+            opacity: 0, 
+            duration: 1.5, 
+            ease: 'power2.inOut',
+            onComplete: () => {
+              stage.style.display = 'none';
+              document.body.style.overflow = '';
+              
+              if (heroContent) {
+                gsap.fromTo(heroContent, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' });
+              }
+              if (heroTitle) {
+                gsap.fromTo(heroTitle, { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.5, delay: 0.3, ease: 'power3.out' });
+              }
+            }
+          });
+        }
+      }
+    });
+
+    tl.set('#scene-1', { opacity: 1, visibility: 'visible' })
+      .to('#seed', { scale: 20, duration: 2, ease: 'power1.inOut' })
+      .to('#seed-glow', { scale: 15, opacity: 0.6, duration: 2 }, 0)
+      .to('#void-text', { opacity: 1, y: -10, duration: 1.5 }, 1)
+      .to('#void-text', { opacity: 0, duration: 1 }, '+=1');
+
+    tl.set('#scene-2', { opacity: 1, visibility: 'visible' })
+      .to('#saffron-bloom', { opacity: 1, duration: 2 })
+      .to('.awakening-text .word', { 
+        opacity: 1, 
+        y: 0, 
+        stagger: 0.3, 
+        duration: 1.5, 
+        ease: 'power3.out' 
+      }, '-=1')
+      .to('#scene-1', { opacity: 0, duration: 1 }, '-=0.5');
+
+    tl.set('#scene-3', { opacity: 1, visibility: 'visible' })
+      .to('#scene-2', { opacity: 0, duration: 1 })
+      .to('.fragment', { 
+        opacity: 1, 
+        scale: 1, 
+        translateZ: 0,
+        stagger: 0.7, 
+        duration: 2,
+        ease: 'power2.out'
+      })
+      .to('.frag-text', { 
+        opacity: 1, 
+        stagger: 0.7, 
+        duration: 1,
+        ease: 'power1.inOut'
+      }, '-=1')
+      .to('#scene-3', { opacity: 0, duration: 1 }, '+=2');
+
+    tl.set('#scene-4', { opacity: 1, visibility: 'visible' })
+      .to('#heaven-light', { opacity: 1, duration: 2 })
+      .to('#ascension-text', { 
+        opacity: 1, 
+        scale: 1.1, 
+        duration: 2, 
+        ease: 'power2.out' 
+      }, '-=1')
+      .to('#progress-bar', { width: '100%', duration: 10 }, 0);
   }
 
-  document.addEventListener("astro:page-load", initOpening);
+  document.addEventListener('astro:page-load', initCinema);
 </script>
