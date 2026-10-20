@@ -1,8 +1,7 @@
 ---
 /**
  * Opening Sequence — Cinematic "Ascension"
- * A high-end, scroll-driven movie experience that leads the user from 
- * the Void into the divine realm of Satyug.
+ * UPDATED: Added CSS-based fail-safe to guarantee visibility even if JS fails.
  */
 ---
 
@@ -75,6 +74,16 @@
     color: var(--color-ivory);
     font-family: var(--font-serif);
     cursor: none;
+    transition: opacity 1.5s ease-in-out, visibility 1.5s;
+    
+    /* FAIL-SAFE: If JS doesn't run, this animation forces the curtain open after 7s */
+    animation: fail-safe-reveal 7s forwards ease-in-out;
+  }
+
+  @keyframes fail-safe-reveal {
+    0% { opacity: 1; visibility: visible; }
+    80% { opacity: 1; visibility: visible; }
+    100% { opacity: 0; visibility: hidden; }
   }
 
   .film-grain {
@@ -260,112 +269,109 @@
     const stage = document.getElementById('cinema-stage');
     if (!stage) return;
 
-    // SAFETY VALVE: Force reveal if cinematic doesn't start in 6s
-    const safetyTimer = setTimeout(() => {
-      console.warn('Cinematic intro timeout: Forcing reveal');
-      gsap.to(stage, { 
-        opacity: 0, 
-        duration: 1, 
-        onComplete: () => {
-          stage.style.display = 'none';
-          document.body.style.overflow = '';
+    // JS FAIL-SAFE: If Lenis or GSAP crash, the CSS animation above handles the reveal.
+    try {
+      const lenis = new Lenis({
+        duration: 1.5,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
+
+      lenis.on('scroll', () => {
+        // Once user scrolls, remove the CSS fail-safe animation so GSAP can take over
+        stage.style.animation = 'none';
+        ScrollTrigger.update();
+      });
+
+      gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+      });
+      gsap.ticker.lagSmoothing(0);
+
+      document.body.style.overflow = 'hidden';
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: 'body',
+          start: 'top top',
+          end: '+=500%', 
+          scrub: 1,
+          pin: true,
+          onLeave: () => {
+            const heroContent = document.querySelector('.hero__content');
+            const heroTitle = document.querySelector('.hero__title');
+            
+            gsap.to(stage, { 
+              opacity: 0, 
+              duration: 1.5, 
+              ease: 'power2.inOut',
+              onComplete: () => {
+                stage.style.display = 'none';
+                document.body.style.overflow = '';
+                
+                if (heroContent) {
+                  gsap.fromTo(heroContent, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' });
+                }
+                if (heroTitle) {
+                  gsap.fromTo(heroTitle, { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.5, delay: 0.3, ease: 'power3.out' });
+                }
+              }
+            });
+          }
         }
       });
-    }, 6000);
 
-    const lenis = new Lenis({
-      duration: 1.5,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    });
+      tl.set('#scene-1', { opacity: 1, visibility: 'visible' })
+        .to('#seed', { scale: 20, duration: 2, ease: 'power1.inOut' })
+        .to('#seed-glow', { scale: 15, opacity: 0.6, duration: 2 }, 0)
+        .to('#void-text', { opacity: 1, y: -10, duration: 1.5 }, 1)
+        .to('#void-text', { opacity: 0, duration: 1 }, '+=1');
 
-    lenis.on('scroll', () => {
-      // Clear safety timer once user starts interacting
-      clearTimeout(safetyTimer);
-      ScrollTrigger.update();
-    });
+      tl.set('#scene-2', { opacity: 1, visibility: 'visible' })
+        .to('#saffron-bloom', { opacity: 1, duration: 2 })
+        .to('.awakening-text .word', { 
+          opacity: 1, 
+          y: 0, 
+          stagger: 0.3, 
+          duration: 1.5, 
+          ease: 'power3.out' 
+        }, '-=1')
+        .to('#scene-1', { opacity: 0, duration: 1 }, '-=0.5');
 
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
-    gsap.ticker.lagSmoothing(0);
+      tl.set('#scene-3', { opacity: 1, visibility: 'visible' })
+        .to('#scene-2', { opacity: 0, duration: 1 })
+        .to('.fragment', { 
+          opacity: 1, 
+          scale: 1, 
+          translateZ: 0,
+          stagger: 0.7, 
+          duration: 2,
+          ease: 'power2.out'
+        })
+        .to('.frag-text', { 
+          opacity: 1, 
+          stagger: 0.7, 
+          duration: 1,
+          ease: 'power1.inOut'
+        }, '-=1')
+        .to('#scene-3', { opacity: 0, duration: 1 }, '+=2');
 
-    document.body.style.overflow = 'hidden';
+      tl.set('#scene-4', { opacity: 1, visibility: 'visible' })
+        .to('#heaven-light', { opacity: 1, duration: 2 })
+        .to('#ascension-text', { 
+          opacity: 1, 
+          scale: 1.1, 
+          duration: 2, 
+          ease: 'power2.out' 
+        }, '-=1')
+        .to('#progress-bar', { width: '100%', duration: 10 }, 0);
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: 'body',
-        start: 'top top',
-        end: '+=500%', 
-        scrub: 1,
-        pin: true,
-        onLeave: () => {
-          const heroContent = document.querySelector('.hero__content');
-          const heroTitle = document.querySelector('.hero__title');
-          
-          gsap.to(stage, { 
-            opacity: 0, 
-            duration: 1.5, 
-            ease: 'power2.inOut',
-            onComplete: () => {
-              stage.style.display = 'none';
-              document.body.style.overflow = '';
-              
-              if (heroContent) {
-                gsap.fromTo(heroContent, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' });
-              }
-              if (heroTitle) {
-                gsap.fromTo(heroTitle, { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.5, delay: 0.3, ease: 'power3.out' });
-              }
-            }
-          });
-        }
-      }
-    });
-
-    tl.set('#scene-1', { opacity: 1, visibility: 'visible' })
-      .to('#seed', { scale: 20, duration: 2, ease: 'power1.inOut' })
-      .to('#seed-glow', { scale: 15, opacity: 0.6, duration: 2 }, 0)
-      .to('#void-text', { opacity: 1, y: -10, duration: 1.5 }, 1)
-      .to('#void-text', { opacity: 0, duration: 1 }, '+=1');
-
-    tl.set('#scene-2', { opacity: 1, visibility: 'visible' })
-      .to('#saffron-bloom', { opacity: 1, duration: 2 })
-      .to('.awakening-text .word', { 
-        opacity: 1, 
-        y: 0, 
-        stagger: 0.3, 
-        duration: 1.5, 
-        ease: 'power3.out' 
-      }, '-=1')
-      .to('#scene-1', { opacity: 0, duration: 1 }, '-=0.5');
-
-    tl.set('#scene-3', { opacity: 1, visibility: 'visible' })
-      .to('#scene-2', { opacity: 0, duration: 1 })
-      .to('.fragment', { 
-        opacity: 1, 
-        scale: 1, 
-        translateZ: 0,
-        stagger: 0.7, 
-        duration: 2,
-        ease: 'power2.out'
-      })
-      .to('.frag-text', { 
-        opacity: 1, 
-        stagger: 0.7, 
-        duration: 1,
-        ease: 'power1.inOut'
-      }, '-=1')
-      .to('#scene-3', { opacity: 0, duration: 1 }, '+=2');
-
-    tl.set('#scene-4', { opacity: 1, visibility: 'visible' })
-      .to('#heaven-light', { opacity: 1, duration: 2 })
-      .to('#ascension-text', { 
-        opacity: 1, 
-        scale: 1.1, 
-        duration: 2, 
-        ease: 'power2.out' 
-      }, '-=1')
-      .to('#progress-bar', { width: '100%', duration: 10 }, 0);
+    } catch (e) {
+      console.error('Cinema failed to initialize:', e);
+      // Immediate reveal if JS crashes
+      stage.style.opacity = '0';
+      stage.style.visibility = 'hidden';
+      document.body.style.overflow = '';
+    }
   }
 
   document.addEventListener('astro:page-load', initCinema);
