@@ -1,7 +1,22 @@
 ---
 /**
  * Opening Sequence — Cinematic "Ascension"
- * UPDATED: Added CSS-based fail-safe to guarantee visibility even if JS fails.
+ *
+ * A self-contained, auto-playing intro overlay. It is purely decorative and
+ * MUST never leave the page covered or invisible.
+ *
+ * History — why this is written defensively:
+ *  - The original drove the intro with ScrollTrigger `pin: true` on
+ *    `trigger: 'body'`. Pinning the body made ScrollTrigger wrap <body> in a
+ *    <div class="pin-spacer">, which detaches it from <html> and makes
+ *    `document.body` evaluate to null. Every script that then touched
+ *    document.body (notably BaseLayout removing the `page-fade-out`
+ *    `opacity: 0` class) threw, so the whole page stayed invisible — a blank
+ *    white screen. Rule: NEVER pin body/html. This component no longer uses
+ *    ScrollTrigger or Lenis at all.
+ *  - The intro now plays on its own timeline and always dismisses via one of
+ *    several independent guarantees: timeline completion, the Skip button,
+ *    the Escape key, a JS safety timer, and a pure-CSS fade backstop.
  */
 ---
 
@@ -59,9 +74,13 @@
   </div>
 
   <!-- PROGRESS INDICATOR -->
-  <div class="cinema-progress">
+  <div class="cinema-progress" aria-hidden="true">
     <div class="progress-bar" id="progress-bar"></div>
   </div>
+
+  <!-- SKIP CONTROL: real, focusable button — deliberately NOT inside any
+       aria-hidden subtree, so keyboard and screen-reader users can bail out. -->
+  <button type="button" id="opening-skip">Skip Intro</button>
 </div>
 
 <style>
@@ -71,19 +90,50 @@
     z-index: 1000;
     background: #050505;
     overflow: hidden;
-    color: var(--color-ivory);
-    font-family: var(--font-serif);
+    color: var(--color-ivory, #f4f1ea);
+    font-family: var(--font-serif, serif);
     cursor: none;
-    transition: opacity 1.5s ease-in-out, visibility 1.5s;
-    
-    /* FAIL-SAFE: If JS doesn't run, this animation forces the curtain open after 7s */
-    animation: fail-safe-reveal 7s forwards ease-in-out;
+    transition: opacity 1s ease-in-out, visibility 1s;
+    /* Pure-CSS backstop: if the module script never runs, the overlay still
+       fades away on its own so the page is never permanently covered. */
+    animation: fail-safe-reveal 12s forwards ease-in-out;
   }
 
   @keyframes fail-safe-reveal {
-    0% { opacity: 1; visibility: visible; }
-    80% { opacity: 1; visibility: visible; }
-    100% { opacity: 0; visibility: hidden; }
+    0%,
+    92% {
+      opacity: 1;
+      visibility: visible;
+    }
+    100% {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+  #opening-skip {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    z-index: 30;
+    padding: 0.6em 1.1em;
+    background: transparent;
+    border: 1px solid rgba(184, 155, 94, 0.5);
+    border-radius: 2px;
+    color: var(--color-gold, #b89b5e);
+    font-family: var(--font-body, system-ui, sans-serif);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+
+  #opening-skip:hover,
+  #opening-skip:focus-visible {
+    background: rgba(184, 155, 94, 0.14);
+    border-color: rgba(184, 155, 94, 0.8);
   }
 
   .film-grain {
@@ -91,7 +141,7 @@
     inset: -100% -100%;
     width: 300%;
     height: 300%;
-    background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+    background-image: url('/images/noise.svg');
     opacity: 0.04;
     pointer-events: none;
     z-index: 10;
@@ -99,8 +149,12 @@
   }
 
   @keyframes grain-drift {
-    from { transform: translate(0, 0); }
-    to { transform: translate(-50%, -50%); }
+    from {
+      transform: translate(0, 0);
+    }
+    to {
+      transform: translate(-50%, -50%);
+    }
   }
 
   .scene {
@@ -195,12 +249,12 @@
     background-position: center;
     filter: contrast(1.1) brightness(0.7) saturate(0.8);
     border: 1px solid rgba(184, 155, 94, 0.2);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   }
   .frag-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(5,5,5,0.8) 0%, transparent 50%);
+    background: linear-gradient(to top, rgba(5, 5, 5, 0.8) 0%, transparent 50%);
   }
   .frag-text {
     position: absolute;
@@ -210,7 +264,7 @@
     text-align: center;
     font-style: italic;
     font-size: 1.1rem;
-    color: var(--color-gold);
+    color: var(--color-gold, #b89b5e);
     letter-spacing: 0.05em;
     opacity: 0;
   }
@@ -227,9 +281,8 @@
   .celestial-mist {
     position: absolute;
     inset: 0;
-    background: url('https://www.transparenttextures.com/patterns/clouds.png');
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 80%);
     opacity: 0.1;
-    filter: invert(1);
     pointer-events: none;
   }
   .ascension-text {
@@ -248,131 +301,160 @@
     left: 0;
     width: 100%;
     height: 3px;
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     z-index: 10;
   }
   .progress-bar {
     width: 0%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+    background: linear-gradient(90deg, transparent, var(--color-gold, #b89b5e), transparent);
+  }
+
+  @media (max-width: 1024px) {
+    .fragment {
+      width: 62vw;
+      height: 84vw;
+    }
+    .fragment-stage {
+      gap: 1.5rem;
+      padding: 1.5rem;
+    }
   }
 </style>
 
 <script>
-  import gsap from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  import Lenis from 'lenis';
-
-  gsap.registerPlugin(ScrollTrigger);
+  import gsap from "gsap";
 
   function initCinema() {
-    const stage = document.getElementById('cinema-stage');
+    const stage = document.getElementById("cinema-stage");
     if (!stage) return;
 
-    // JS FAIL-SAFE: If Lenis or GSAP crash, the CSS animation above handles the reveal.
+    // Played once per session — returning to the home page via the client
+    // router must not re-cover the page or leave it locked.
+    if (window.__thirdEyeIntroPlayed) {
+      stage.remove();
+      return;
+    }
+    window.__thirdEyeIntroPlayed = true;
+
+    const reduce = document.documentElement.classList.contains("reduced-motion");
+    const $ = (sel) => document.querySelector(sel);
+
+    let done = false;
+    let safetyTimer = 0;
+
+    // Reveal whatever the intro was covering. Kept defensive: the page must be
+    // visible even if this runs before BaseLayout's own page-load handler.
+    function revealPage() {
+      document.body?.classList.remove("page-fade-out");
+      document.querySelectorAll(".hero .reveal, .hero .reveal-mask").forEach((el) => {
+        el.classList.add("is-visible");
+      });
+    }
+
+    function dismiss() {
+      if (done) return;
+      done = true;
+      window.clearTimeout(safetyTimer);
+      document.removeEventListener("keydown", onKeyDown);
+      document.body && (document.body.style.overflow = "");
+      stage.style.animation = "none"; // disable the CSS backstop once JS owns it
+      revealPage();
+      gsap.to(stage, {
+        opacity: 0,
+        duration: 0.9,
+        ease: "power2.inOut",
+        onComplete: () => {
+          stage.style.display = "none";
+          stage.remove();
+        },
+      });
+    }
+
+    function onKeyDown(e) {
+      if (e.key === "Escape" || e.key === "Enter" || e.key === " ") dismiss();
+    }
+
+    document.getElementById("opening-skip")?.addEventListener("click", dismiss);
+    document.addEventListener("keydown", onKeyDown);
+
+    // Last-resort guarantee the overlay can never trap the page.
+    safetyTimer = window.setTimeout(dismiss, 10000);
+
+    if (reduce) {
+      dismiss();
+      return;
+    }
+
     try {
-      const lenis = new Lenis({
-        duration: 1.5,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      });
+      // Hold the page still while the intro plays, released on any exit path.
+      document.body && (document.body.style.overflow = "hidden");
 
-      lenis.on('scroll', () => {
-        // Once user scrolls, remove the CSS fail-safe animation so GSAP can take over
-        stage.style.animation = 'none';
-        ScrollTrigger.update();
-      });
+      const seed = $("#seed");
+      const seedGlow = $("#seed-glow");
+      const voidText = $("#void-text");
+      const saffronBloom = $("#saffron-bloom");
+      const heavenLight = $("#heaven-light");
+      const ascensionText = $("#ascension-text");
+      const progressBar = $("#progress-bar");
 
-      gsap.ticker.add((time) => {
-        lenis.raf(time * 1000);
-      });
-      gsap.ticker.lagSmoothing(0);
+      const tl = gsap.timeline({ onComplete: dismiss });
 
-      document.body.style.overflow = 'hidden';
+      // SCENE 1 — THE VOID
+      tl.set("#scene-1", { opacity: 1, visibility: "visible" }, 0)
+        .to(seed || {}, { scale: 20, duration: 1.4, ease: "power1.inOut" }, 0)
+        .to(seedGlow || {}, { scale: 15, opacity: 0.6, duration: 1.4 }, 0)
+        .to(voidText || {}, { opacity: 1, y: -10, duration: 1 }, 0.5)
+        .to(voidText || {}, { opacity: 0, duration: 0.7 }, 1.8);
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: 'body',
-          start: 'top top',
-          end: '+=500%', 
-          scrub: 1,
-          pin: true,
-          onLeave: () => {
-            const heroContent = document.querySelector('.hero__content');
-            const heroTitle = document.querySelector('.hero__title');
-            
-            gsap.to(stage, { 
-              opacity: 0, 
-              duration: 1.5, 
-              ease: 'power2.inOut',
-              onComplete: () => {
-                stage.style.display = 'none';
-                document.body.style.overflow = '';
-                
-                if (heroContent) {
-                  gsap.fromTo(heroContent, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1.2, ease: 'power3.out' });
-                }
-                if (heroTitle) {
-                  gsap.fromTo(heroTitle, { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.5, delay: 0.3, ease: 'power3.out' });
-                }
-              }
-            });
-          }
-        }
-      });
-
-      tl.set('#scene-1', { opacity: 1, visibility: 'visible' })
-        .to('#seed', { scale: 20, duration: 2, ease: 'power1.inOut' })
-        .to('#seed-glow', { scale: 15, opacity: 0.6, duration: 2 }, 0)
-        .to('#void-text', { opacity: 1, y: -10, duration: 1.5 }, 1)
-        .to('#void-text', { opacity: 0, duration: 1 }, '+=1');
-
-      tl.set('#scene-2', { opacity: 1, visibility: 'visible' })
-        .to('#saffron-bloom', { opacity: 1, duration: 2 })
-        .to('.awakening-text .word', { 
-          opacity: 1, 
-          y: 0, 
-          stagger: 0.3, 
-          duration: 1.5, 
-          ease: 'power3.out' 
-        }, '-=1')
-        .to('#scene-1', { opacity: 0, duration: 1 }, '-=0.5');
-
-      tl.set('#scene-3', { opacity: 1, visibility: 'visible' })
-        .to('#scene-2', { opacity: 0, duration: 1 })
-        .to('.fragment', { 
-          opacity: 1, 
-          scale: 1, 
-          translateZ: 0,
-          stagger: 0.7, 
-          duration: 2,
-          ease: 'power2.out'
-        })
-        .to('.frag-text', { 
-          opacity: 1, 
-          stagger: 0.7, 
+      // SCENE 2 — THE AWAKENING
+      tl.set("#scene-2", { opacity: 1, visibility: "visible" }, 2.4)
+        .to(saffronBloom || {}, { opacity: 1, duration: 1.4 }, 2.4)
+        .to("#scene-1", { opacity: 0, duration: 0.7 }, 2.4)
+        .to(".awakening-text .word", {
+          opacity: 1,
+          y: 0,
+          stagger: 0.25,
           duration: 1,
-          ease: 'power1.inOut'
-        }, '-=1')
-        .to('#scene-3', { opacity: 0, duration: 1 }, '+=2');
+          ease: "power3.out",
+        }, 2.9);
 
-      tl.set('#scene-4', { opacity: 1, visibility: 'visible' })
-        .to('#heaven-light', { opacity: 1, duration: 2 })
-        .to('#ascension-text', { 
-          opacity: 1, 
-          scale: 1.1, 
-          duration: 2, 
-          ease: 'power2.out' 
-        }, '-=1')
-        .to('#progress-bar', { width: '100%', duration: 10 }, 0);
+      // SCENE 3 — THE SACRED FRAGMENTS
+      tl.set("#scene-3", { opacity: 1, visibility: "visible" }, 4.2)
+        .to("#scene-2", { opacity: 0, duration: 0.7 }, 4.2)
+        .to(".fragment", {
+          opacity: 1,
+          scale: 1,
+          translateZ: 0,
+          stagger: 0.45,
+          duration: 1.4,
+          ease: "power2.out",
+        }, 4.5)
+        .to(".frag-text", {
+          opacity: 1,
+          stagger: 0.45,
+          duration: 0.7,
+          ease: "power1.inOut",
+        }, 5.1);
 
-    } catch (e) {
-      console.error('Cinema failed to initialize:', e);
-      // Immediate reveal if JS crashes
-      stage.style.opacity = '0';
-      stage.style.visibility = 'hidden';
-      document.body.style.overflow = '';
+      // SCENE 4 — THE ASCENSION
+      tl.set("#scene-3", { opacity: 0, duration: 0.6 }, 6.4)
+        .set("#scene-4", { opacity: 1, visibility: "visible" }, 6.8)
+        .to(heavenLight || {}, { opacity: 1, duration: 1 }, 6.8)
+        .to(ascensionText || {}, {
+          opacity: 1,
+          scale: 1.1,
+          duration: 0.9,
+          ease: "power2.out",
+        }, 7.1);
+
+      // Progress bar fills across the whole sequence.
+      tl.to(progressBar || {}, { width: "100%", duration: 8, ease: "none" }, 0);
+    } catch (err) {
+      console.error("Cinema failed to initialize:", err);
+      dismiss();
     }
   }
 
-  document.addEventListener('astro:page-load', initCinema);
+  document.addEventListener("astro:page-load", initCinema);
 </script>
