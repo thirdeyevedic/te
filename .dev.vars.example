@@ -1,0 +1,34 @@
+# Third Eye Events — local environment template
+# Copy to `.dev.vars` (gitignored) for local full-stack dev:
+#   cp .dev.vars.example .dev.vars
+#   npm run build && npx wrangler pages dev dist --d1 DB=third-eye-db
+#
+# In production these live in Cloudflare Pages → Settings → Environment variables
+# (runtime secrets) and the build environment (PUBLIC_* vars, baked into the bundle).
+
+# ── Enquiry email notification (Resend) ──────────────────────────────
+# https://resend.com — free tier. Sender domain must be verified.
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxx
+ENQUIRY_NOTIFY_EMAIL=hello@thirdeyeevents.com
+
+# ── Turnstile (spam check) ────────────────────────────────────────────
+# Set BOTH to enable, or NEITHER to disable (honeypot + rate-limit still apply).
+# The sitekey is PUBLIC (build-time, baked into the client bundle); the secret
+# stays server-side. Cloudflare test keys (always pass) for local testing:
+#   sitekey 1x00000000000000000000AA   secret 1x0000000000000000000000000000000AA
+TURNSTILE_SECRET_KEY=0x0000000000000000000000000000000AA
+PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA
+
+# ── Admin dashboard (Phase 2) ─────────────────────────────────────────
+# Shared secret for /admin. Use a long random string. (Recommended: also put
+# /admin behind Cloudflare Access.)
+ADMIN_TOKEN=change-me-to-a-long-random-string
+
+# ── Analytics (Phase 3, optional) ──────────────────────────────────────
+# Cloudflare Web Analytics beacon token (privacy-friendly, no cookie).
+# Leave blank to disable.
+PUBLIC_CF_BEACON_TOKEN=
+
+# ── Rate limiting (optional tuning) ───────────────────────────────────
+ENQUIRY_RATE_LIMIT=5
+ENQUIRY_RATE_WINDOW_MIN=10
