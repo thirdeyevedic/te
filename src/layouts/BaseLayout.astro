@@ -16,9 +16,10 @@ interface Props {
   structuredData?: Record<string, unknown>[];
   solidNav?: boolean;
   noindex?: boolean;
+  bare?: boolean;
 }
 
-const { title, description, path = "", structuredData = [], solidNav = false, noindex = false } = Astro.props;
+const { title, description, path = "", structuredData = [], solidNav = false, noindex = false, bare = false } = Astro.props;
 
 const site = Astro.site ?? new URL("https://thirdeyeevents.com");
 const canonical = new URL(path, site);
@@ -114,14 +115,14 @@ const webPage = {
   </head>
 
   <body data-solid-nav={solidNav ? "" : undefined} class="page-fade-out">
-    <a class="skip-link" href="#main">Skip to content</a>
-    <Navbar solid={solidNav} />
+    {!bare && <a class="skip-link" href="#main">Skip to content</a>}
+    {!bare && <Navbar solid={solidNav} />}
     <main id="main">
       <slot />
     </main>
-    <Footer />
-    <div class="grain" aria-hidden="true"></div>
-    <Cursor />
+    {!bare && <Footer />}
+    {!bare && <div class="grain" aria-hidden="true"></div>}
+    {!bare && <Cursor />}
 
     <script>
       function initReveals() {

@@ -1,0 +1,328 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "Enquiries · Admin | Third Eye Events";
+const description = "Internal enquiry dashboard.";
+---
+
+<BaseLayout title={title} description={description} bare noindex>
+  <div class="admin">
+    <!-- Login -->
+    <section id="login-view" class="panel">
+      <p class="eyebrow">Third Eye Events</p>
+      <h1>Enquiries</h1>
+      <p class="muted">Enter the admin token to continue.</p>
+      <form id="login-form" class="loginform">
+        <input id="token-input" type="password" placeholder="Admin token" autocomplete="current-password" required />
+        <button type="submit" class="solid">Unlock</button>
+      </form>
+      <p id="login-error" class="error" role="alert"></p>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="app-view" hidden>
+      <header class="topbar">
+        <h1>Enquiries <span id="count" class="muted"></span></h1>
+        <div class="actions">
+          <button id="export-btn" class="ghost" type="button">Export CSV</button>
+          <button id="logout-btn" class="ghost" type="button">Lock</button>
+        </div>
+      </header>
+
+      <div class="toolbar">
+        <select id="status-filter" aria-label="Filter by status">
+          <option value="">All statuses</option>
+          <option value="new">New</option>
+          <option value="contacted">Contacted</option>
+          <option value="qualified">Qualified</option>
+          <option value="archived">Archived</option>
+        </select>
+        <input id="search" type="search" placeholder="Search name, email, type…" aria-label="Search enquiries" />
+      </div>
+
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th>Date</th><th>Name</th><th>Email</th><th>Type</th><th>Destination</th><th>Status</th></tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Detail drawer -->
+    <aside id="detail" hidden aria-label="Enquiry detail">
+      <div class="dhead">
+        <strong>Enquiry</strong>
+        <button id="d-close" class="ghost" type="button" aria-label="Close detail">✕</button>
+      </div>
+      <div id="d-body" class="dbody"></div>
+      <div class="dstatus" id="d-status" role="group" aria-label="Set status"></div>
+      <label class="dlabel" for="notes">Internal notes</label>
+      <textarea id="notes" rows="4" placeholder="Private — never shown to the enquirer."></textarea>
+      <div class="dfooter">
+        <button id="save-notes" class="solid" type="button">Save notes</button>
+        <span id="notes-saved" class="muted" role="status"></span>
+        <button id="delete-btn" class="danger" type="button">Delete</button>
+      </div>
+    </aside>
+  </div>
+</BaseLayout>
+
+<style>
+  .admin {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: clamp(1.5rem, 5vw, 4rem) 1.25rem 6rem;
+    color: var(--ink, #f5f1e8);
+    position: relative;
+  }
+  h1 { font-family: var(--font-display, Georgia, serif); font-weight: 400; font-size: clamp(1.6rem, 4vw, 2.4rem); margin: 0 0 0.5rem; }
+  .eyebrow { letter-spacing: 0.3em; text-transform: uppercase; font-size: 0.7rem; color: var(--color-gold, #b89b5e); margin: 0 0 0.75rem; }
+  .muted { color: var(--color-smoke, #8a8580); font-size: 0.9rem; }
+  .error { color: var(--color-agni, #a9552b); min-height: 1.2em; margin: 0.5rem 0 0; }
+
+  .panel { max-width: 26rem; margin: 12vh auto 0; }
+  .loginform { display: flex; gap: 0.6rem; margin-top: 1.25rem; }
+  .loginform input {
+    flex: 1; background: transparent; border: 0; border-bottom: 1px solid rgba(255,255,255,0.2);
+    color: #fff; padding: 0.6em 0; font: inherit;
+  }
+  .loginform input:focus-visible { outline: none; border-bottom-color: var(--color-gold, #b89b5e); }
+
+  button { font: inherit; cursor: pointer; border-radius: 2px; border: 1px solid transparent; padding: 0.55em 1.1em; }
+  .solid { background: var(--color-gold, #b89b5e); color: #0a0a0a; font-weight: 600; }
+  .solid:hover { background: #d4b57a; }
+  .ghost { background: transparent; color: var(--ink, #f5f1e8); border-color: rgba(255,255,255,0.2); }
+  .ghost:hover { border-color: var(--color-gold, #b89b5e); }
+  .danger { background: transparent; color: var(--color-agni, #a9552b); border-color: var(--color-agni, #a9552b); margin-left: auto; }
+  .danger:hover { background: rgba(169,85,43,0.12); }
+
+  .topbar { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .actions { display: flex; gap: 0.6rem; }
+
+  .toolbar { display: flex; gap: 0.75rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+  .toolbar select, .toolbar input {
+    background: var(--color-charcoal, #171717); color: #fff; border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 2px; padding: 0.55em 0.7em; font: inherit;
+  }
+  .toolbar input { flex: 1; min-width: 12rem; }
+
+  .tablewrap { overflow-x: auto; border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 0.7em 0.9em; border-bottom: 1px solid rgba(255,255,255,0.06); white-space: nowrap; }
+  th { color: var(--color-smoke, #8a8580); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.72rem; }
+  tbody tr { cursor: pointer; }
+  tbody tr:hover { background: rgba(184,155,94,0.07); }
+
+  .badge { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.2em 0.6em; border-radius: 999px; border: 1px solid currentColor; }
+  .badge--new { color: #d4b57a; }
+  .badge--contacted { color: #7fb3d5; }
+  .badge--qualified { color: #82c99a; }
+  .badge--archived { color: var(--color-smoke, #8a8580); }
+
+  #detail {
+    position: fixed; top: 0; right: 0; height: 100vh; width: min(420px, 100%);
+    background: #12100c; border-left: 1px solid rgba(255,255,255,0.1);
+    padding: 1.5rem; overflow-y: auto; z-index: 50; box-shadow: -20px 0 60px rgba(0,0,0,0.5);
+  }
+  .dhead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+  .dhead strong { font-family: var(--font-display, Georgia, serif); font-size: 1.3rem; font-weight: 400; }
+  .drow { display: flex; justify-content: space-between; gap: 1rem; padding: 0.5em 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.9rem; }
+  .drow span { color: var(--color-smoke, #8a8580); }
+  .drow strong { font-weight: 500; text-align: right; word-break: break-word; }
+  .dbody { margin-bottom: 1rem; }
+  .dbody p { white-space: pre-wrap; line-height: 1.6; }
+  .dlabel { display: block; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-smoke, #8a8580); margin: 1rem 0 0.4rem; }
+  #notes { width: 100%; background: var(--color-charcoal, #171717); color: #fff; border: 1px solid rgba(255,255,255,0.12); border-radius: 2px; padding: 0.6em; font: inherit; resize: vertical; }
+  .dstatus { display: flex; gap: 0.4rem; flex-wrap: wrap; margin: 1rem 0; }
+  .sbtn { background: transparent; border: 1px solid rgba(255,255,255,0.18); color: var(--ink, #f5f1e8); text-transform: capitalize; }
+  .sbtn.is-active { background: var(--color-gold, #b89b5e); color: #0a0a0a; border-color: var(--color-gold, #b89b5e); }
+  .dfooter { display: flex; align-items: center; gap: 0.75rem; margin-top: 1.25rem; flex-wrap: wrap; }
+</style>
+
+<script>
+  const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
+  const loginView = $("login-view");
+  const appView = $("app-view")!;
+  const loginForm = $("login-form") as HTMLFormElement;
+  const tokenInput = $("token-input") as HTMLInputElement;
+  const loginError = $("login-error")!;
+  const rowsBody = $("rows")!;
+  const countLabel = $("count")!;
+  const statusFilter = $("status-filter") as HTMLSelectElement;
+  const search = $("search") as HTMLInputElement;
+  const detail = $("detail")!;
+  const dBody = $("d-body")!;
+  const dStatus = $("d-status")!;
+  const notes = $("notes") as HTMLTextAreaElement;
+  const notesSaved = $("notes-saved")!;
+
+  const state: { status: string; q: string; list: any[]; current: any } = { status: "", q: "", list: [], current: null };
+
+  const el = (tag: string, text?: string) => { const n = document.createElement(tag); if (text != null) n.textContent = text; return n; };
+
+  async function api(path: string, opts: RequestInit = {}): Promise<Response> {
+    const res = await fetch(path, opts);
+    if (res.status === 401) { showLogin(); throw new Error("unauthorized"); }
+    return res;
+  }
+
+  function showLogin() { loginView.hidden = false; appView.hidden = true; detail.hidden = true; }
+  function showApp() { loginView.hidden = true; appView.hidden = false; }
+
+  async function boot() {
+    try {
+      const res = await api("/api/admin/enquiries?limit=1");
+      if (res.ok) { showApp(); await loadList(); return; }
+    } catch { /* unauthorized */ }
+    showLogin();
+  }
+
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    loginError.textContent = "";
+    const body = new FormData();
+    body.set("token", tokenInput.value);
+    const res = await fetch("/api/admin/login", { method: "POST", body });
+    if (res.ok) { tokenInput.value = ""; showApp(); await loadList(); }
+    else { loginError.textContent = "Incorrect token."; }
+  });
+
+  $("logout-btn").addEventListener("click", async () => {
+    await fetch("/api/admin/logout", { method: "POST" });
+    showLogin();
+  });
+
+  async function loadList() {
+    const params = new URLSearchParams();
+    if (state.status) params.set("status", state.status);
+    if (state.q) params.set("q", state.q);
+    params.set("limit", "200");
+    const res = await api("/api/admin/enquiries?" + params.toString());
+    const data = await res.json();
+    state.list = data.enquiries;
+    countLabel.textContent = `· ${data.total}`;
+    renderRows();
+  }
+
+  function renderRows() {
+    rowsBody.replaceChildren();
+    if (!state.list.length) {
+      const tr = el("tr");
+      const td = el("td", "No enquiries match.");
+      td.colSpan = 6;
+      tr.append(td);
+      rowsBody.append(tr);
+      return;
+    }
+    for (const e of state.list) {
+      const tr = el("tr");
+      tr.append(el("td", (e.created_at || "").slice(0, 10) || "—"));
+      tr.append(el("td", e.name));
+      tr.append(el("td", e.email));
+      tr.append(el("td", e.event_type || "—"));
+      tr.append(el("td", e.destination || "—"));
+      const td = el("td");
+      const badge = el("span", e.status || "new");
+      badge.className = "badge badge--" + (e.status || "new");
+      td.append(badge);
+      tr.append(td);
+      tr.addEventListener("click", () => openDetail(e.id));
+      rowsBody.append(tr);
+    }
+  }
+
+  async function openDetail(id: number) {
+    const res = await api("/api/admin/enquiries?id=" + id);
+    const { enquiry } = await res.json();
+    state.current = enquiry;
+
+    dBody.replaceChildren();
+    const fields: [string, string | null][] = [
+      ["Name", enquiry.name], ["Email", enquiry.email], ["Phone", enquiry.phone],
+      ["Event type", enquiry.event_type], ["Destination", enquiry.destination],
+      ["Guests", enquiry.guests], ["Timeframe", enquiry.timeframe],
+      ["Received", enquiry.created_at], ["Updated", enquiry.updated_at],
+    ];
+    for (const [k, v] of fields) {
+      const row = el("div"); row.className = "drow";
+      row.append(el("span", k));
+      row.append(el("strong", v || "—"));
+      dBody.append(row);
+    }
+    dBody.append(el("div", "Vision")).className = "dlabel";
+    dBody.append(el("p", enquiry.vision || "—"));
+
+    dStatus.replaceChildren();
+    for (const s of ["new", "contacted", "qualified", "archived"]) {
+      const b = el("button", s);
+      b.type = "button";
+      b.className = "sbtn" + ((enquiry.status || "new") === s ? " is-active" : "");
+      b.addEventListener("click", () => setStatus(id, s));
+      dStatus.append(b);
+    }
+
+    notes.value = enquiry.notes || "";
+    notesSaved.textContent = "";
+    detail.hidden = false;
+  }
+
+  async function setStatus(id: number, status: string) {
+    const body = new FormData();
+    body.set("id", String(id)); body.set("status", status);
+    await api("/api/admin/enquiries", { method: "PATCH", body });
+    await loadList();
+    await openDetail(id);
+  }
+
+  $("save-notes").addEventListener("click", async () => {
+    if (!state.current) return;
+    const body = new FormData();
+    body.set("id", String(state.current.id)); body.set("notes", notes.value);
+    await api("/api/admin/enquiries", { method: "PATCH", body });
+    notesSaved.textContent = "Saved.";
+    await loadList();
+  });
+
+  $("delete-btn").addEventListener("click", async () => {
+    if (!state.current || !confirm("Delete this enquiry permanently?")) return;
+    const body = new FormData();
+    body.set("id", String(state.current.id));
+    await api("/api/admin/enquiries", { method: "DELETE", body });
+    detail.hidden = true;
+    await loadList();
+  });
+
+  $("d-close").addEventListener("click", () => { detail.hidden = true; });
+
+  statusFilter.addEventListener("change", () => { state.status = statusFilter.value; void loadList(); });
+  let searchTimer: number | undefined;
+  search.addEventListener("input", () => {
+    window.clearTimeout(searchTimer);
+    searchTimer = window.setTimeout(() => { state.q = search.value.trim(); void loadList(); }, 250);
+  });
+
+  async function exportCsv() {
+    const params = new URLSearchParams();
+    if (state.status) params.set("status", state.status);
+    if (state.q) params.set("q", state.q);
+    params.set("limit", "200");
+    const res = await api("/api/admin/enquiries?" + params.toString());
+    const data = await res.json();
+    const cols = ["id", "created_at", "name", "email", "phone", "event_type", "destination", "guests", "timeframe", "status", "notes", "vision"];
+    const esc = (v: unknown) => '"' + String(v ?? "").replace(/"/g, '""') + '"';
+    const csv = [cols.join(",")]
+      .concat(data.enquiries.map((e: any) => cols.map((c) => esc(e[c])).join(",")))
+      .join("\r\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "enquiries.csv";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+  $("export-btn").addEventListener("click", () => void exportCsv());
+
+  document.addEventListener("astro:page-load", () => void boot());
+</script>
