@@ -17,6 +17,14 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
   sound: e.sound,
   targetAudience: e.targetAudience,
   customizationOptions: e.customizationOptions,
+  /* Cinematic assets. The URLs ship in the payload, but the dialog only
+     * activates a control once the file itself answers — see assetExists().
+     * Until the client drops the real mp4/mp3 into public/, the dialog shows
+     * the poster still and keeps the sound toggle hidden. */
+  videoUrl: e.videoUrl ?? null,
+  audioUrl: e.audioUrl ?? null,
+  cardImage: e.cardImage ?? null,
+  heroImage: e.heroImage ?? null,
 })));
 ---
 
@@ -87,9 +95,9 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
         </button>
         <div class="entry-dialog__inner">
           {/* Video Container (for cinematic video playback) */}
-          <div class="entry-dialog__video-container" id="dialog-video-container">
-            {/* Video will be inserted here when available */}
-            {/* Example: <video src="/videos/shiva-entry-cinematic.mp4" autoplay muted loop playsinline></video> */}
+          <div class="entry-dialog__video-container" id="dialog-video-container" hidden>
+            {/* Cinematic still or <video> is inserted here by the script —
+                poster fallback when the entry ships no playable asset. */}
           </div>
           
           <div class="entry-dialog__info">
@@ -102,17 +110,21 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
               <div class="entry-dialog__sound">
                 <p class="eyebrow">Sound Identity</p>
                 <p class="text-muted" id="dialog-sound"></p>
-                {/* Revealed by the script only when the entry actually ships an
-                    audio asset. `entriesJSON` carries no `audioUrl` until the
-                    file exists, so today this stays hidden rather than sitting
-                    there as a control that does nothing when pressed. */}
+                {/* Revealed by the script only when the entry actually ships
+                    an audio file that answers. Until then this stays hidden
+                    rather than sitting there as a control that does nothing
+                    when pressed. */}
                 <button
                   class="btn btn--ghost btn--small"
                   id="dialog-sound-toggle"
                   aria-label="Play sound identity"
                   hidden
                 >
-                  <span id="dialog-sound-icon" aria-hidden="true">▶️</span>
+                  <span class="sound-ico" aria-hidden="true">
+                    <span class="sound-ico__play"><svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M4 2.5v11l9-5.5-9-5.5Z"/></svg></span>
+                    <span class="sound-ico__pause" hidden><svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M4 2.5h3v11H4V2.5Zm5 0h3v11H9V2.5Z"/></svg></span>
+                  </span>
+                  <span class="sound-ico__label">Play sound</span>
                 </button>
               </div>
               <div class="entry-dialog__audience">
@@ -140,6 +152,15 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
     let cleanupFns: (() => void)[] = [];
     let videoElements: HTMLVideoElement[] = [];
     let audioElements: HTMLAudioElement[] = [];
+
+    /* Cinematic-media state. `mediaToken` guards the async asset probes: a
+       dialog re-opened while a probe is in flight must not let the stale
+       answer populate the new entry's slot. `assetChecks` memoizes HEAD
+       probes per URL for the session, and `resetSoundUI` lets closeDialog
+       return the sound button to its resting state. */
+    let mediaToken = 0;
+    let resetSoundUI: (() => void) | null = null;
+    const assetChecks = new Map<string, Promise<boolean>>();
 
     /* ── Auto-advance ──────────────────────────────────────────────────────
        The entries drift slowly sideways once the visitor has been idle for
@@ -262,9 +283,8 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
       const dialog = document.getElementById("entry-dialog") as HTMLDialogElement;
       const backdrop = document.getElementById("entry-dialog-backdrop");
       const closeBtn = document.getElementById("entry-dialog-close");
-      const videoContainer = document.getElementById("dialog-video-container");
-      const soundToggleBtn = document.getElementById("dialog-sound-toggle");
-      const soundIcon = document.getElementById("dialog-sound-icon");
+      const videoContainer = document.getElementById("dialog-video-container")!;
+      const soundToggleBtn = document.getElementById("dialog-sound-toggle") as HTMLButtonElement;
       signatureTrack = document.querySelector<HTMLElement>(".signature-entries__track");
 
       if (!dialog || !backdrop || !closeBtn) return;
@@ -293,81 +313,17 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
           }),
         );
 
-        // Set up video if available
-        if (videoContainer && entry.videoUrl) {
-          // Clear container first
-          videoContainer.innerHTML = '';
-          
-          // Create video element
-          const video = document.createElement('video');
-          video.src = entry.videoUrl;
-          video.autoplay = true;
-          video.muted = true; // Start muted for autoplay policies
-          video.loop = true;
-          video.playsInline = true;
-          video.preload = 'auto';
-          
-          video.addEventListener("loadedmetadata", () => {
-            // Video is ready to play
-            video.play().catch(() => {
-              // Autoplay refused — leave the element paused and unmuted so the
-              // visitor can start it themselves.
-              video.muted = false;
-            });
-          });
-          
-          videoContainer.hidden = false;
-          videoContainer.appendChild(video);
-          videoElements.push(video);
-        } else if (videoContainer) {
-          /* No cinematic asset for this entry yet. Hide the slot entirely
-             rather than showing developer placeholder copy — "(Video asset
-             would be loaded here)" was rendering to visitors. The wiring above
-             still activates the moment an entry ships a `videoUrl`. */
-          videoContainer.innerHTML = "";
-          videoContainer.hidden = true;
-        }
-
-        // Set up audio if available
-        if (soundToggleBtn && soundIcon && entry.audioUrl) {
-          const audio = new Audio(entry.audioUrl);
-          audio.loop = true;
-          audio.preload = "auto";
-          audioElements.push(audio);
-
-          soundToggleBtn.hidden = false;
-          let isSoundPlaying = false;
-
-          const toggleSound = () => {
-            isSoundPlaying = !isSoundPlaying;
-            soundIcon.textContent = isSoundPlaying ? "⏸️" : "▶️";
-            soundToggleBtn.setAttribute(
-              "aria-label",
-              isSoundPlaying ? "Pause sound identity" : "Play sound identity",
-            );
-
-            if (!isSoundPlaying) {
-              audio.pause();
-              return;
-            }
-
-            audio.play().catch(() => {
-              /* Autoplay policy refused the play — put the control back to
-                 "play" so the visitor's next click retries honestly instead of
-                 leaving a pause icon on silence. */
-              isSoundPlaying = false;
-              soundIcon.textContent = "▶️";
-              soundToggleBtn.setAttribute("aria-label", "Play sound identity");
-            });
-          };
-
-          /* One stable reference, bound once per dialog population. The old
-             code tried to de-duplicate by string-matching the cleanup
-             function's source, which never matched, so every re-open stacked
-             another listener on the same button. */
-          soundToggleBtn.addEventListener("click", toggleSound);
-          cleanupFns.push(() => soundToggleBtn.removeEventListener("click", toggleSound));
-        }
+        /* ── Cinematic media ─────────────────────────────────────────────
+           The dialog never blocks on the network: the copy and the modal
+           appear immediately, and the media slot is wired once a probe
+           answers. If the entry's mp4/mp3 is not deployed yet, the slot
+           falls back to the poster still and the sound toggle stays
+           hidden — a control that would do nothing when pressed is worse
+           than no control at all. */
+        resetMedia();
+        videoContainer.replaceChildren();
+        videoContainer.hidden = true;
+        soundToggleBtn.hidden = true;
 
         // Update CTA links
         (document.getElementById("dialog-cta") as HTMLAnchorElement).href = '/contact/';
@@ -377,6 +333,141 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
         document.body.style.overflow = 'hidden';
         // The modal covers the track; hold the drift until it closes.
         pauseAutoScroll();
+
+        const token = ++mediaToken;
+        void wireCinematicMedia(entry, token);
+      }
+
+      /** HEAD-probe a static asset, memoized per URL for the session. */
+      function assetExists(url: string): Promise<boolean> {
+        let check = assetChecks.get(url);
+        if (!check) {
+          check = fetch(url, { method: "HEAD" })
+            .then((res) => res.ok)
+            .catch(() => false);
+          assetChecks.set(url, check);
+        }
+        return check;
+      }
+
+      /** Drop whatever the previous entry left playing. */
+      function resetMedia() {
+        videoElements.forEach((v) => {
+          v.pause();
+          v.currentTime = 0;
+        });
+        videoElements = [];
+        audioElements.forEach((a) => {
+          a.pause();
+          a.currentTime = 0;
+        });
+        audioElements = [];
+        resetSoundUI = null;
+      }
+
+      /** Poster-still fallback: the entry's card crop, framed like the video. */
+      function showPoster(src: string) {
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = ""; // decorative — the dialog copy carries the meaning
+        img.className = "entry-dialog__poster";
+        img.decoding = "async";
+        videoContainer.replaceChildren(img);
+        videoContainer.hidden = false;
+      }
+
+      async function wireCinematicMedia(
+        entry: { videoUrl?: string | null; audioUrl?: string | null; cardImage?: string | null; heroImage?: string | null },
+        token: number,
+      ) {
+        const stale = () => token !== mediaToken || !videoContainer?.isConnected;
+        const poster = entry.cardImage || entry.heroImage || "";
+
+        const videoOk = entry.videoUrl ? await assetExists(entry.videoUrl) : false;
+        if (stale()) return;
+        if (videoOk) {
+          const video = document.createElement("video");
+          video.src = entry.videoUrl!;
+          if (poster) video.poster = poster;
+          video.className = "entry-dialog__video";
+          video.autoplay = true;
+          video.muted = true; // muted start satisfies autoplay policies
+          video.loop = true;
+          video.playsInline = true;
+          video.preload = "auto";
+          /* The probe said the file exists; if it still fails at playback
+             time, degrade to the poster rather than a black rectangle. */
+          video.addEventListener("error", () => {
+            if (!stale() && poster) showPoster(poster);
+          });
+          videoContainer.replaceChildren(video);
+          videoContainer.hidden = false;
+          videoElements.push(video);
+          video.play().catch(() => {
+            // Autoplay refused — leave it paused and unmuted so the visitor
+            // can start it themselves.
+            video.muted = false;
+          });
+        } else if (poster) {
+          showPoster(poster);
+        }
+
+        const audioOk = entry.audioUrl ? await assetExists(entry.audioUrl) : false;
+        if (!audioOk || stale() || !soundToggleBtn?.isConnected) return;
+
+        const audio = new Audio(entry.audioUrl!);
+        audio.loop = true;
+        audio.preload = "auto";
+        audioElements.push(audio);
+
+        const playIco = soundToggleBtn.querySelector(".sound-ico__play");
+        const pauseIco = soundToggleBtn.querySelector(".sound-ico__pause");
+        const label = soundToggleBtn.querySelector(".sound-ico__label");
+        let isSoundPlaying = false;
+
+        const paint = (playing: boolean) => {
+          playIco?.toggleAttribute("hidden", playing);
+          pauseIco?.toggleAttribute("hidden", !playing);
+          if (label) label.textContent = playing ? "Pause sound" : "Play sound";
+          soundToggleBtn.setAttribute(
+            "aria-label",
+            playing ? "Pause sound identity" : "Play sound identity",
+          );
+        };
+
+        const toggleSound = () => {
+          isSoundPlaying = !isSoundPlaying;
+          paint(isSoundPlaying);
+
+          if (!isSoundPlaying) {
+            audio.pause();
+            return;
+          }
+
+          audio.play().catch(() => {
+            /* Autoplay policy refused the play — put the control back to
+               "play" so the visitor's next click retries honestly instead of
+               leaving a pause icon on silence. */
+            isSoundPlaying = false;
+            paint(false);
+          });
+        };
+
+        paint(false);
+        soundToggleBtn.hidden = false;
+        soundToggleBtn.addEventListener("click", toggleSound);
+        /* One stable reference, bound once per dialog population. The old
+           code tried to de-duplicate by string-matching the cleanup
+           function's source, which never matched, so every re-open stacked
+           another listener on the same button. */
+        cleanupFns.push(() => soundToggleBtn.removeEventListener("click", toggleSound));
+        /* Closing the dialog pauses the audio; hand closeDialog a way to
+           return the button to its resting state too — which is hidden,
+           exactly as it ships in the markup until an asset answers. */
+        resetSoundUI = () => {
+          paint(false);
+          soundToggleBtn.hidden = true;
+        };
       }
 
       function closeDialog() {
@@ -394,6 +485,9 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
           audio.pause();
           audio.currentTime = 0;
         });
+
+        // Return the sound control to its resting state
+        resetSoundUI?.();
 
         // Resume auto-scroll when dialog closes
         resumeAutoScroll();
@@ -706,6 +800,50 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
       justify-content: center;
       margin-bottom: 1.5rem;
       overflow: hidden;
+    }
+
+    /* Video and poster-still share one frame: same object-fit, same scrim,
+       so a fallback still looks like the film it stands in for. */
+    .entry-dialog__video,
+    .entry-dialog__poster {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .entry-dialog__video-container::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(10, 10, 10, 0.25), rgba(10, 10, 10, 0.55));
+    }
+
+    .sound-ico {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .sound-ico__play,
+    .sound-ico__pause {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .sound-ico svg {
+      display: block;
+      flex: none;
+    }
+
+    .sound-ico__label {
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
     .entry-dialog__info {

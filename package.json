@@ -9,9 +9,11 @@
     "build": "astro build",
     "prebuild": "python3 scripts/make-responsive.py || true",
     "check": "astro check",
+    "check:functions": "tsc --noEmit -p tsconfig.functions.json",
+    "check:all": "npm run check && npm run check:functions",
     "preview": "astro preview",
     "preview:full": "npm run build && npx wrangler pages dev dist --d1 DB=third-eye-db",
-    "deploy": "npm run build && wrangler pages deploy dist --project-name=third-eye-events --branch main",
+    "deploy": "npm run check:all && npm run build && wrangler pages deploy dist --project-name=third-eye-events --branch main",
     "astro": "astro"
   },
   "engines": {
