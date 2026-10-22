@@ -121,6 +121,17 @@ real routing.
       variables → Actions). Without them the run fails at the deploy step
       only; the type-checks and build still prove the repo is healthy. Site
       deploys are unaffected either way — wrangler deploys directly.
+- [x] **Mobile responsiveness — done 2026-10-22** (branch
+      `mobile-responsive-pass`, merged to `main`). Fixed: dead mobile-menu
+      scroll-lock (now `html.is-menu-open`), overlay `100dvh`, 10 undefined
+      font vars, burger close bug (Escape/link-tap re-opened the menu),
+      30×20px burger tap target, 30 venue-page grid overflows, cramped
+      contact-form fields, oversized signature-entry cards, 404-ing nav
+      links. Responsive images: `srcset`/`sizes` wired into
+      `ExperienceImage.astro` (266 images; ~75% smaller phone payload).
+      Verified: `mobile-probe.mjs` **76/76 routes clean at 360×800, 390×844,
+      768×1024 and 1440×900** (0 failures, 0 warnings), desktop audit stays
+      75/76, GA/CSP/entry-media probes green on live.
 
 ### Verified state (2026-10-22)
 
@@ -157,8 +168,27 @@ against the same state dir first, or test against the deployed preview URL.
 
 Verification harnesses live outside the repo in
 `~/.workbuddy-ai/binaries/node/workspace` — `audit-site.mjs` (crawls every
-built route), `csp-probe.mjs` (header + console check), `entry-media-probe.mjs`
-(signature-entry dialog media wiring).
+built route at desktop), `csp-probe.mjs` (header + console check),
+`entry-media-probe.mjs` (signature-entry dialog media wiring) and
+`mobile-probe.mjs` (asserts per route at 360×800 / 390×844 / 768×1024 /
+1440×900: horizontal overflow, viewport meta, console/request errors,
+burger open→scroll-lock→Escape flow, ≥44px tap targets, font floor,
+srcset presence, carousel snap, entry dialog).
+
+```bash
+# build once, then probe the static build
+CODEBUDDY_SAFE_DELETE_ENABLED=0 npm run build
+npx astro preview --port 4178          # NOTE: binds to localhost, not 127.0.0.1
+find dist -name "*.html" | sed -E 's|^dist||; s|/index\.html$|/|; s|\.html$|/|; s|//+$|/|' > /tmp/pages.txt
+env -u HTTP_PROXY -u HTTPS_PROXY -u http_proxy -u https_proxy \
+    -u ALL_PROXY -u all_proxy node ~/.workbuddy-ai/binaries/node/workspace/mobile-probe.mjs \
+    http://localhost:4178 /tmp/pages.txt
+```
+
+`mobile-probe.mjs` replaces the stale `verify-mobile-nav.mjs` (its selectors
+no longer exist). Flags: `--only <substring>` filters routes. Expected
+desktop-audit finding is `/admin/` (needs a login session; excluded as
+noise by the mobile probe along with the `/api/admin/` 401s).
 
 > On this machine, wrangler and the headless browser both need the proxy env
 > vars stripped: `env -u HTTP_PROXY -u HTTPS_PROXY -u http_proxy -u https_proxy
