@@ -53,8 +53,10 @@ const { solid = false } = Astro.props;
     if (!toggle || !menu) return;
 
     function toggleMenu(forceClose = false) {
-      const isOpen = forceClose ? false : toggle!.getAttribute("aria-expanded") === "true";
-      const newState = !isOpen;
+      // forceClose must CLOSE: the old code computed newState = !false = true,
+      // so Escape and link taps re-opened the menu instead of closing it.
+      const current = toggle!.getAttribute("aria-expanded") === "true";
+      const newState = forceClose ? false : !current;
 
       toggle!.setAttribute("aria-expanded", String(newState));
       menu!.classList.toggle("is-open", newState);
@@ -169,7 +171,7 @@ const { solid = false } = Astro.props;
     background: #c5a059;
     color: #000;
     text-decoration: none;
-    padding: 0.6rem 1.2rem;
+    padding: 0.65rem 1.2rem;
     font-family: var(--font-body);
     font-size: 0.85rem;
     font-weight: 600;
