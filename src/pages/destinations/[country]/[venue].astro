@@ -145,6 +145,14 @@ const structuredData = [
     row-gap: 2.75rem;
   }
 
+  /* Phones/tablet: full-width articles. The shared 4-col grid gives 1fr
+     tracks a min-content minimum, so unsized articles sized their columns
+     to min-content ("interpretation" ~152px) and pushed the grid past the
+     viewport. */
+  .two article {
+    grid-column: span 4;
+  }
+
   @media (min-width: 56em) {
     .two article {
       grid-column: span 6;
