@@ -100,8 +100,14 @@ real routing.
       they are what switches bot protection on.
 - [ ] **Rate limiting** — the D1 windowed limiter fails open. A Cloudflare WAF
       rate-limit rule on `/api/enquiry` is the hardened backstop.
-- [ ] **Analytics** — set `PUBLIC_CF_BEACON_TOKEN` if traffic reporting is
-      wanted. The beacon is absent from the bundle until then.
+- [x] **Analytics — done 2026-10-22** — Google Analytics 4 (gtag.js,
+      measurement ID `G-RTPB8265VC`) ships in every public page's head
+      (single-sourced in `src/data/site.ts`), with ClientRouter-aware
+      `page_view` tracking for virtual navigations. The bare (admin) layout
+      is excluded. CSP allows `googletagmanager.com` (scripts, images) and
+      `*.google-analytics.com` (connect, images). Cloudflare Web Analytics
+      remains an optional alternative: set `PUBLIC_CF_BEACON_TOKEN` at build
+      time to add the beacon alongside.
 - [x] **Push path (SSH) — done 2026-10-22** — key pair
       `~/.ssh/thirdeye_ed25519` generated, registered on the thirdeyevedic
       account (GitHub key name "tew"), `~/.ssh/config` host alias `github-te`

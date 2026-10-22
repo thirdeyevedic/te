@@ -8,7 +8,7 @@ import "../styles/global.css";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
 import Cursor from "../components/Cursor.astro";
-import { SITE_URL, SITE_NAME } from "../data/site";
+import { SITE_URL, SITE_NAME, GA_MEASUREMENT_ID } from "../data/site";
 import { buildLocalBusiness } from "../utils/schema";
 
 interface Props {
@@ -133,6 +133,23 @@ const webPage = {
       />
     )}
 
+    {/* Google Analytics 4 (gtag.js) — on every public page, never on the
+        bare (admin) layout. The shim must be inline and synchronous so the
+        js/config events queue before the async library loads. */}
+    {!bare && GA_MEASUREMENT_ID && (
+      <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} />
+    )}
+    {!bare && GA_MEASUREMENT_ID && (
+      <script is:inline define:vars={{ gaId: GA_MEASUREMENT_ID }}>
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+          window.dataLayer.push(arguments);
+        };
+        window.gtag("js", new Date());
+        window.gtag("config", gaId);
+      </script>
+    )}
+
     <script is:inline>
       document.documentElement.dataset.nav = "overlay";
       if (matchMedia("(prefers-reduced-motion: reduce").matches) {
@@ -152,6 +169,13 @@ const webPage = {
     {!bare && <Cursor />}
 
     <script>
+      declare global {
+        interface Window {
+          gtag?: (...args: unknown[]) => void;
+          __teGa?: { firstDone: boolean; listening: boolean };
+        }
+      }
+
       function initReveals() {
         const revealables = document.querySelectorAll(".reveal, .reveal-mask");
         if (document.documentElement.classList.contains("reduced-motion")) {
@@ -170,6 +194,30 @@ const webPage = {
           { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
         );
         revealables.forEach((el) => io.observe(el));
+      }
+
+      /* Google Analytics + ClientRouter: a view-transition swap is not a
+         document load, so GA never sees those navigations. Send a page_view
+         on every virtual navigation — skipping the first, which
+         gtag("config") in <head> already reports. The state lives on window
+         because Astro re-executes this module after every swap (the same
+         reason initNav is idempotent-guarded). */
+      const gaState = (window.__teGa ??= { firstDone: false, listening: false });
+      if (!gaState.listening) {
+        gaState.listening = true;
+        document.addEventListener("astro:page-load", () => {
+          if (!gaState.firstDone) {
+            gaState.firstDone = true;
+            return;
+          }
+          if (typeof window.gtag === "function") {
+            window.gtag("event", "page_view", {
+              page_location: window.location.href,
+              page_path: `${window.location.pathname}${window.location.search}`,
+              page_title: document.title,
+            });
+          }
+        });
       }
 
       document.addEventListener("astro:page-load", () => {
