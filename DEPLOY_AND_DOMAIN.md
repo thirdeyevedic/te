@@ -168,6 +168,17 @@ npm run dev                      # Astro dev server
 npm run preview:full             # build + wrangler pages dev with local D1
 ```
 
+Local credentials live in a gitignored `.env` (mode 600) —
+`CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `GITHUB_TOKEN`, plus the
+unused R2 keys kept commented out. Load them before any wrangler/API command:
+
+```bash
+set -a; . ./.env; set +a         # then: npm run deploy
+```
+
+`.env` is in `.gitignore` (line 11) and is never committed; CI uses the repo
+secrets instead and does not read it.
+
 `wrangler pages dev` uses its own **empty local D1**, separate from
 `d1 migrations apply --local`. To exercise the API locally, run the migrations
 against the same state dir first, or test against the deployed preview URL.
