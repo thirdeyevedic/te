@@ -118,6 +118,13 @@ real routing.
 
 ### Verified state (2026-10-22)
 
+- **GitHub push works** — SSH key `thirdeye_ed25519` (registered as "tew") via
+  host alias `github-te`; all commits pushed (`40cf508..f03b292`), local ==
+  remote.
+- **CI first runs** (`7d3a9ed`, `f03b292`): every step green — checkout,
+  setup-node, `npm ci`, `astro check`, functions `tsc`, build. Only *Deploy to
+  Cloudflare Pages* fails, because the two repo secrets below are unset. The
+  repository itself is healthy.
 - Full headless audit: **75/76 routes completely clean** on both
   `third-eye-events.pages.dev` and `thirdeyeevents.com`. The single finding is
   `/admin/`, which requires a login session (its render is separately
