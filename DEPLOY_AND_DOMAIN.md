@@ -62,16 +62,16 @@ npx wrangler pages secret put NOTIFY_EMAIL
 
 ---
 
-## 2. Custom domain — `thirdeyeevents.com` (action required)
+## 2. Custom domain — `thirdeyeevents.com` — ✅ LIVE (verified 2026-10-22)
 
-**Status:** the apex and `www` hostnames are attached to the Pages project but
-sit at `status: pending` with the error **"CNAME record not set"**; the apex
-currently serves a Cloudflare placeholder page.
+**Status:** both hostnames resolve and serve the site — apex `https://thirdeyeevents.com`
+and `https://www.thirdeyeevents.com` return the real pages (title, JSON-LD,
+CSP header all present), and Pages **Functions are routed on the custom domain**
+(`POST /api/enquiry` → 422 on an invalid payload, `POST /api/admin/login` →
+401 on a bad token, i.e. the same behaviour as the `pages.dev` alias).
 
-The wrangler OAuth token used for deploys has **no `Zone:DNS:Edit` scope**, so
-these records must be added in the dashboard (or with a scoped API token):
-
-**Cloudflare dashboard → `thirdeyeevents.com` → DNS → Records**
+The records that made it work (keep for reference — re-create them if the
+domain ever needs re-validating):
 
 | Type | Name | Content | Proxy |
 | --- | --- | --- | --- |
@@ -79,19 +79,19 @@ these records must be added in the dashboard (or with a scoped API token):
 | `AAAA` | `@` | `100::` | Proxied |
 | `CNAME` | `www` | `third-eye-events.pages.dev` | Proxied |
 
-Then, once the records resolve, return to **Pages → `third-eye-events` →
-Custom domains** and re-validate both hostnames. Cloudflare issues the
-certificate automatically (usually minutes).
-
 `192.0.2.1` / `100::` are Cloudflare's documented placeholder targets for a
 proxied apex that only needs to point at Pages; the CNAME for `www` does the
 real routing.
+
+> Note: the wrangler OAuth token used for deploys has **no `Zone:DNS:Edit`
+> scope**, so any *future* DNS change has to happen in the dashboard (or with a
+> scoped API token) — `GET /zones/{id}/dns_records` fails with a `10000`
+> authentication error even though the zone itself reads fine.
 
 ---
 
 ## 3. Remaining ops checklist
 
-- [ ] **DNS records above** — the custom domain cannot go live without them.
 - [ ] **Resend** — verify the sending domain in the Resend dashboard. When
       adding the SPF record, **merge it with the existing SPF record** (one
       `v=spf1` per domain; a second one breaks mail authentication).
@@ -102,7 +102,22 @@ real routing.
       rate-limit rule on `/api/enquiry` is the hardened backstop.
 - [ ] **Analytics** — set `PUBLIC_CF_BEACON_TOKEN` if traffic reporting is
       wanted. The beacon is absent from the bundle until then.
-- [ ] **Rotate the PAT** stored in `~/.git/config` for this repository.
+- [ ] **Rotate the PAT** stored in `~/.git/config` for this repository — it is
+      revoked, which blocks `git push` and therefore the CI workflow's first
+      run. Site deploys are unaffected (they go through wrangler directly).
+
+### Verified state (2026-10-22)
+
+- Full headless audit: **75/76 routes completely clean** on both
+  `third-eye-events.pages.dev` and `thirdeyeevents.com`. The single finding is
+  `/admin/`, which requires a login session (its render is separately
+  verified: HTTP 200, login gate visible, CSP applied).
+- Enquiry pipeline: submit → D1 → admin list → delete verified end-to-end on
+  production. The database holds only the one archived spam enquiry.
+- Admin API: login 200 + httpOnly cookie, wrong token 401, no cookie 401,
+  list/PATCH/DELETE all verified live.
+- CSP smoke test: 6/6 routes, zero violations. Media probe: 15/15 on both
+  local and live.
 
 ---
 
