@@ -15,12 +15,12 @@ const { solid = false } = Astro.props;
     </a>
 
     <div class="nav-links">
-      <a href="/destinations" class="nav-link">Destinations</a>
-      <a href="/signature-experiences" class="nav-link">Signature Experiences</a>
-      <a href="/ip-events" class="nav-link">IP Events</a>
-      <a href="/services" class="nav-link">Services</a>
-      <a href="/about" class="nav-link">About</a>
-      <a href="/contact" class="nav-cta">Get in Touch</a>
+      <a href="/destinations/" class="nav-link">Destinations</a>
+      <a href="/weddings/experiences/" class="nav-link">Signature Experiences</a>
+      <a href="/ip-events/" class="nav-link">IP Events</a>
+      <a href="/production/" class="nav-link">Services</a>
+      <a href="/about/" class="nav-link">About</a>
+      <a href="/contact/" class="nav-cta">Get in Touch</a>
     </div>
 
     <button class="nav-toggle" aria-label="Toggle Menu" aria-expanded="false" aria-controls="nav-menu">
@@ -33,12 +33,12 @@ const { solid = false } = Astro.props;
   <div id="nav-menu" class="nav-overlay">
     <div class="overlay-content">
       <div class="overlay-links">
-        <a href="/destinations" class="overlay-link">Destinations</a>
-        <a href="/signature-experiences" class="overlay-link">Signature Experiences</a>
-        <a href="/ip-events" class="overlay-link">IP Events</a>
-        <a href="/services" class="overlay-link">Services</a>
-        <a href="/about" class="overlay-link">About</a>
-        <a href="/contact" class="overlay-cta">Get in Touch</a>
+        <a href="/destinations/" class="overlay-link">Destinations</a>
+        <a href="/weddings/experiences/" class="overlay-link">Signature Experiences</a>
+        <a href="/ip-events/" class="overlay-link">IP Events</a>
+        <a href="/production/" class="overlay-link">Services</a>
+        <a href="/about/" class="overlay-link">About</a>
+        <a href="/contact/" class="overlay-cta">Get in Touch</a>
       </div>
     </div>
   </div>
@@ -49,17 +49,29 @@ const { solid = false } = Astro.props;
     const toggle = document.querySelector(".nav-toggle");
     const menu = document.querySelector(".nav-overlay");
     const links = document.querySelectorAll(".overlay-link, .overlay-cta");
-    const body = document.body;
 
     if (!toggle || !menu) return;
 
     function toggleMenu(forceClose = false) {
-      const isOpen = forceClose ? false : toggle!.getAttribute("aria-expanded") === "true";
-      const newState = !isOpen;
+      // forceClose must CLOSE: the old code computed newState = !false = true,
+      // so Escape and link taps re-opened the menu instead of closing it.
+      const current = toggle!.getAttribute("aria-expanded") === "true";
+      const newState = forceClose ? false : !current;
 
       toggle!.setAttribute("aria-expanded", String(newState));
       menu!.classList.toggle("is-open", newState);
-      body.classList.toggle("no-scroll", newState);
+      // Scroll-lock via html.is-menu-open (CSS lives in global.css). html-level
+      // locking coexists with the entry dialog's inline body.style.overflow.
+      document.documentElement.classList.toggle("is-menu-open", newState);
+      if (newState) {
+        // Compensate for the scrollbar vanishing behind the fixed overlay
+        document.documentElement.style.setProperty(
+          "--scrollbar-comp",
+          (window.innerWidth - document.documentElement.clientWidth) + "px",
+        );
+      } else {
+        document.documentElement.style.removeProperty("--scrollbar-comp");
+      }
 
       // Update burger icon state
       toggle!.classList.toggle("is-active", newState);
@@ -128,7 +140,7 @@ const { solid = false } = Astro.props;
   .nav-link {
     color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
-    font-family: var(--font-manrope);
+    font-family: var(--font-body);
     font-size: 0.9rem;
     font-weight: 500;
     letter-spacing: 0.02em;
@@ -159,8 +171,8 @@ const { solid = false } = Astro.props;
     background: #c5a059;
     color: #000;
     text-decoration: none;
-    padding: 0.6rem 1.2rem;
-    font-family: var(--font-manrope);
+    padding: 0.65rem 1.2rem;
+    font-family: var(--font-body);
     font-size: 0.85rem;
     font-weight: 600;
     border-radius: 2px;
@@ -182,6 +194,13 @@ const { solid = false } = Astro.props;
     height: 20px;
     position: relative;
     padding: 0;
+  }
+
+  /* Expand the tap target to ≥44px without changing the visual size */
+  .nav-toggle::before {
+    content: "";
+    position: absolute;
+    inset: -12px;
   }
 
   .burger-line {
@@ -214,6 +233,7 @@ const { solid = false } = Astro.props;
     right: 0;
     width: 100%;
     height: 100vh;
+    height: 100dvh; /* avoids mobile dynamic-toolbar jitter; vh fallback above */
     background: #0A0A0A;
     z-index: 1050;
     visibility: hidden;
@@ -246,7 +266,7 @@ const { solid = false } = Astro.props;
   .overlay-link {
     color: #fff;
     text-decoration: none;
-    font-family: var(--font-fraunces);
+    font-family: var(--font-display);
     font-size: 2.5rem;
     font-weight: 400;
     transition: color 0.3s ease, transform 0.3s var(--ease-in-out-soft);
@@ -269,7 +289,7 @@ const { solid = false } = Astro.props;
     color: #000;
     text-decoration: none;
     padding: 1rem 2.5rem;
-    font-family: var(--font-manrope);
+    font-family: var(--font-body);
     font-size: 1.1rem;
     font-weight: 600;
     border-radius: 2px;
@@ -293,7 +313,7 @@ const { solid = false } = Astro.props;
     }
   }
 
-  @media (max-width: 1024px) {
+  @media (max-width: 64em) {
     .nav-links {
       display: none;
     }

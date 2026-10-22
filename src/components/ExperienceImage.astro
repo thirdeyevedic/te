@@ -5,7 +5,23 @@
  * Handles aspect-ratio enforcement, lazy loading, and cinematic
  * transitions. By wrapping the native <img>, we ensure that every
  * image on the site behaves consistently and remains accessible.
+ *
+ * Responsive delivery: scripts/make-responsive.py generates width
+ * variants (<stem>@480/@768/@1200.jpg) plus src/data/srcset-manifest.json.
+ * Each source's srcset is built here from the manifest, emitting a
+ * candidate only when the variant file actually exists — a stale or
+ * missing manifest degrades gracefully to a plain <img src>.
  */
+
+import { existsSync } from "node:fs";
+import { join } from "node:path";
+import srcsetManifest from "../data/srcset-manifest.json";
+
+interface ManifestEntry {
+  w: number;
+  h: number;
+  variants: number[];
+}
 
 interface Props {
   /** Image URL. Optional: data entries may omit imagery, in which case the
@@ -17,6 +33,9 @@ interface Props {
   eager?: boolean;
   position?: string;
   class?: string;
+  /** Responsive sizes hint (only emitted alongside srcset). Defaults to
+      "100vw" — every current usage is a full-bleed cover image. */
+  sizes?: string;
 }
 
 const {
@@ -26,12 +45,34 @@ const {
   eager = false,
   position = "center center",
   class: className = "",
+  sizes = "100vw",
 } = Astro.props;
 
 // Prioritize LCP images (eager) over non-critical ones (lazy)
 const loading = eager ? "eager" : "lazy";
 const decoding = "async";
 const fetchPriority = eager ? "high" : "auto";
+
+// Build the srcset from the manifest, guarded by existsSync so a stale
+// manifest never emits a 404ing candidate. The original stays the largest
+// entry; non-JPEG imagery (SVG logo, founder portrait) has no manifest
+// entry and passes through untouched.
+const manifest = srcsetManifest as Record<string, ManifestEntry | undefined>;
+const entry = src ? manifest[src] : undefined;
+const candidates: string[] = [];
+if (src && entry) {
+  for (const vw of entry.variants ?? []) {
+    const candidate = src.replace(/\.jpg$/i, `@${vw}.jpg`);
+    // Build-time existence check: variants live in <root>/public. cwd is the
+    // project root for every npm script (local + CI). A miss simply omits the
+    // candidate, so a stale manifest degrades to a plain <img src>.
+    if (existsSync(join(process.cwd(), "public", candidate))) {
+      candidates.push(`${candidate} ${vw}w`);
+    }
+  }
+  candidates.push(`${src} ${entry.w}w`);
+}
+const srcset = candidates.length > 1 ? candidates.join(", ") : undefined;
 ---
 
 <div class={`xi ${fill ? 'xi--fill' : ''} ${className}`}>
@@ -44,6 +85,8 @@ const fetchPriority = eager ? "high" : "auto";
       fetchpriority={fetchPriority}
       class={`xi__media ${fill ? 'xi--fill' : ''}`}
       style={fill ? `object-position: ${position};` : ''}
+      srcset={srcset}
+      sizes={srcset ? sizes : undefined}
     />
   )}
 </div>

@@ -58,11 +58,11 @@ const turnstileSitekey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | u
             {destinations.map((d) => <option value={d.name}>{d.name}</option>)}
           </select>
         </label>
-        <label class="field reveal" style="--reveal-delay: 320ms; grid-column: span 2">
+        <label class="field field--half reveal" style="--reveal-delay: 320ms">
           <span class="field-label">Approximate guest count</span>
           <input type="text" name="guests" inputmode="numeric" placeholder="e.g. 250" />
         </label>
-        <label class="field reveal" style="--reveal-delay: 380ms; grid-column: span 2">
+        <label class="field field--half reveal" style="--reveal-delay: 380ms">
           <span class="field-label">Date / timeframe</span>
           <input type="text" name="timeframe" placeholder="Month & year, or flexible" />
         </label>
@@ -109,6 +109,18 @@ const turnstileSitekey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | u
     display: grid;
     gap: 0.8rem;
     position: relative;
+  }
+
+  /* Paired short fields: full-width on phones, half-width from 48em up
+     (preserves the desktop pairing on the wider grids) */
+  .field--half {
+    grid-column: span 4;
+  }
+
+  @media (min-width: 48em) {
+    .field--half {
+      grid-column: span 2;
+    }
   }
 
   .field-label {

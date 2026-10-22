@@ -99,6 +99,12 @@ const year = new Date().getFullYear();
     padding-block: 0.35rem;
   }
 
+  /* Keep every footer link target >= 24px tall (WCAG 2.5.8) */
+  .footer li a {
+    display: inline-block;
+    padding-block: 0.2rem;
+  }
+
   .footer a {
     color: var(--ink-muted);
     transition: color var(--dur-micro) ease;

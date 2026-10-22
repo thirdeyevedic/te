@@ -898,6 +898,10 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       scroll-behavior: smooth;
+      /* Mirror HorizontalScroller's --edge gutter so the first card aligns
+         with the content grid instead of sitting flush to the screen edge */
+      padding-inline: max(var(--space-gutter), calc((100vw - var(--grid-max)) / 2));
+      scroll-padding-inline-start: max(var(--space-gutter), calc((100vw - var(--grid-max)) / 2));
       padding-block-end: clamp(3rem, 8vh, 6rem);
       -webkit-overflow-scrolling: touch;
     }
@@ -908,8 +912,10 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
 
     .signature-entries__card {
       flex: 0 0 auto;
-      width: clamp(26rem, 32vw, 30rem);
-      height: clamp(32rem, 45vh, 40rem);
+      /* min(86vw, 30rem) — the old 26rem floor (416px) overflowed 375px
+         phones, cutting the card off mid-snap */
+      width: min(86vw, 30rem);
+      height: clamp(24rem, 52vh, 40rem);
       scroll-snap-align: start;
       position: relative;
       display: flex;

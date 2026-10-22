@@ -273,6 +273,8 @@ button {
   letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--ink-muted);
+  /* Keep the tap target >= 24px (WCAG 2.5.8) */
+  padding-block: 0.15rem;
   transition: color var(--dur-micro) ease;
 }
 
@@ -350,12 +352,12 @@ button {
 }
 
 /* ---------- Scroll lock (mobile menu) ---------- */
+/* Lock the viewport scroller itself (the root element). A body-level
+   overflow:hidden does not stop the page from scrolling here, because
+   body's overflow-x:clip makes the body a non-propagating box. */
 html.is-menu-open {
-  padding-right: var(--scrollbar-comp, 0px);
-  }
-
-html.is-menu-open body {
   overflow: hidden;
+  padding-right: var(--scrollbar-comp, 0px);
 }
 
 /* ---------- Skip link ---------- */

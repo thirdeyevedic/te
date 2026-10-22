@@ -53,6 +53,9 @@ const { crumbs } = Astro.props;
 
   .crumbs a {
     transition: color var(--dur-micro) ease;
+    /* Keep the tap target >= 24px (WCAG 2.5.8) */
+    display: inline-block;
+    padding-block: 0.2rem;
   }
 
   .crumbs a:hover {

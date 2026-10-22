@@ -26,6 +26,7 @@ committed variants + manifest are used as-is (wire `prebuild` with `|| true`).
 """
 import json
 import os
+import re
 import sys
 import time
 
@@ -62,6 +63,10 @@ def main() -> None:
     for dirpath, _dirs, files in os.walk(os.path.join(PUBLIC, "images")):
         for fn in files:
             if fn.lower().endswith(".jpg"):
+                # Skip our own generated variants (e.g. hero@480.jpg) so the
+                # walk can never chain variants off variants.
+                if re.search(r"@\d+\.jpg$", fn, re.I):
+                    continue
                 sources.append(os.path.join(dirpath, fn))
     sources.sort()
 
