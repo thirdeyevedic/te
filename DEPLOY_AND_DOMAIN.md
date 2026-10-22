@@ -102,19 +102,19 @@ real routing.
       rate-limit rule on `/api/enquiry` is the hardened backstop.
 - [ ] **Analytics** — set `PUBLIC_CF_BEACON_TOKEN` if traffic reporting is
       wanted. The beacon is absent from the bundle until then.
-- [ ] **Push path (SSH — one step from working)** — a dedicated key pair
-      `~/.ssh/thirdeye_ed25519` was generated 2026-10-22 for the thirdeyevedic
-      account, and `~/.ssh/config` defines the host alias `github-te`
-      (github.com, offering only that key). `origin` is
-      `github-te:thirdeyevedic/te.git`. **Register the public key** at
-      github.com/settings/keys → `git push origin main` then works with no
-      further setup. Until then the push is denied, because the key is
-      unregistered. Other keys on this machine: `id_ed25519` (unregistered)
-      and `cc_deploy_ed25519` (a read-only deploy key on this repo; GitHub
-      authenticates it as `creativeclique/cc`). The CI workflow's first run
-      additionally needs the `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID`
-      secrets. Site deploys are unaffected throughout — they go through
-      wrangler directly.
+- [x] **Push path (SSH) — done 2026-10-22** — key pair
+      `~/.ssh/thirdeye_ed25519` generated, registered on the thirdeyevedic
+      account (GitHub key name "tew"), `~/.ssh/config` host alias `github-te`
+      (github.com, that key only), `origin` = `github-te:thirdeyevedic/te.git`.
+      All 11 local commits pushed (`40cf508..7d3a9ed`). Other keys on this
+      machine: `id_ed25519` (unregistered) and `cc_deploy_ed25519` (a
+      read-only deploy key on this repo; GitHub authenticates it as
+      `creativeclique/cc`).
+- [ ] **CI secrets** — the workflow needs `CLOUDFLARE_API_TOKEN` +
+      `CLOUDFLARE_ACCOUNT_ID` as repository secrets (Settings → Secrets and
+      variables → Actions). Without them the run fails at the deploy step
+      only; the type-checks and build still prove the repo is healthy. Site
+      deploys are unaffected either way — wrangler deploys directly.
 
 ### Verified state (2026-10-22)
 
