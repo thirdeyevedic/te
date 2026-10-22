@@ -160,7 +160,11 @@ const description = "Internal enquiry dashboard.";
 
   const state: { status: string; q: string; list: any[]; current: any } = { status: "", q: "", list: [], current: null };
 
-  const el = (tag: string, text?: string) => { const n = document.createElement(tag); if (text != null) n.textContent = text; return n; };
+  const el = <K extends keyof HTMLElementTagNameMap>(tag: K, text?: string): HTMLElementTagNameMap[K] => {
+    const n = document.createElement(tag);
+    if (text != null) n.textContent = text;
+    return n;
+  };
 
   async function api(path: string, opts: RequestInit = {}): Promise<Response> {
     const res = await fetch(path, opts);
@@ -251,7 +255,9 @@ const description = "Internal enquiry dashboard.";
       row.append(el("strong", v || "—"));
       dBody.append(row);
     }
-    dBody.append(el("div", "Vision")).className = "dlabel";
+    const visionLabel = el("div", "Vision");
+    visionLabel.className = "dlabel";
+    dBody.append(visionLabel);
     dBody.append(el("p", enquiry.vision || "—"));
 
     dStatus.replaceChildren();

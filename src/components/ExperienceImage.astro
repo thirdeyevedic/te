@@ -8,8 +8,11 @@
  */
 
 interface Props {
-  src: string;
-  alt: string;
+  /** Image URL. Optional: data entries may omit imagery, in which case the
+      wrapper renders as a neutral placeholder rather than a broken <img>. */
+  src?: string;
+  /** Alt text. Defaults to decorative (empty) when a card supplies none. */
+  alt?: string;
   fill?: boolean;
   eager?: boolean;
   position?: string;
@@ -18,7 +21,7 @@ interface Props {
 
 const {
   src,
-  alt,
+  alt = "",
   fill = false,
   eager = false,
   position = "center center",
@@ -32,15 +35,17 @@ const fetchPriority = eager ? "high" : "auto";
 ---
 
 <div class={`xi ${fill ? 'xi--fill' : ''} ${className}`}>
-  <img
-    src={src}
-    alt={alt}
-    loading={loading}
-    decoding={decoding}
-    fetchpriority={fetchPriority}
-    class={`xi__media ${fill ? 'xi--fill' : ''}`}
-    style={fill ? `object-position: ${position};` : ''}
-  />
+  {src && (
+    <img
+      src={src}
+      alt={alt}
+      loading={loading}
+      decoding={decoding}
+      fetchpriority={fetchPriority}
+      class={`xi__media ${fill ? 'xi--fill' : ''}`}
+      style={fill ? `object-position: ${position};` : ''}
+    />
+  )}
 </div>
 
 <style>

@@ -372,46 +372,14 @@ const personSchema = {
   </style>
 
   <script>
-    function initPathAnimation() {
-      const pathLine = document.getElementById("path-line");
-      if (!pathLine) return;
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              // Animate the line fill
-              pathLine.style.setProperty("--line-progress", "100%");
-              // Use a CSS transition for the actual fill
-              pathLine.style.transition = "height 1.5s var(--ease-in-out-soft)";
-              // We trigger a re-style to force the transition
-              pathLine.style.height = "100%";
-            }
-          });
-        },
-        { threshold: 0.1 }
-      );
-
-      observer.observe(pathLine);
-    }
-
     // Implementing the drawing effect via CSS Variable
     function animateDrawing() {
       const pathLine = document.getElementById("path-line");
       if (!pathLine) return;
 
       const rect = pathLine.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      
-      // Calculate how much of the line is above the "viewport center"
-      const progress = Math.max(0, Math.min(1, (rect.top + windowHeight / 2) / rect.height));
-      // We want it to fill as we scroll down, so we invert or calculate based on offset
-      const fillPercentage = 100 - ( (rect.bottom - windowHeight/2) / rect.height * 100);
-      
-      // This is a simplified version; the best way is to use a CSS mask or 
-      // a dynamic height on the ::after pseudo-element.
-      const after = pathLine.style;
-      // We use a CSS variable to control the fill
+
+      // Use a CSS variable to control the fill
       pathLine.style.setProperty("--draw-progress", `${Math.max(0, Math.min(100, 100 - (rect.top / rect.height * 100)))}%`);
     }
 

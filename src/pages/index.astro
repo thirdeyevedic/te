@@ -156,7 +156,7 @@ const heroImage = "/images/hero-cinematic.jpg";
               href={`/destinations/${d.slug}/`}
               style={`--reveal-delay: ${i * 60}ms; view-transition-name: dest-${d.slug}`}
             >
-              <ExperienceImage src={d.cardImage} alt={d.cardAlt} fill />
+              <ExperienceImage src={d.cardImage} alt={d.cardAlt ?? d.name} fill />
               <span class="ph__scrim" aria-hidden="true" />
               <span class="dcard__region microcopy">{d.region} · {d.country}</span>
               <span class="dcard__name display">{d.name}</span>
@@ -189,7 +189,7 @@ const heroImage = "/images/hero-cinematic.jpg";
             href={`/weddings/experiences/${e.slug}/`}
             style={`--reveal-delay: ${i * 110}ms; view-transition-name: entry-${e.slug}`}
           >
-            <ExperienceImage src={e.cardImage} alt={e.cardAlt} fill />
+            <ExperienceImage src={e.cardImage} alt={e.cardAlt ?? e.title} fill />
             <span class="ph__scrim" aria-hidden="true" />
             <span class="microcopy">{e.category}</span>
             <span class="sig-card__title display">{e.title}</span>

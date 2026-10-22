@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
+# Private surfaces — never indexed
+Disallow: /api/
+Disallow: /admin/
+
 Sitemap: https://thirdeyeevents.com/sitemap-index.xml

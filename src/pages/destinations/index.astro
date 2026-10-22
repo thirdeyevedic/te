@@ -28,7 +28,7 @@ const description =
             style={`--reveal-delay: ${(i % 3) * 110}ms; view-transition-name: dest-${d.slug}`}
           >
             <div class="world__media">
-              <ExperienceImage src={d.cardImage} fill alt={d.cardAlt} />
+              <ExperienceImage src={d.cardImage} fill alt={d.cardAlt ?? d.name} />
               <span class="ph__scrim" aria-hidden="true" />
             </div>
             

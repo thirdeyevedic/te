@@ -20,6 +20,9 @@ interface Props {
 }
 const { eyebrow, title, statement, image, transitionName, breadcrumbs = [], flip = false } =
   Astro.props;
+
+// Astro may hand us a resolved ImageMetadata object rather than a URL string
+const imageSrc = typeof image === "string" ? image : image?.src;
 ---
 
 <section class="phero">
@@ -28,7 +31,7 @@ const { eyebrow, title, statement, image, transitionName, breadcrumbs = [], flip
     aria-hidden="true"
     style={transitionName ? `view-transition-name: ${transitionName}` : undefined}
   >
-    <ExperienceImage src={image} alt="Cinematic hero imagery" fill eager />
+    {imageSrc && <ExperienceImage src={imageSrc} alt="Cinematic hero imagery" fill eager />}
   </div>
   <div class="container phero__content">
     {breadcrumbs.length > 0 && <BreadcrumbTrail crumbs={breadcrumbs} />}

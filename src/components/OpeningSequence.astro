@@ -325,6 +325,12 @@
 <script>
   import gsap from "gsap";
 
+  declare global {
+    interface Window {
+      __thirdEyeIntroPlayed?: boolean;
+    }
+  }
+
   function initCinema() {
     const stage = document.getElementById("cinema-stage");
     if (!stage) return;
@@ -338,7 +344,7 @@
     window.__thirdEyeIntroPlayed = true;
 
     const reduce = document.documentElement.classList.contains("reduced-motion");
-    const $ = (sel) => document.querySelector(sel);
+    const $ = (sel: string) => document.querySelector(sel);
 
     let done = false;
     let safetyTimer = 0;
@@ -358,20 +364,20 @@
       window.clearTimeout(safetyTimer);
       document.removeEventListener("keydown", onKeyDown);
       document.body && (document.body.style.overflow = "");
-      stage.style.animation = "none"; // disable the CSS backstop once JS owns it
+      stage!.style.animation = "none"; // disable the CSS backstop once JS owns it
       revealPage();
       gsap.to(stage, {
         opacity: 0,
         duration: 0.9,
         ease: "power2.inOut",
         onComplete: () => {
-          stage.style.display = "none";
-          stage.remove();
+          stage!.style.display = "none";
+          stage!.remove();
         },
       });
     }
 
-    function onKeyDown(e) {
+    function onKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape" || e.key === "Enter" || e.key === " ") dismiss();
     }
 

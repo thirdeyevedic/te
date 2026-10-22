@@ -55,7 +55,7 @@ const description =
             href={p.href}
             style={`--reveal-delay: ${i * 110}ms`}
           >
-            <ExperienceImage src={p.image} fill />
+            <ExperienceImage src={p.image} alt={p.name} fill />
             <span class="ph__scrim" aria-hidden="true" />
             <span class="microcopy">{p.num}</span>
             <h2 class="display path__name">{p.name}</h2>

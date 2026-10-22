@@ -46,7 +46,7 @@ const structuredData = [
         productionServices.map((s, i) => (
           <article class="svc reveal" id={s.id} style={`--reveal-delay: ${(i % 3) * 90}ms`}>
             <figure class="svc__visual">
-              <ExperienceImage src={s.heroImage} fill />
+              <ExperienceImage src={s.heroImage} alt={s.name} fill />
             </figure>
             <h2 class="display svc__name">{s.name}</h2>
             <ul role="list">

@@ -1,5 +1,4 @@
 ---
-import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 
 interface Props {
@@ -55,15 +54,15 @@ const { solid = false } = Astro.props;
     if (!toggle || !menu) return;
 
     function toggleMenu(forceClose = false) {
-      const isOpen = forceClose ? false : toggle.getAttribute("aria-expanded") === "true";
+      const isOpen = forceClose ? false : toggle!.getAttribute("aria-expanded") === "true";
       const newState = !isOpen;
 
-      toggle.setAttribute("aria-expanded", String(newState));
-      menu.classList.toggle("is-open", newState);
+      toggle!.setAttribute("aria-expanded", String(newState));
+      menu!.classList.toggle("is-open", newState);
       body.classList.toggle("no-scroll", newState);
-      
+
       // Update burger icon state
-      toggle.classList.toggle("is-active", newState);
+      toggle!.classList.toggle("is-active", newState);
     }
 
     toggle.addEventListener("click", () => toggleMenu());
@@ -74,9 +73,9 @@ const { solid = false } = Astro.props;
 
     // Close on Escape key
     window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && menu.classList.contains("is-open")) {
+      if (e.key === "Escape" && menu!.classList.contains("is-open")) {
         toggleMenu(true);
-        toggle.focus();
+        (toggle as HTMLElement).focus();
       }
     });
   }

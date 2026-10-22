@@ -8,6 +8,8 @@ import "../styles/global.css";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
 import Cursor from "../components/Cursor.astro";
+import { SITE_URL, SITE_NAME } from "../data/site";
+import { buildLocalBusiness } from "../utils/schema";
 
 interface Props {
   title: string;
@@ -21,15 +23,21 @@ interface Props {
 
 const { title, description, path = "", structuredData = [], solidNav = false, noindex = false, bare = false } = Astro.props;
 
-const site = Astro.site ?? new URL("https://thirdeyeevents.com");
+const site = Astro.site ?? new URL(SITE_URL);
 const canonical = new URL(path, site);
 const ogImage = new URL("/images/og.jpg", site);
+
+// Optional Cloudflare Web Analytics beacon — off unless PUBLIC_CF_BEACON_TOKEN
+// is set at build time, so local/preview builds never leak a real token.
+const cfBeaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN as string | undefined;
+
+const localBusiness = buildLocalBusiness(site.href);
 
 const organization = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "@id": `${site}#organization`,
-  name: "Third Eye Events",
+  name: SITE_NAME,
   alternateName: "Third Eye",
   url: site.href,
   description:
@@ -55,7 +63,7 @@ const website = {
   "@type": "WebSite",
   "@id": `${site}#website`,
   url: site.href,
-  name: "Third Eye Events",
+  name: SITE_NAME,
   publisher: { "@id": `${site}#organization` },
   inLanguage: "en-IN",
 };
@@ -86,13 +94,22 @@ const webPage = {
     <meta name="theme-color" content="#0A0A0A" />
 
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Third Eye Events" />
+    <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical.href} />
     <meta property="og:image" content={ogImage.href} />
+    <meta property="og:image:secure_url" content={ogImage.href} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Third Eye Events — luxury weddings and experiences" />
     <meta property="og:locale" content="en_IN" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage.href} />
+    <meta name="twitter:image:alt" content="Third Eye Events — luxury weddings and experiences" />
 
     <link rel="preload" href={frauncesLatin} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={manropeLatin} as="font" type="font/woff2" crossorigin />
@@ -104,7 +121,17 @@ const webPage = {
     <script is:inline type="application/ld+json" set:html={JSON.stringify(organization)} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(website)} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(webPage)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(localBusiness)} />
     {structuredData.map((block) => <script is:inline type="application/ld+json" set:html={JSON.stringify(block)} />)}
+
+    {cfBeaconToken && (
+      <script
+        is:inline
+        defer
+        src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon={JSON.stringify({ token: cfBeaconToken })}
+      />
+    )}
 
     <script is:inline>
       document.documentElement.dataset.nav = "overlay";

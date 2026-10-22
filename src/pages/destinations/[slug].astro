@@ -116,7 +116,7 @@ const related = destinations.filter((x) => x.slug !== d.slug).slice(0, 3);
       {
         related.map((r) => (
           <a class="rel ph ph--imaged reveal" href={`/destinations/${r.slug}/`}>
-            <ExperienceImage src={r.cardImage} fill />
+            <ExperienceImage src={r.cardImage} alt={r.name} fill />
             <span class="ph__scrim" aria-hidden="true" />
             <span class="microcopy">{r.country}</span>
             <span class="display rel__name">{r.name} →</span>

@@ -129,8 +129,8 @@
       followerX += (mouseX - followerX) * 0.1;
       followerY += (mouseY - followerY) * 0.1;
 
-      dot.style.transform = `translate(${dotX}px, ${dotY}px)`;
-      follower.style.transform = `translate(${followerX - (follower.offsetWidth / 2)}px, ${followerY - (follower.offsetHeight / 2)}px)`;
+      dot!.style.transform = `translate(${dotX}px, ${dotY}px)`;
+      follower!.style.transform = `translate(${followerX - (follower!.offsetWidth / 2)}px, ${followerY - (follower!.offsetHeight / 2)}px)`;
 
       requestAnimationFrame(animate);
     }
