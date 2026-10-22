@@ -352,7 +352,7 @@ button {
 /* ---------- Scroll lock (mobile menu) ---------- */
 html.is-menu-open {
   padding-right: var(--scrollbar-comp, 0px);
-  }
+}
 
 html.is-menu-open body {
   overflow: hidden;
