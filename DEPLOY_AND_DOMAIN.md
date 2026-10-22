@@ -116,17 +116,17 @@ real routing.
       **removed**. Other keys on this machine: `id_ed25519` (unregistered) and
       `cc_deploy_ed25519` (a read-only deploy key on this repo; GitHub
       authenticates it as `creativeclique/cc`).
-- [ ] **CI secrets** — the workflow needs `CLOUDFLARE_API_TOKEN` +
-      `CLOUDFLARE_ACCOUNT_ID` as repository secrets (Settings → Secrets and
-      variables → Actions → New repository secret). Values:
-      token = the Cloudflare API token (account-scoped, Pages edit), account
-      ID = `905a54b83934b6eefb57642b34996fd4`. **Until they exist the deploy
-      step is skipped with an explicit `::warning::` instead of failing the
-      run** — type-checks and build still gate the push, and `dist/` is
-      intact so `npm run deploy` works manually. Once the secrets are set the
-      same workflow deploys automatically on every push to `main`.
-      *(Secrets can only be written through the GitHub UI/API — a repo-scoped
-      token is required; an SSH push key cannot set them.)*
+- [x] **CI secrets — done 2026-10-22** — `CLOUDFLARE_API_TOKEN` and
+      `CLOUDFLARE_ACCOUNT_ID` (`905a54b83934b6eefb57642b34996fd4`) are set as
+      repository secrets (written via the Actions secrets API, libsodium
+      sealed-box encrypted, after verifying the token with `wrangler whoami`).
+      A dispatched run then went **green with the deploy step executing** —
+      `Deploy to Cloudflare Pages: success` — and the site answered 200
+      afterwards. CI now builds *and* deploys on every push to `main`.
+      The workflow still degrades gracefully: if the secrets are ever removed
+      the deploy step is skipped with an explicit `::warning::` rather than
+      failing the run. *(Note: repo secrets can only be written via the
+      GitHub API/UI with a repo-admin token — an SSH push key cannot.)*
 - [x] **Mobile responsiveness — done 2026-10-22** (branch
       `mobile-responsive-pass`, merged to `main`). Fixed: dead mobile-menu
       scroll-lock (now `html.is-menu-open`), overlay `100dvh`, 10 undefined
