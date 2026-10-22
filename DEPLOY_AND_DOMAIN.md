@@ -112,15 +112,21 @@ real routing.
       `~/.ssh/thirdeye_ed25519` generated, registered on the thirdeyevedic
       account (GitHub key name "tew"), `~/.ssh/config` host alias `github-te`
       (github.com, that key only), `origin` = `github-te:thirdeyevedic/te.git`.
-      All 11 local commits pushed (`40cf508..7d3a9ed`). Other keys on this
-      machine: `id_ed25519` (unregistered) and `cc_deploy_ed25519` (a
-      read-only deploy key on this repo; GitHub authenticates it as
-      `creativeclique/cc`).
+      The dead `github-pat` remote (revoked PAT embedded in its URL) has been
+      **removed**. Other keys on this machine: `id_ed25519` (unregistered) and
+      `cc_deploy_ed25519` (a read-only deploy key on this repo; GitHub
+      authenticates it as `creativeclique/cc`).
 - [ ] **CI secrets** — the workflow needs `CLOUDFLARE_API_TOKEN` +
       `CLOUDFLARE_ACCOUNT_ID` as repository secrets (Settings → Secrets and
-      variables → Actions). Without them the run fails at the deploy step
-      only; the type-checks and build still prove the repo is healthy. Site
-      deploys are unaffected either way — wrangler deploys directly.
+      variables → Actions → New repository secret). Values:
+      token = the Cloudflare API token (account-scoped, Pages edit), account
+      ID = `905a54b83934b6eefb57642b34996fd4`. **Until they exist the deploy
+      step is skipped with an explicit `::warning::` instead of failing the
+      run** — type-checks and build still gate the push, and `dist/` is
+      intact so `npm run deploy` works manually. Once the secrets are set the
+      same workflow deploys automatically on every push to `main`.
+      *(Secrets can only be written through the GitHub UI/API — a repo-scoped
+      token is required; an SSH push key cannot set them.)*
 - [x] **Mobile responsiveness — done 2026-10-22** (branch
       `mobile-responsive-pass`, merged to `main`). Fixed: dead mobile-menu
       scroll-lock (now `html.is-menu-open`), overlay `100dvh`, 10 undefined

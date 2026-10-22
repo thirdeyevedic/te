@@ -3,6 +3,15 @@ name: Deploy to Cloudflare Pages
 # The Pages project was created via the API with a GitHub source, but no
 # webhook is wired — pushes to main change nothing on the site on their own.
 # This workflow is the deploy path: it gates on type-checks, then ships dist/.
+#
+# Deploy requires two repository secrets:
+#   CLOUDFLARE_API_TOKEN   (Cloudflare API token, "Edit Cloudflare Workers" +
+#                           Pages edit on the account)
+#   CLOUDFLARE_ACCOUNT_ID  (905a54b83934b6eefb57642b34996fd4)
+# Settings -> Secrets and variables -> Actions -> New repository secret.
+# When they are absent the deploy step is skipped with an explicit warning
+# instead of failing the run — the type-checks and build still prove the repo
+# is healthy.
 
 on:
   push:
@@ -19,6 +28,11 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      # Job-level so the step-level `if` conditions can read them (the
+      # `secrets` context is not available in `if`).
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - uses: actions/checkout@v4
 
@@ -46,7 +60,11 @@ jobs:
           PUBLIC_CF_BEACON_TOKEN: ${{ secrets.PUBLIC_CF_BEACON_TOKEN }}
 
       - name: Deploy to Cloudflare Pages
+        if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
         run: npx wrangler pages deploy dist --project-name=third-eye-events --branch main
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Deploy skipped — credentials not configured
+        if: ${{ env.CLOUDFLARE_API_TOKEN == '' }}
+        run: |
+          echo "::warning title=Deploy skipped::CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID repo secrets are not set. Type-checks and build passed, but nothing was deployed. Add both secrets under Settings -> Secrets and variables -> Actions to enable automatic deploys."
+          echo "Build output is intact in dist/ — a manual 'npm run deploy' still works."
