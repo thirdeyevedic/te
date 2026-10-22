@@ -102,9 +102,22 @@ real routing.
       rate-limit rule on `/api/enquiry` is the hardened backstop.
 - [ ] **Analytics** — set `PUBLIC_CF_BEACON_TOKEN` if traffic reporting is
       wanted. The beacon is absent from the bundle until then.
-- [ ] **Rotate the PAT** stored in `~/.git/config` for this repository — it is
-      revoked, which blocks `git push` and therefore the CI workflow's first
-      run. Site deploys are unaffected (they go through wrangler directly).
+- [ ] **Push path (SSH — currently blocked)** — `origin` is already
+      `git@github.com:thirdeyevedic/te.git` and GitHub is reachable over SSH,
+      but neither local key can push:
+      - `~/.ssh/id_ed25519` (comment `thirdeyevedic@gmail.com`) is **not yet
+        registered** on the GitHub account.
+      - `~/.ssh/cc_deploy_ed25519` is registered as a **read-only deploy key**
+        on this repo and authenticates as `creativeclique/cc` (a different
+        account) — reads work, pushes are denied.
+      Fix with any one of: (a) add the `id_ed25519.pub` key at
+      github.com/settings/keys — then `git push origin main` works with no
+      config change, since ssh offers that key first; (b) enable *Allow write
+      access* on the deploy key in the repo's Settings → Deploy keys; or
+      (c) issue a new PAT and update the retired `github-pat` remote.
+      The CI workflow's first run additionally needs the
+      `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` secrets. Site deploys
+      are unaffected throughout — they go through wrangler directly.
 
 ### Verified state (2026-10-22)
 
