@@ -18,7 +18,7 @@ const { solid = false } = Astro.props;
       <a href="/destinations/" class="nav-link">Destinations</a>
       <a href="/weddings/experiences/" class="nav-link">Signature Experiences</a>
       <a href="/ip-events/" class="nav-link">IP Events</a>
-      <a href="/production/" class="nav-link">Services</a>
+      <a href="/production/" class="nav-link">Production</a>
       <a href="/about/" class="nav-link">About</a>
       <a href="/contact/" class="nav-cta">Get in Touch</a>
     </div>
@@ -36,7 +36,7 @@ const { solid = false } = Astro.props;
         <a href="/destinations/" class="overlay-link">Destinations</a>
         <a href="/weddings/experiences/" class="overlay-link">Signature Experiences</a>
         <a href="/ip-events/" class="overlay-link">IP Events</a>
-        <a href="/production/" class="overlay-link">Services</a>
+        <a href="/production/" class="overlay-link">Production</a>
         <a href="/about/" class="overlay-link">About</a>
         <a href="/contact/" class="overlay-cta">Get in Touch</a>
       </div>
@@ -92,7 +92,49 @@ const { solid = false } = Astro.props;
     });
   }
 
+  /* The header is transparent over the hero by design — but it must not STAY
+     transparent once real content scrolls beneath it: white links over a bright
+     photo are unreadable (e.g. the weddings gallery row). `solid` is the
+     build-time floor: pages that pass it (404) are always solid; every other
+     page switches on scroll. */
+  function initNavSolid() {
+    const nav = document.querySelector<HTMLElement>(".navbar");
+    if (!nav) return;
+    // Permanently solid page — nothing to toggle.
+    if (nav.getAttribute("data-solid") === "true") return;
+
+    const apply = () => {
+      nav.setAttribute("data-solid", window.scrollY > 40 ? "true" : "false");
+    };
+
+    // Astro re-runs this module on every ClientRouter swap, so the previous
+    // listener must be removed or they accumulate against detached nav nodes.
+    const w = window as unknown as { __teNavScroll?: () => void };
+    if (w.__teNavScroll) window.removeEventListener("scroll", w.__teNavScroll);
+    w.__teNavScroll = apply;
+    window.addEventListener("scroll", apply, { passive: true });
+    apply();
+  }
+
+  /* Mark the section the visitor is in. Without this the nav gives no
+     "you are here" signal — the visitor can't tell /weddings/vedic/ from
+     /production/ except by reading the page. */
+  function initNavCurrent() {
+    const path = location.pathname;
+    document
+      .querySelectorAll<HTMLAnchorElement>(".nav-link, .overlay-link")
+      .forEach((a) => {
+        const href = a.getAttribute("href") || "";
+        if (!href) return;
+        const isCurrent = path === href || (href !== "/" && path.startsWith(href));
+        if (isCurrent) a.setAttribute("aria-current", "page");
+        else a.removeAttribute("aria-current");
+      });
+  }
+
   document.addEventListener("astro:page-load", initNavbar);
+  document.addEventListener("astro:page-load", initNavSolid);
+  document.addEventListener("astro:page-load", initNavCurrent);
 </script>
 
 <style>
@@ -164,6 +206,16 @@ const { solid = false } = Astro.props;
   }
 
   .nav-link:hover::after {
+    width: 100%;
+  }
+
+  /* Current section — the only "you are here" signal on a 76-page site.
+     aria-current drives it, so assistive tech gets the same information. */
+  .nav-link[aria-current="page"] {
+    color: #fff;
+  }
+
+  .nav-link[aria-current="page"]::after {
     width: 100%;
   }
 
