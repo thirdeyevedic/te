@@ -61,6 +61,8 @@ const structuredData = [
     .family {
       padding-block: clamp(3rem, 7vw, 5rem);
       border-top: 1px solid var(--line);
+      /* Anchor jumps must clear the fixed navbar */
+      scroll-margin-top: calc(var(--nav-h) + 1rem);
     }
 
     .family:last-of-type {

@@ -21,7 +21,7 @@ const related = getVenuesByCountry(venue.countrySlug).filter((v) => v.slug !== v
 
 const crumbs = [
   { label: "Home", href: "/" },
-  { label: "Destinations", href: "/destinations" },
+  { label: "Destinations", href: "/destinations/" },
   { label: country.name, href: `/destinations/${country.slug}` },
   { label: venue.name },
 ];
@@ -111,7 +111,7 @@ const structuredData = [
           </a>
         ))
       }
-      <a class="rel ph ph--imaged reveal" href={`/weddings/experiences`} style="--reveal-delay: 300ms">
+      <a class="rel ph ph--imaged reveal" href={`/weddings/experiences/`} style="--reveal-delay: 300ms">
         <ExperienceImage src="/images/weddings/experiences-hero.jpg" alt="Signature Entries" fill />
         <span class="ph__scrim" aria-hidden="true" />
         <span class="microcopy">Before it begins</span>
