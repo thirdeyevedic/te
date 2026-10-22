@@ -108,8 +108,9 @@ real routing.
       - `~/.ssh/id_ed25519` (comment `thirdeyevedic@gmail.com`) is **not yet
         registered** on the GitHub account.
       - `~/.ssh/cc_deploy_ed25519` is registered as a **read-only deploy key**
-        on this repo and authenticates as `creativeclique/cc` (a different
-        account) — reads work, pushes are denied.
+        on this repo — GitHub authenticates it as `creativeclique/cc` (the
+        same name is in the key's own comment field). Reads work, pushes
+        denied.
       Fix with any one of: (a) add the `id_ed25519.pub` key at
       github.com/settings/keys — then `git push origin main` works with no
       config change, since ssh offers that key first; (b) enable *Allow write
