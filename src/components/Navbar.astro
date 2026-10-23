@@ -11,7 +11,16 @@ const { solid = false } = Astro.props;
 <nav class="navbar" data-solid={solid}>
   <div class="nav-container">
     <a href="/" class="nav-logo">
-      <img src="/images/logo.png" alt="Third Eye Events" width="102" height="50" />
+      <!-- 820x403 source was 198KB and downloaded on every page for a 102x50
+           slot. The sized PNGs are 7.5/22.6/42.8KB; a 2x phone takes the 204. -->
+      <img
+        src="/images/logo-204.png"
+        srcset="/images/logo-102.png 102w, /images/logo-204.png 204w, /images/logo-306.png 306w"
+        sizes="102px"
+        alt="Third Eye Events"
+        width="102"
+        height="50"
+      />
     </a>
 
     <!-- data-section = the whole section a link owns. It is wider than href:

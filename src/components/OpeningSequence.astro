@@ -47,17 +47,17 @@
   <div class="scene scene--fragments" id="scene-3">
     <div class="fragment-stage">
       <div class="fragment" id="frag-1">
-        <div class="frag-img" style="background-image: url('/images/weddings/vedic-hero.jpg')"></div>
+        <div class="frag-img frag-img--vedic"></div>
         <div class="frag-overlay"></div>
         <div class="frag-text">The Purity of Tradition</div>
       </div>
       <div class="fragment" id="frag-2">
-        <div class="frag-img" style="background-image: url('/images/weddings/destination-hero.jpg')"></div>
+        <div class="frag-img frag-img--destination"></div>
         <div class="frag-overlay"></div>
         <div class="frag-text">The Breath of the Divine</div>
       </div>
       <div class="fragment" id="frag-3">
-        <div class="frag-img" style="background-image: url('/images/weddings/concepts-hero.jpg')"></div>
+        <div class="frag-img frag-img--concepts"></div>
         <div class="frag-overlay"></div>
         <div class="frag-text">A Sacred Sanskar</div>
       </div>
@@ -247,10 +247,30 @@
     height: 100%;
     background-size: cover;
     background-position: center;
+    /* The fragments are ~40vw cards, not full-bleed art: a phone was pulling
+       the 1593px originals (890KB across the three) for a 156px box. The
+       @480 variants are 2x for that box; tablets get @768. */
+    background-image: var(--frag-img-mobile);
     filter: contrast(1.1) brightness(0.7) saturate(0.8);
     border: 1px solid rgba(184, 155, 94, 0.2);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
   }
+  .frag-img--vedic { --frag-img-mobile: url('/images/weddings/vedic-hero@480.jpg'); }
+  .frag-img--destination { --frag-img-mobile: url('/images/weddings/destination-hero@480.jpg'); }
+  .frag-img--concepts { --frag-img-mobile: url('/images/weddings/concepts-hero@480.jpg'); }
+
+  @media (min-width: 48em) {
+    .frag-img--vedic { --frag-img-mobile: url('/images/weddings/vedic-hero@768.jpg'); }
+    .frag-img--destination { --frag-img-mobile: url('/images/weddings/destination-hero@768.jpg'); }
+    .frag-img--concepts { --frag-img-mobile: url('/images/weddings/concepts-hero@768.jpg'); }
+  }
+
+  @media (min-width: 75em) {
+    .frag-img--vedic { --frag-img-mobile: url('/images/weddings/vedic-hero.jpg'); }
+    .frag-img--destination { --frag-img-mobile: url('/images/weddings/destination-hero.jpg'); }
+    .frag-img--concepts { --frag-img-mobile: url('/images/weddings/concepts-hero.jpg'); }
+  }
+
   .frag-overlay {
     position: absolute;
     inset: 0;

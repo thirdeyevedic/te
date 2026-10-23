@@ -3,6 +3,7 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 import PageHero from "../../../components/PageHero.astro";
 import CTA from "../../../components/CTA.astro";
 import { signatureEntries } from "../../../data/signatureEntries";
+import { buildSrcset } from "../../../lib/images";
 
 const title = "Signature Entries — Moments That Define the Wedding | Third Eye Events";
 const description =
@@ -54,14 +55,19 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
               style={`--reveal-delay: ${index * 110}ms; view-transition-name: entry-${entry.slug}`}
               aria-label={`Explore ${entry.title}`}
             >
-              {/* Visual/Image */}
+              {/* Visual/Image — the card is min(86vw, 30rem) wide, so without
+                  srcset+sizes a phone downloaded the full 1365px hero
+                  (364KB) for a 271px box. */}
               {entry.heroImage && (
                 <div class="signature-entries__visual">
                   <img 
                     src={entry.heroImage} 
+                    srcset={buildSrcset(entry.heroImage)}
+                    sizes="(min-width: 35rem) 30rem, 86vw"
                     alt={`${entry.title} hero image`}
                     class="signature-entries__image"
                     loading="lazy"
+                    decoding="async"
                   />
                 </div>
               )}

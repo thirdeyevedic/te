@@ -13,15 +13,7 @@
  * missing manifest degrades gracefully to a plain <img src>.
  */
 
-import { existsSync } from "node:fs";
-import { join } from "node:path";
-import srcsetManifest from "../data/srcset-manifest.json";
-
-interface ManifestEntry {
-  w: number;
-  h: number;
-  variants: number[];
-}
+import { buildSrcset } from "../lib/images";
 
 interface Props {
   /** Image URL. Optional: data entries may omit imagery, in which case the
@@ -53,26 +45,11 @@ const loading = eager ? "eager" : "lazy";
 const decoding = "async";
 const fetchPriority = eager ? "high" : "auto";
 
-// Build the srcset from the manifest, guarded by existsSync so a stale
-// manifest never emits a 404ing candidate. The original stays the largest
-// entry; non-JPEG imagery (SVG logo, founder portrait) has no manifest
-// entry and passes through untouched.
-const manifest = srcsetManifest as Record<string, ManifestEntry | undefined>;
-const entry = src ? manifest[src] : undefined;
-const candidates: string[] = [];
-if (src && entry) {
-  for (const vw of entry.variants ?? []) {
-    const candidate = src.replace(/\.jpg$/i, `@${vw}.jpg`);
-    // Build-time existence check: variants live in <root>/public. cwd is the
-    // project root for every npm script (local + CI). A miss simply omits the
-    // candidate, so a stale manifest degrades to a plain <img src>.
-    if (existsSync(join(process.cwd(), "public", candidate))) {
-      candidates.push(`${candidate} ${vw}w`);
-    }
-  }
-  candidates.push(`${src} ${entry.w}w`);
-}
-const srcset = candidates.length > 1 ? candidates.join(", ") : undefined;
+// Build the srcset from the manifest (see src/lib/images.ts), guarded by
+// existsSync so a stale manifest never emits a 404ing candidate. The original
+// stays the largest entry; non-JPEG imagery (SVG logo, founder portrait) has
+// no manifest entry and passes through untouched.
+const srcset = buildSrcset(src);
 ---
 
 <div class={`xi ${fill ? 'xi--fill' : ''} ${className}`}>
