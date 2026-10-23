@@ -49,7 +49,10 @@ MANIFEST = os.path.join(ROOT, "src", "data", "srcset-manifest.json")
 
 # Widths to emit as variants (the original's natural width is the largest
 # srcset entry, so we only generate strictly-smaller widths).
-VARIANT_WIDTHS = [480, 768, 1200]
+# 800 exists for the most common phone case: a 390pt viewport at DPR 2 asks
+# for 780px, which used to fall through 768 and land on the 1200 variant (or
+# on the original, which is not encoded as tightly as these variants).
+VARIANT_WIDTHS = [480, 768, 800, 1200]
 HERO_QUALITY = 82  # variants are small; 82 keeps them crisp without bloat
 
 
