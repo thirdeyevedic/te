@@ -8,8 +8,13 @@
 
 # ── Enquiry email notification (Resend) ──────────────────────────────
 # https://resend.com — free tier. Sender domain must be verified.
+# Until thirdeyeevents.com is verified, Resend only accepts the shared
+# sender AND a recipient that is the Resend account owner's own address:
+#   ENQUIRY_FROM_EMAIL=Third Eye Events <onboarding@resend.dev>
+#   ENQUIRY_NOTIFY_EMAIL=<the address on the Resend account>
 RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxx
 ENQUIRY_NOTIFY_EMAIL=hello@thirdeyeevents.com
+ENQUIRY_FROM_EMAIL=Third Eye Events <enquiries@thirdeyeevents.com>
 
 # ── Turnstile (spam check) ────────────────────────────────────────────
 # Set BOTH to enable, or NEITHER to disable (honeypot + rate-limit still apply).

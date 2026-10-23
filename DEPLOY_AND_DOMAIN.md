@@ -52,9 +52,10 @@ Optional (build-time only; the feature stays off while unset):
 ```bash
 npx wrangler pages secret put ADMIN_TOKEN        # gates /admin (any long random string)
 npx wrangler pages secret put TURNSTILE_SECRET_KEY # only when the site key above is set
-# Resend, once the sending domain is verified:
+# Resend — see §5 for the domain-verification step
 npx wrangler pages secret put RESEND_API_KEY
-npx wrangler pages secret put NOTIFY_EMAIL
+npx wrangler pages secret put ENQUIRY_NOTIFY_EMAIL   # where enquiries land
+npx wrangler pages secret put ENQUIRY_FROM_EMAIL     # optional; defaults to the branded sender
 ```
 
 `.dev.vars` mirrors these for local `wrangler pages dev` — copy
@@ -92,9 +93,11 @@ real routing.
 
 ## 3. Remaining ops checklist
 
-- [ ] **Resend** — verify the sending domain in the Resend dashboard. When
-      adding the SPF record, **merge it with the existing SPF record** (one
-      `v=spf1` per domain; a second one breaks mail authentication).
+- [ ] **Resend — domain verification** (key + secrets are already wired; this is
+      the last step). Add `thirdeyeevents.com` in the Resend dashboard and add
+      the records it shows — see **§5**. Do **not** touch the root SPF record:
+      Resend sends from the `send.` subdomain, which carries its own SPF, so the
+      existing `v=spf1 include:secureserver.net -all` (GoDaddy mail) stays as is.
 - [ ] **Turnstile** — set `PUBLIC_TURNSTILE_SITE_KEY` (build) *and*
       `TURNSTILE_SECRET_KEY` (runtime secret). The form works without them;
       they are what switches bot protection on.
@@ -210,3 +213,60 @@ noise by the mobile probe along with the `/api/admin/` 401s).
 > On this machine, wrangler and the headless browser both need the proxy env
 > vars stripped: `env -u HTTP_PROXY -u HTTPS_PROXY -u http_proxy -u https_proxy
 > -u ALL_PROXY -u all_proxy …`
+
+---
+
+## 5. Enquiry email — Resend
+
+**Status (2026-10-23):** key + all three secrets set; the account's sending
+domain is **not yet verified**, so notifications are currently sent from
+Resend's shared test sender to the account owner's address. One dashboard step
+upgrades them to the branded address.
+
+### Current configuration (live)
+
+| Pages secret | Value | Notes |
+| --- | --- | --- |
+| `RESEND_API_KEY` | `re_…` (send-only scope) | cannot list domains or manage the account — sending only |
+| `ENQUIRY_NOTIFY_EMAIL` | `thirdeyevedic@gmail.com` | the Resend account owner; **the only address Resend accepts before verification** |
+| `ENQUIRY_FROM_EMAIL` | `Third Eye Events <onboarding@resend.dev>` | Resend's shared sender, allowed pre-verification |
+
+Replies still go to the enquirer: the function sets `reply_to` to the
+submitted address, so hitting Reply works regardless of the `from`.
+
+### To finish — verify the domain
+
+1. Resend dashboard → **Domains → Add Domain** → `thirdeyeevents.com`.
+2. Add the records it shows in **Cloudflare DNS** (this zone is managed there).
+   The standard set is:
+
+   | Type | Name | Content | Proxy |
+   | --- | --- | --- | --- |
+   | `MX` | `send` | `feedback-smtp.<region>.amazonses.com` (priority 10) | DNS only |
+   | `TXT` | `send` | `v=spf1 include:amazonses.com ~all` | DNS only |
+   | `TXT` | `resend._domainkey` | `p=MIGfMA0GCS…` (per-domain DKIM key) | DNS only |
+
+   **Copy the exact values from the dashboard** — the DKIM key is unique to the
+   domain and the region differs per account. All three go on subdomains, so the
+   root MX (GoDaddy `secureserver.net`) and root SPF are untouched. Leave the
+   orange cloud **off** on these.
+3. Wait for Resend to show **Verified** (usually minutes).
+4. Swap the two secrets back to the branded pair:
+
+   ```bash
+   printf '%s' 'hello@thirdeyeevents.com' | npx wrangler pages secret put ENQUIRY_NOTIFY_EMAIL
+   npx wrangler pages secret delete ENQUIRY_FROM_EMAIL   # falls back to the branded default
+   ```
+
+   `ENQUIRY_FROM_EMAIL` defaults to `Third Eye Events <enquiries@thirdeyeevents.com>`
+   in code, so deleting the secret is the cleanest way to restore it.
+5. Redeploy (`npm run deploy`) — Pages snapshots env at deploy time.
+
+The DNS edit itself needs the **Cloudflare dashboard**: the deploy token has no
+`Zone:DNS:Edit` scope (§2).
+
+> **Why this matters:** email is best-effort and never fails a submission — D1
+> is the source of truth and `/admin/` lists every enquiry. A Resend rejection
+> is logged to `console.error` only, so check the Pages logs if notifications
+> ever stop.
+

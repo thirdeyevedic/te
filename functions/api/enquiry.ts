@@ -14,6 +14,13 @@
  * 2. Secrets (Pages → Settings → Environment variables):
  *      RESEND_API_KEY          re_...            (resend.com, free tier)
  *      ENQUIRY_NOTIFY_EMAIL    hello@thirdeyeevents.com
+ *      ENQUIRY_FROM_EMAIL      Third Eye Events <enquiries@thirdeyeevents.com>
+ *                              (optional — the sending domain must be verified
+ *                               in Resend. Until it is, set this to
+ *                               "Third Eye Events <onboarding@resend.dev>"
+ *                               and NOTIFY to the Resend account owner's
+ *                               address, which is the only pair Resend
+ *                               accepts before verification.)
  *      TURNSTILE_SECRET_KEY    0x...             (optional — enables Turnstile check)
  *      ENQUIRY_RATE_LIMIT      5                 (optional — attempts/IP/window)
  *      ENQUIRY_RATE_WINDOW_MIN 10                (optional — rate-limit window, min)
@@ -34,10 +41,14 @@ interface Env {
   DB: D1Database;
   RESEND_API_KEY?: string;
   ENQUIRY_NOTIFY_EMAIL?: string;
+  ENQUIRY_FROM_EMAIL?: string;
   TURNSTILE_SECRET_KEY?: string;
   ENQUIRY_RATE_LIMIT?: string;
   ENQUIRY_RATE_WINDOW_MIN?: string;
 }
+
+/** The branded sender, used unless ENQUIRY_FROM_EMAIL overrides it. */
+const DEFAULT_FROM = "Third Eye Events <enquiries@thirdeyeevents.com>";
 
 const MAX = { name: 200, email: 320, phone: 40, event_type: 100, destination: 120, guests: 60, timeframe: 120, vision: 5000 } as const;
 
@@ -213,7 +224,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
           "content-type": "application/json",
         },
         body: JSON.stringify({
-          from: "Third Eye Events <enquiries@thirdeyeevents.com>",
+          from: env.ENQUIRY_FROM_EMAIL || DEFAULT_FROM,
           to: [env.ENQUIRY_NOTIFY_EMAIL],
           reply_to: data.email,
           subject: `New Enquiry — ${data.event_type || "General"} · ${data.name}`,
