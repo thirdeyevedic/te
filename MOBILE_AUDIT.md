@@ -8,6 +8,8 @@ Checked against the live site (https://thirdeyeevents.com) on 23 October 2026, a
 
 Traffic is mostly mobile, so the pass also weighed every page at 390×844 with the HTTP cache disabled and every image forced to load — the number a phone actually pays. Four pages were shipping desktop-weight assets; all four are fixed and re-measured.
 
+Vertical spacing is covered separately in **[MOBILE_SPACING.md](MOBILE_SPACING.md)** — that pass found pages passing every check above while still reading as broken, because nothing measured the empty bands between sections.
+
 ## What "pass" means
 
 | # | Check | Result |
