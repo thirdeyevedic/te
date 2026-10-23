@@ -1015,6 +1015,33 @@ const entriesJSON = JSON.stringify(signatureEntries.map((e) => ({
       scrollbar-width: none;  /* Firefox */
     }
 
+    /* On a phone this page stacked its own air on top of the air it already
+       had: .signature-entries adds --space-section*1.5 (202px) INSIDE a
+       <section class="section"> (135px), the track adds clamp(3rem,8vh,6rem)
+       (67px), and (pointer: coarse) adds another clamp(4rem,10vh,8rem) (84px).
+       That is 616px between the last card and the next heading. The section
+       already supplies the rhythm, so the inner block supplies none of it, and
+       the card stops being 439px tall for a 335px-wide box.
+       This block is last on purpose: it has to win over the coarse-pointer
+       rule above, which sets the same property. */
+    @media (max-width: 47.99em) {
+      .signature-entries {
+        padding-block: 0;
+      }
+
+      .signature-entries__track {
+        padding-block-end: 1.5rem;
+      }
+
+      .signature-entries__card {
+        height: clamp(19rem, 88vw, 22rem);
+        /* .sig (a shared rule earlier in this file) sets
+           min-height: clamp(20rem,48vh,28rem) = 405px, which would floor the
+           height above back up to 405. */
+        min-height: 0;
+      }
+    }
+
   </style>
 
 </BaseLayout>

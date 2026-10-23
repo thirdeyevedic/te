@@ -85,6 +85,13 @@ const description =
       transition: border-color var(--dur-standard) ease, scale var(--dur-standard) var(--ease-out-expo);
     }
 
+    /* Full-width when stacked: 36vh (304px) of card for a 350px box. */
+    @media (max-width: 47.99em) {
+      .path {
+        min-height: clamp(12.5rem, 62vw, 16rem);
+      }
+    }
+
     .path:hover {
       border-color: var(--color-gold);
       scale: 1.01;

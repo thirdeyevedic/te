@@ -66,6 +66,15 @@ const description =
     z-index: 1;
   }
 
+  /* Stacked full-width on a phone, so 45vh made every card 380px tall for a
+     350px-wide box and the page read as one long scroll of empty cards.
+     Width-driven instead: the card scales with the column, not the handset. */
+  @media (max-width: 47.99em) {
+    .world {
+      min-height: clamp(17rem, 78vw, 20rem);
+    }
+  }
+
   .world:hover {
     border-color: var(--color-gold);
     transform: translateY(-4px);

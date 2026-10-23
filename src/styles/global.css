@@ -66,6 +66,30 @@
   }
 }
 
+/* Mobile spacing. The base tokens are height-driven (`16vh`), and on a tall
+   phone 16vh of 844px = 135px is ABOVE the 7rem floor — so a phone got MORE
+   air than a short laptop window, and two consecutive .section blocks sat
+   270px apart. Width drives the measure on a phone, not device height, so the
+   mobile branch is vw-driven: a 390x844 and a 390x700 handset now agree.
+   Desktop/tablet (>=48em) is untouched. */
+@media (max-width: 47.99em) {
+  :root {
+    --space-section: clamp(4.5rem, 20.5vw, 5rem); /* 80px @390 · 73.8 @360 */
+    --space-section-lg: clamp(6.25rem, 28vw, 7rem); /* 109 @390 · 100.8 @360 */
+  }
+
+  /* A section whose payload is one statement does not need a full beat. The
+     .section-lg variant keeps more air than a plain compact section because
+     its content is a display-size line, not body copy. */
+  .section--compact {
+    padding-block: calc(var(--space-section) * 0.75);
+  }
+
+  .section-lg.section--compact {
+    padding-block: calc(var(--space-section-lg) * 0.8);
+  }
+}
+
 /* ---------- Reset & base ---------- */
 *,
 *::before,

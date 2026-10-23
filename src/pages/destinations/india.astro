@@ -84,6 +84,13 @@ const structuredData = [
     transition: border-color var(--dur-standard) ease;
   }
 
+  /* Full-width when stacked: 34vh (287px) of card for a 350px box. */
+  @media (max-width: 47.99em) {
+    .cat {
+      min-height: clamp(12rem, 60vw, 15rem);
+    }
+  }
+
   .cat:hover {
     border-color: var(--color-gold);
   }

@@ -134,6 +134,15 @@ const structuredData = [
     border-bottom: 1px solid var(--line);
   }
 
+  /* The list ends here: a trailing rule plus its padding is dead air stacked
+     on the section's own padding and the next section's. */
+  @media (max-width: 47.99em) {
+    .chain__node:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+  }
+
   .chain__node:first-child {
     border-top: 1px solid var(--line);
   }

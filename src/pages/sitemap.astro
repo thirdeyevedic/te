@@ -71,7 +71,7 @@ const sections: {
 ---
 
 <BaseLayout title={title} description={description} path="/sitemap/" noindex>
-  <section class="section-lg">
+  <section class="section-lg sm-page">
     <div class="container">
       <p class="eyebrow reveal">Site Map</p>
       <h1 class="display sm-title reveal" style="--reveal-delay: 120ms">The world,<br />mapped.</h1>
@@ -120,6 +120,15 @@ const sections: {
 </BaseLayout>
 
 <style>
+  /* The only content page with no PageHero, so .section-lg's top padding was
+     the first thing under a 88px fixed navbar: 186px of black before the word
+     "Site Map". Pay the nav clearance instead, then normal rhythm. */
+  @media (max-width: 47.99em) {
+    .sm-page {
+      padding-block: calc(var(--nav-h) + 2rem) var(--space-section);
+    }
+  }
+
   .sm-title {
     font-size: clamp(2.6rem, 7vw, 5.5rem);
     margin-block: 1.2rem clamp(3rem, 7vw, 5rem);

@@ -69,6 +69,15 @@ const structuredData = [
       border-bottom: 1px solid var(--line);
     }
 
+    /* The last family's bottom padding sits directly on the section's own
+       padding and the CTA's, which is 260px of black on a phone. A divider
+       block with nothing after it does not need a trailing beat. */
+    @media (max-width: 47.99em) {
+      .family:last-of-type {
+        padding-bottom: 0;
+      }
+    }
+
     .family__head {
       display: flex;
       flex-wrap: wrap;

@@ -48,6 +48,16 @@ const imageSrc = typeof image === "string" ? image : image?.src;
     overflow: clip;
   }
 
+  /* On a phone the 12vh term made the hero's bottom padding 84px, and every
+     page puts a full .section straight after it — 219px of nothing between the
+     hero's last line and the next heading. --nav-h stays in the calc(): that is
+     fixed-nav clearance, not air. */
+  @media (max-width: 47.99em) {
+    .phero {
+      padding-block: calc(var(--nav-h) + 3rem) 3rem;
+    }
+  }
+
   .phero__bg {
     position: absolute;
     inset: 0;

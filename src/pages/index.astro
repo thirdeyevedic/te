@@ -347,6 +347,19 @@ const heroImage = "/images/hero-cinematic.jpg";
       justify-items: start;
     }
 
+    /* A phone viewport is 844px tall, so 100svh filled the screen exactly and
+       the next section was invisible until the visitor scrolled blind. Cap it
+       so the following band peeks, and drop the hard-coded 128/112px inset. */
+    @media (max-width: 47.99em) {
+      .hero {
+        min-height: min(100svh, 46rem);
+      }
+
+      .hero__content {
+        padding-block: 6rem 4.5rem;
+      }
+    }
+
     .hero__title {
       font-size: var(--text-hero);
       letter-spacing: 0.02em;
@@ -464,6 +477,13 @@ const heroImage = "/images/hero-cinematic.jpg";
       gap: 0.6rem;
       border: 1px solid transparent;
       transition: border-color var(--dur-standard) ease;
+    }
+
+    /* Full-width when stacked: 42vh (354px) of card for a 350px box. */
+    @media (max-width: 47.99em) {
+      .pathway {
+        min-height: clamp(13rem, 68vw, 17rem);
+      }
     }
 
     @media (min-width: 48em) {
@@ -657,6 +677,14 @@ const heroImage = "/images/hero-cinematic.jpg";
       padding: 1.6rem;
       border: 1px solid transparent;
       transition: border-color var(--dur-standard) ease;
+    }
+
+    /* A single stacked column makes 3/4.2 a 490px-tall card for a 350px box.
+       Square keeps the poster proportion without the empty lower third. */
+    @media (max-width: 47.99em) {
+      .sig-card {
+        aspect-ratio: 1 / 1;
+      }
     }
 
     .sig-card:hover {

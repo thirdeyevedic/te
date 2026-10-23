@@ -99,6 +99,13 @@ const description =
       transition: border-color var(--dur-standard) ease;
     }
 
+    /* Stacked full-width: 3/4 turned a 312px box into 416px of card. */
+    @media (max-width: 47.99em) {
+      .world__card {
+        aspect-ratio: 1 / 1.15;
+      }
+    }
+
     .world__card:hover {
       border-color: var(--color-gold);
     }

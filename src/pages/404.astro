@@ -26,6 +26,14 @@ const description = "The page you are looking for does not exist. Return to the 
     align-items: center;
   }
 
+  /* 100svh on a phone is the whole screen, and the section also carries
+     --space-section-lg top and bottom: the 404 read as an empty black page. */
+  @media (max-width: 47.99em) {
+    .nf {
+      min-height: min(100svh, 42rem);
+    }
+  }
+
   .nf__inner {
     display: grid;
     gap: 1.75rem;
