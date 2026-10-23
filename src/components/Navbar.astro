@@ -14,12 +14,16 @@ const { solid = false } = Astro.props;
       <img src="/images/logo.png" alt="Third Eye Events" width="102" height="50" />
     </a>
 
+    <!-- data-section = the whole section a link owns. It is wider than href:
+         the weddings sub-pages (/weddings/, /weddings/vedic/, /weddings/concepts/,
+         /weddings/destination/) belong to "Signature Entries" but are not
+         descendants of /weddings/experiences/, so href alone highlighted nothing. -->
     <div class="nav-links">
-      <a href="/destinations/" class="nav-link">Destinations</a>
-      <a href="/weddings/experiences/" class="nav-link">Signature Experiences</a>
-      <a href="/ip-events/" class="nav-link">IP Events</a>
-      <a href="/production/" class="nav-link">Production</a>
-      <a href="/about/" class="nav-link">About</a>
+      <a href="/destinations/" data-section="/destinations/" class="nav-link">Destinations</a>
+      <a href="/weddings/experiences/" data-section="/weddings/" class="nav-link">Signature Entries</a>
+      <a href="/ip-events/" data-section="/ip-events/" class="nav-link">IP Events</a>
+      <a href="/production/" data-section="/production/" class="nav-link">Production</a>
+      <a href="/about/" data-section="/about/" class="nav-link">About</a>
       <a href="/contact/" class="nav-cta">Get in Touch</a>
     </div>
 
@@ -33,11 +37,11 @@ const { solid = false } = Astro.props;
   <div id="nav-menu" class="nav-overlay">
     <div class="overlay-content">
       <div class="overlay-links">
-        <a href="/destinations/" class="overlay-link">Destinations</a>
-        <a href="/weddings/experiences/" class="overlay-link">Signature Experiences</a>
-        <a href="/ip-events/" class="overlay-link">IP Events</a>
-        <a href="/production/" class="overlay-link">Production</a>
-        <a href="/about/" class="overlay-link">About</a>
+        <a href="/destinations/" data-section="/destinations/" class="overlay-link">Destinations</a>
+        <a href="/weddings/experiences/" data-section="/weddings/" class="overlay-link">Signature Entries</a>
+        <a href="/ip-events/" data-section="/ip-events/" class="overlay-link">IP Events</a>
+        <a href="/production/" data-section="/production/" class="overlay-link">Production</a>
+        <a href="/about/" data-section="/about/" class="overlay-link">About</a>
         <a href="/contact/" class="overlay-cta">Get in Touch</a>
       </div>
     </div>
@@ -118,15 +122,22 @@ const { solid = false } = Astro.props;
 
   /* Mark the section the visitor is in. Without this the nav gives no
      "you are here" signal — the visitor can't tell /weddings/vedic/ from
-     /production/ except by reading the page. */
+     /production/ except by reading the page.
+     Matching uses data-section (the whole section a link owns), falling back
+     to href; both sides are normalised to a single trailing slash so
+     /about and /about/ behave the same. */
   function initNavCurrent() {
-    const path = location.pathname;
+    const norm = (p: string) => {
+      if (!p) return "/";
+      return p.endsWith("/") ? p : p + "/";
+    };
+    const path = norm(location.pathname);
     document
       .querySelectorAll<HTMLAnchorElement>(".nav-link, .overlay-link")
       .forEach((a) => {
-        const href = a.getAttribute("href") || "";
-        if (!href) return;
-        const isCurrent = path === href || (href !== "/" && path.startsWith(href));
+        const section = norm(a.dataset.section || a.getAttribute("href") || "");
+        if (section === "/") return;
+        const isCurrent = path === section || path.startsWith(section);
         if (isCurrent) a.setAttribute("aria-current", "page");
         else a.removeAttribute("aria-current");
       });
@@ -333,6 +344,12 @@ const { solid = false } = Astro.props;
   .overlay-link:hover {
     color: #c5a059;
     transform: scale(1.05);
+  }
+
+  /* Same "you are here" signal as the desktop bar, so the mobile overlay
+     doesn't lose the information the wide nav carries. */
+  .overlay-link[aria-current="page"] {
+    color: #c5a059;
   }
 
   .overlay-cta {
